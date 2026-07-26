@@ -6,12 +6,13 @@
 <title>Acidity Bar &amp; Coffee — Victoria Street, Richmond</title>
 <meta name="description" content="Acidity Bar &amp; Coffee on Victoria Street, Richmond — coffee by day, cocktails and live gigs by night.">
 <link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
 <body>
 
 <header class="site-header">
   <div class="nav-wrap">
-    <a href="index.html" class="brand">Acidity <span>Bar &amp; Coffee</span></a>
+    <a href="index.html" class="brand"><img src="assets/images/logo.png" alt="Acidity Bar &amp; Coffee" class="brand-logo"></a>
     <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
     <ul class="nav-links">
       <li><a href="index.html" class="active">Home</a></li>
@@ -27,7 +28,7 @@
   <div class="hero-inner">
     <div class="hero-eyebrow">Victoria Street, Richmond</div>
     <h1>Coffee by day.<br>Cocktails &amp; live gigs by night.</h1>
-    <p>A Japanese-inspired bar and cafe built on warm wood, quiet green, and weekly live music that fills the room.</p>
+    <p>Specialty coffee, a full cocktail list, and weekly live music — warm wood, quiet green, and a room that fills up on the right nights.</p>
     <div class="hero-actions">
       <a href="menu.html" class="btn btn-primary">View Menu</a>
       <a href="events.html" class="btn btn-outline">See What's On</a>
@@ -41,16 +42,58 @@
     <div class="section-label">The Vibe</div>
     <h2>A quiet room that gets loud on the right nights</h2>
     <p class="section-intro" style="margin-bottom:1rem;">
-      Acidity Bar &amp; Coffee takes cues from Japanese renovation style — natural timber,
-      soft greenery, low light — reworked into a space that's just as easy for a slow
-      morning coffee as it is for a packed gig night. Come for the espresso, stay for the
-      set.
+      Acidity Bar &amp; Coffee is built around natural timber, soft greenery, and low light —
+      a space that's just as easy for a slow morning coffee as it is for a packed gig
+      night. Come for the espresso, stay for the set.
     </p>
     <div class="about-tags">
       <span>Specialty Coffee</span>
       <span>Cocktail Bar</span>
       <span>Weekly Live Gigs</span>
       <span>Wood &amp; Greenery Interior</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="signature-drinks">
+  <div class="section-label">On The Menu</div>
+  <h2>Signature Drinks</h2>
+  <p class="section-intro">A few house favourites — full coffee, cocktail, wine and spirits list on the <a href="menu.html" style="color: var(--amber); text-decoration: underline;">menu page</a>.</p>
+  <div class="drinks-grid">
+    <div class="drink-card">
+      <div class="drink-card-photo"><img src="assets/images/drinks/yuzu-jasmine-dirty.jpg" alt="Yuzu & Jasmine Dirty" onerror="this.parentElement.textContent='[ photo: Yuzu & Jasmine Dirty ]'"></div>
+      <div class="drink-card-body">
+        <h3>Yuzu &amp; Jasmine Dirty</h3>
+        <p>Cold brewed jasmine tea with yuzu, layered with Ethiopian espresso.</p>
+      </div>
+    </div>
+    <div class="drink-card">
+      <div class="drink-card-photo"><img src="assets/images/drinks/oat-banana-dirty.jpg" alt="Oat Banana Dirty" onerror="this.parentElement.textContent='[ photo: Oat Banana Dirty ]'"></div>
+      <div class="drink-card-body">
+        <h3>Oat Banana Dirty</h3>
+        <p>Banana, coconut &amp; oat, espresso dirty — gold, nutty, smooth.</p>
+      </div>
+    </div>
+    <div class="drink-card">
+      <div class="drink-card-photo"><img src="assets/images/drinks/citrus-matcha-rave.jpg" alt="Citrus Matcha Rave" onerror="this.parentElement.textContent='[ photo: Citrus Matcha Rave ]'"></div>
+      <div class="drink-card-body">
+        <h3>Citrus Matcha Rave</h3>
+        <p>Passionfruit, grapefruit and matcha — refreshing, balanced, blooming.</p>
+      </div>
+    </div>
+    <div class="drink-card">
+      <div class="drink-card-photo"><img src="assets/images/drinks/pistachio-coco.jpg" alt="Pistachio Coco" onerror="this.parentElement.textContent='[ photo: Pistachio Coco ]'"></div>
+      <div class="drink-card-body">
+        <h3>Pistachio Coco</h3>
+        <p>Espresso, coconut purée, finished with pistachio cream.</p>
+      </div>
+    </div>
+    <div class="drink-card">
+      <div class="drink-card-photo"><img src="assets/images/drinks/ume-matcha-aperitif.jpg" alt="Ume × Matcha Aperitif" onerror="this.parentElement.textContent='[ photo: Ume × Matcha Aperitif ]'"></div>
+      <div class="drink-card-body">
+        <h3>Ume × Matcha Aperitif</h3>
+        <p>Roku gin, plum, matcha and a subtle herbal lift — light, dry, refreshing.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -81,28 +124,45 @@
   <div class="availability">
     <div>
       <h3>Opening Hours</h3>
-      <table class="hours-table">
-        <tr><td>Monday</td><td>7:00am – 4:00pm</td></tr>
-        <tr><td>Tuesday</td><td>7:00am – 4:00pm</td></tr>
-        <tr><td>Wednesday</td><td>7:00am – 4:00pm</td></tr>
-        <tr><td>Thursday</td><td>7:00am – 10:00pm</td></tr>
-        <tr><td>Friday</td><td>7:00am – Late</td></tr>
-        <tr><td>Saturday</td><td>8:00am – Late</td></tr>
-        <tr><td>Sunday</td><td>8:00am – 5:00pm</td></tr>
+      <table class="hours-table" id="hours-table"
+        data-hours='{"0":[["08:00","16:00"]],"1":[["08:00","17:00"]],"2":[],"3":[["08:00","17:00"]],"4":[["08:00","17:00"],["18:00","23:00"]],"5":[["08:00","16:00"],["18:00","24:00"]],"6":[["08:00","16:00"],["19:00","24:00"]]}'>
+        <tr><td>Sunday</td><td>8:00am – 4:00pm</td></tr>
+        <tr><td>Monday</td><td>8:00am – 5:00pm</td></tr>
+        <tr><td>Tuesday</td><td>Closed</td></tr>
+        <tr><td>Wednesday</td><td>8:00am – 5:00pm</td></tr>
+        <tr><td>Thursday</td><td>8:00am – 5:00pm, 6:00pm – 11:00pm</td></tr>
+        <tr><td>Friday</td><td>8:00am – 4:00pm, 6:00pm – 12:00am</td></tr>
+        <tr><td>Saturday</td><td>8:00am – 4:00pm, 7:00pm – 12:00am</td></tr>
       </table>
-      <div class="status-badge"><span class="status-dot"></span> Open now — kitchen closes 30 min before close</div>
+      <div class="status-badge" id="open-status"><span class="status-dot"></span> Checking hours…</div>
     </div>
     <div>
       <h3>Upcoming Sessions</h3>
       <ul class="event-list">
-        <li><span>Jazz Trio — Live Session</span><span class="event-date">Fri, 7:30pm</span></li>
-        <li><span>Open Mic Night</span><span class="event-date">Sat, 8:00pm</span></li>
-        <li><span>Acoustic Sunday</span><span class="event-date">Sun, 4:00pm</span></li>
+        <li><span>Music of Wes Montgomery — Tony Yang Jazz Trio, Live</span><span class="event-date">Sat, 1 Aug</span></li>
       </ul>
+      <p class="menu-note">More sessions announced weekly — follow <a href="https://www.instagram.com/acidity.bar_n_coffee" target="_blank" rel="noopener" style="color: var(--amber);">@acidity.bar_n_coffee</a> for updates.</p>
       <div class="booking-note">
         Planning a private event or want the venue for a group booking? Let us know your date and
         headcount through the contact form and we'll confirm availability.
       </div>
+    </div>
+  </div>
+
+  <div class="cal" id="availability-cal" style="margin-top: 2.5rem;"
+    data-sessions="2026-08-01"
+    data-private="">
+    <div class="cal-head">
+      <h4 id="cal-month-label"></h4>
+      <div class="cal-nav">
+        <button type="button" id="cal-prev" aria-label="Previous month">&#8249;</button>
+        <button type="button" id="cal-next" aria-label="Next month">&#8250;</button>
+      </div>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+    <div class="cal-legend">
+      <span><i class="dot-session"></i> Live session / gig</span>
+      <span><i class="dot-private"></i> Private event (venue unavailable)</span>
     </div>
   </div>
 </section>
@@ -140,21 +200,20 @@
 
     <div class="contact-info">
       <h3>Address</h3>
-      <p>Victoria Street, Richmond</p>
+      <p>3/240 Victoria Street, Richmond VIC 3121</p>
       <h3>Contact</h3>
       <p>hello@acidity.example — to be updated</p>
       <h3>Follow</h3>
-      <p>Instagram / Facebook links to be added</p>
+      <p><a href="https://www.instagram.com/acidity.bar_n_coffee" target="_blank" rel="noopener" style="color: var(--amber);">@acidity.bar_n_coffee</a> on Instagram</p>
     </div>
   </div>
 </section>
 
 <footer class="site-footer">
   <div class="footer-social">
-    <a href="#">Instagram</a>
-    <a href="#">Facebook</a>
+    <a href="https://www.instagram.com/acidity.bar_n_coffee" target="_blank" rel="noopener">Instagram</a>
   </div>
-  <p>&copy; 2026 Acidity Bar &amp; Coffee, Victoria Street, Richmond.</p>
+  <p>&copy; 2026 Acidity Bar &amp; Coffee, 3/240 Victoria Street, Richmond VIC 3121.</p>
 </footer>
 
 <script src="assets/js/main.js"></script>

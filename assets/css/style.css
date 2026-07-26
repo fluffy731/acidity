@@ -74,16 +74,16 @@ img{ max-width: 100%; display: block; }
 
 /* Wood-grain texture, built in CSS so no external image is required */
 .wood-bg{
-  background-color: var(--wood-mid);
+  background-color: var(--wood-dark);
   background-image:
     repeating-linear-gradient(
       90deg,
-      rgba(0,0,0,0.08) 0px,
-      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.12) 0px,
+      rgba(0,0,0,0.12) 2px,
       transparent 2px,
       transparent 6px
     ),
-    linear-gradient(180deg, var(--wood-light) 0%, var(--wood-mid) 55%, var(--wood-dark) 100%);
+    linear-gradient(180deg, var(--wood-mid) 0%, var(--wood-dark) 100%);
 }
 
 /* ---------------- Header / Nav ---------------- */
@@ -109,8 +109,11 @@ img{ max-width: 100%; display: block; }
   font-family: var(--font-display);
   font-size: 1.4rem;
   letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
 }
 .brand span{ color: var(--amber); }
+.brand-logo{ height: 42px; width: auto; }
 
 .nav-links{
   display: flex;
@@ -229,16 +232,18 @@ img{ max-width: 100%; display: block; }
 .about-photo{
   aspect-ratio: 4/5;
   border-radius: var(--radius);
-  background: linear-gradient(160deg, var(--wood-light), var(--wood-dark));
+  background: linear-gradient(160deg, var(--wood-mid), var(--wood-dark));
   box-shadow: var(--shadow);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(243,234,217,0.5);
+  color: rgba(243,234,217,0.75);
   font-size: 0.85rem;
   text-align: center;
   padding: 1rem;
+  overflow: hidden;
 }
+.about-photo img{ width: 100%; height: 100%; object-fit: cover; }
 
 .about-tags{
   display: flex;
@@ -283,15 +288,17 @@ img{ max-width: 100%; display: block; }
 .gallery-item{
   aspect-ratio: 1/1;
   border-radius: var(--radius);
-  background: linear-gradient(150deg, var(--green-soft), var(--wood-mid));
+  background: linear-gradient(150deg, var(--green-deep), var(--wood-dark));
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(243,234,217,0.55);
+  color: rgba(243,234,217,0.75);
   font-size: 0.75rem;
   text-align: center;
   padding: 0.5rem;
+  overflow: hidden;
 }
+.gallery-item img{ width: 100%; height: 100%; object-fit: cover; }
 
 .gallery-item.tall{ grid-row: span 2; aspect-ratio: auto; }
 
@@ -347,6 +354,103 @@ img{ max-width: 100%; display: block; }
   color: var(--cream-dim);
 }
 
+/* ---------------- Signature drinks ---------------- */
+.drinks-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.drink-card{
+  border: 1px solid rgba(217,154,61,0.15);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: rgba(255,255,255,0.03);
+}
+.drink-card-photo{
+  aspect-ratio: 4/5;
+  background: linear-gradient(150deg, var(--green-deep), var(--wood-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(243,234,217,0.75);
+  font-size: 0.8rem;
+  text-align: center;
+  padding: 0.75rem;
+  overflow: hidden;
+}
+.drink-card-photo img{ width: 100%; height: 100%; object-fit: cover; }
+.drink-card-body{ padding: 1rem 1.1rem 1.25rem; }
+.drink-card-body h3{ font-size: 1rem; margin-bottom: 0.3rem; }
+.drink-card-body p{ color: var(--cream-dim); font-size: 0.85rem; margin: 0; }
+
+/* ---------------- Availability calendar ---------------- */
+.cal{
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(217,154,61,0.15);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+.cal-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.cal-head h4{ margin: 0; font-size: 1.05rem; }
+.cal-nav{
+  display: flex;
+  gap: 0.5rem;
+}
+.cal-nav button{
+  background: transparent;
+  border: 1px solid rgba(243,234,217,0.25);
+  color: var(--cream);
+  border-radius: var(--radius);
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.cal-nav button:hover{ border-color: var(--amber); color: var(--amber); }
+.cal-grid{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  text-align: center;
+}
+.cal-grid .cal-dow{
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  padding-bottom: 0.4rem;
+}
+.cal-day{
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  color: var(--cream-dim);
+  background: rgba(255,255,255,0.02);
+}
+.cal-day.empty{ background: transparent; }
+.cal-day.session{ background: rgba(217,154,61,0.25); color: var(--cream); font-weight: 600; }
+.cal-day.private{ background: rgba(111,191,115,0.2); color: var(--cream); font-weight: 600; }
+.cal-legend{
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: var(--cream-dim);
+}
+.cal-legend span{ display: inline-flex; align-items: center; gap: 0.4rem; }
+.cal-legend i{ width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.cal-legend .dot-session{ background: var(--amber); }
+.cal-legend .dot-private{ background: #6fbf73; }
+
 /* ---------------- Menu page ---------------- */
 .menu-hero{
   text-align: center;
@@ -387,6 +491,26 @@ img{ max-width: 100%; display: block; }
 .menu-item-name{ font-weight: 500; }
 .menu-item-desc{ display: block; color: var(--cream-dim); font-size: 0.85rem; margin-top: 0.2rem; }
 .menu-item-price{ color: var(--amber); white-space: nowrap; }
+
+.menu-subhead{
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin: 1.5rem 0 0.5rem;
+}
+.menu-note{ color: var(--cream-dim); font-size: 0.82rem; margin: 0.5rem 0 0; }
+
+.menu-columns{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 2.5rem;
+}
+@media (max-width: 640px){
+  .menu-columns{ grid-template-columns: 1fr; }
+}
 
 /* ---------------- Contact form ---------------- */
 .contact-layout{
@@ -448,6 +572,7 @@ img{ max-width: 100%; display: block; }
   .about{ grid-template-columns: 1fr; }
   .card-grid{ grid-template-columns: repeat(2, 1fr); }
   .gallery-grid{ grid-template-columns: repeat(2, 1fr); }
+  .drinks-grid{ grid-template-columns: repeat(2, 1fr); }
   .availability{ grid-template-columns: 1fr; }
   .contact-layout{ grid-template-columns: 1fr; }
 }
@@ -469,4 +594,5 @@ img{ max-width: 100%; display: block; }
   .nav-toggle{ display: block; }
   .card-grid{ grid-template-columns: 1fr; }
   .gallery-grid{ grid-template-columns: repeat(2, 1fr); }
+  .drinks-grid{ grid-template-columns: 1fr; }
 }

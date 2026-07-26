@@ -6,12 +6,13 @@
 <title>Menu — Acidity Bar &amp; Coffee</title>
 <meta name="description" content="Coffee, cocktails, and food menu for Acidity Bar &amp; Coffee, Victoria Street, Richmond.">
 <link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" type="image/png" href="assets/images/logo.png">
 </head>
 <body>
 
 <header class="site-header">
   <div class="nav-wrap">
-    <a href="index.html" class="brand">Acidity <span>Bar &amp; Coffee</span></a>
+    <a href="index.html" class="brand"><img src="assets/images/logo.png" alt="Acidity Bar &amp; Coffee" class="brand-logo"></a>
     <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
@@ -40,66 +41,335 @@
 
   <div class="menu-section">
     <h2>Coffee</h2>
+
+    <div class="menu-subhead">Espresso Blend</div>
     <div class="menu-item">
-      <span class="menu-item-name">Espresso<span class="menu-item-desc">House blend, single or double</span></span>
-      <span class="menu-item-price">$4.50</span>
+      <span class="menu-item-name">Humbler<span class="menu-item-desc">Chocolate fudge, date caramel, syrups</span></span>
     </div>
     <div class="menu-item">
-      <span class="menu-item-name">Flat White<span class="menu-item-desc">Silky microfoam, house blend</span></span>
-      <span class="menu-item-price">$5.00</span>
+      <span class="menu-item-name">Ghost Rider <span style="color:var(--amber);">(+$1)</span><span class="menu-item-desc">Milk chocolate, red grape, blueberry &amp; syrups</span></span>
     </div>
     <div class="menu-item">
-      <span class="menu-item-name">Matcha Latte<span class="menu-item-desc">Ceremonial grade, oat or dairy</span></span>
-      <span class="menu-item-price">$5.50</span>
+      <span class="menu-item-name">Hot Coffee</span>
+      <span class="menu-item-price">$5 / $5.50 (TA) / $6</span>
     </div>
     <div class="menu-item">
-      <span class="menu-item-name">Cold Brew<span class="menu-item-desc">Slow steeped, 18 hours</span></span>
-      <span class="menu-item-price">$6.00</span>
+      <span class="menu-item-name">Iced Latte / Long Black</span>
+      <span class="menu-item-price">$6.50</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Iced Coffee / Mocha</span>
+      <span class="menu-item-price">$8</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">House Singles / Extra Shot / Decaf</span>
+      <span class="menu-item-price">+$1 each</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Alternative Milk</span>
+      <span class="menu-item-price">+$0.70</span>
+    </div>
+
+    <div class="menu-subhead">Filter &amp; Non-Coffee</div>
+    <div class="menu-item">
+      <span class="menu-item-name">Pour Overs<span class="menu-item-desc">Refer to the Acidity Brews menu</span></span>
+      <span class="menu-item-price">$8+</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Black-Sonic<span class="menu-item-desc">Nitro-infused filter coffee</span></span>
+      <span class="menu-item-price">$8</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Iced Drip</span>
+      <span class="menu-item-price">$8+</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Flash Brew</span>
+      <span class="menu-item-price">$8+</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Matcha / Chocolate / Chai<span class="menu-item-desc">Make it iced +$7.50</span></span>
+      <span class="menu-item-price">$6 / $7</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Tea</span>
+      <span class="menu-item-price">$7</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Smoothie</span>
+      <span class="menu-item-price">$8+</span>
+    </div>
+  </div>
+
+  <div class="menu-section">
+    <h2>Coffee-Inspired</h2>
+    <div class="menu-item">
+      <span class="menu-item-name">Pistachio Coco<span class="menu-item-desc">Espresso, coconut purée, finished with pistachio cream. Aromatic, rich and clean.</span></span>
+      <span class="menu-item-price">$12</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Mo Li Black<span class="menu-item-desc">Iced dripped coffee, topped with jasmine infused milk foam — floral, creamy, softly layered.</span></span>
+      <span class="menu-item-price">$8</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Bananachino (Hot)<span class="menu-item-desc">Banana, coconut and oat cappuccino with a brûléed finish — warm, dessert-like.</span></span>
+      <span class="menu-item-price">$10</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Yuzu &amp; Jasmine Dirty<span class="menu-item-desc">Cold brewed jasmine tea with yuzu, layered with Ethiopian espresso. Floral, citrus &amp; tea-like.</span></span>
+      <span class="menu-item-price">$11</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Ruby &amp; Amber<span class="menu-item-desc">Raspberry, pomegranate &amp; espresso, jasmine infused milk foam with pineapple sphere.</span></span>
+      <span class="menu-item-price">$14</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Underberry<span class="menu-item-desc">Anaerobic strawberry punch, iced drip coffee, fizzy. Umami, rich &amp; refreshing.</span></span>
+      <span class="menu-item-price">$12</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Oat Banana Dirty<span class="menu-item-desc">Banana, coconut &amp; oat, espresso dirty. Gold, nutty, smooth &amp; relaxing.</span></span>
+      <span class="menu-item-price">$8</span>
+    </div>
+  </div>
+
+  <div class="menu-section">
+    <h2>Refresher &amp; Bodied</h2>
+    <div class="menu-item">
+      <span class="menu-item-name">Citrus Matcha Rave<span class="menu-item-desc">Passionfruit, grapefruit and matcha. Refreshing, balanced and blooming.</span></span>
+      <span class="menu-item-price">$8</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Evergreen<span class="menu-item-desc">Cucumber, green apple and cold brewed oolong tea. Bright, juicy and clean.</span></span>
+      <span class="menu-item-price">$10</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Thyme &amp; Iced Tea<span class="menu-item-desc">Lime &amp; thyme, cold brew black tea. Cooling, lingering &amp; citrusy.</span></span>
+      <span class="menu-item-price">$9</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Strawberry Guava &amp; Shrub<span class="menu-item-desc">Strawberry, guava vinegar and black tea. Funky, tart and long on the palate.</span></span>
+      <span class="menu-item-price">$9</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Mango Sticky Rice<span class="menu-item-desc">Mango, rice milk, evaporated milk, coconut. Creamy, tropical and softly sweet.</span></span>
+      <span class="menu-item-price">$10</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Mt Kailash Dirty<span class="menu-item-desc">Oat, banana, coconut, milk with chocolate dirty on top. Chocolatey, malty &amp; smooth.</span></span>
+      <span class="menu-item-price">$8</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Matcha &amp; Pistachio<span class="menu-item-desc">Matcha, pistachio. Nutty, creamy, mellow &amp; tea-forward.</span></span>
+      <span class="menu-item-price">$10</span>
     </div>
   </div>
 
   <div class="menu-section">
     <h2>Cocktails</h2>
+
+    <div class="menu-subhead">Light Refresher</div>
     <div class="menu-item">
-      <span class="menu-item-name">Yuzu Highball<span class="menu-item-desc">Japanese whisky, yuzu, soda</span></span>
-      <span class="menu-item-price">$18</span>
-    </div>
-    <div class="menu-item">
-      <span class="menu-item-name">Acidity Sour<span class="menu-item-desc">House signature, seasonal citrus</span></span>
+      <span class="menu-item-name">Ume × Matcha Aperitif<span class="menu-item-desc">Roku gin, plum, matcha and a subtle herbal lift — light, dry, refreshing.</span></span>
       <span class="menu-item-price">$19</span>
     </div>
     <div class="menu-item">
-      <span class="menu-item-name">Umeshu Spritz<span class="menu-item-desc">Plum wine, prosecco, soda</span></span>
-      <span class="menu-item-price">$17</span>
+      <span class="menu-item-name">Sake × Ume Peach Spritz<span class="menu-item-desc">Sake, plum, thyme, fresh citrus and a gentle amaro bitterness — clean, refreshing finish.</span></span>
+      <span class="menu-item-price">$18</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Pink Cut<span class="menu-item-desc">Gin with peach, cherry, cranberry and lemon — crisp, fruit-led, cleanly structured.</span></span>
+      <span class="menu-item-price">$20</span>
+    </div>
+
+    <div class="menu-subhead">Silk &amp; Cream</div>
+    <div class="menu-item">
+      <span class="menu-item-name">Matcha Gin Fizz<span class="menu-item-desc">Roku gin with matcha liqueur, fresh lemon and a soft fizz — creamy, lightly bitter, balanced.</span></span>
+      <span class="menu-item-price">$21</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Cross Brew<span class="menu-item-desc">House signature blending black tea and espresso with cacao liqueur, milk and spirits.</span></span>
+      <span class="menu-item-price">$19</span>
+    </div>
+
+    <div class="menu-subhead">Structured</div>
+    <div class="menu-item">
+      <span class="menu-item-name">Midnight Orchard<span class="menu-item-desc">Jim Beam rye whisky, cherry liqueur and Cynar with fresh lemon — dry, bittersweet, structured.</span></span>
+      <span class="menu-item-price">$23</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Tea Tree Sour<span class="menu-item-desc">Cognac, Branca Menta, lemon and honey — aromatic, lightly mentholated, balanced.</span></span>
+      <span class="menu-item-price">$24</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Rosita<span class="menu-item-desc">Tequila, vermouth and amaro stirred with bitters — dry, bittersweet, balanced.</span></span>
+      <span class="menu-item-price">$21</span>
+    </div>
+
+    <div class="menu-subhead">Spirit-Forwarded</div>
+    <div class="menu-item">
+      <span class="menu-item-name">Vieux Carré<span class="menu-item-desc">Rye whisky, cognac and sweet vermouth with Bénédictine — warming, complex, structured.</span></span>
+      <span class="menu-item-price">$24</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Black Canopy<span class="menu-item-desc">Plantation dark rum with pineapple oleo, cherry and Campari — deep, structured, tropical.</span></span>
+      <span class="menu-item-price">$23</span>
     </div>
   </div>
 
   <div class="menu-section">
-    <h2>Small Plates</h2>
+    <h2>Wine &amp; Sake</h2>
+    <p class="menu-note" style="margin-bottom:1rem;">Where two prices are shown, that's glass / bottle.</p>
+
+    <div class="menu-subhead">Fizz</div>
     <div class="menu-item">
-      <span class="menu-item-name">Karaage Chicken<span class="menu-item-desc">Japanese fried chicken, spiced mayo</span></span>
-      <span class="menu-item-price">$14</span>
+      <span class="menu-item-name">N.V. Serafino — Goose Island Sparkling<span class="menu-item-desc">McLaren Vale, SA</span></span>
+      <span class="menu-item-price">$12 / $66</span>
     </div>
     <div class="menu-item">
-      <span class="menu-item-name">Miso Butter Edamame<span class="menu-item-desc">Charred, miso butter glaze</span></span>
-      <span class="menu-item-price">$9</span>
+      <span class="menu-item-name">2023 Sir Paz — Yianni Blanc de Blanc Sparkling<span class="menu-item-desc">Yarra Valley, VIC</span></span>
+      <span class="menu-item-price">$98</span>
+    </div>
+
+    <div class="menu-subhead">White</div>
+    <div class="menu-item">
+      <span class="menu-item-name">2025 Claymore — Walk This Way Riesling<span class="menu-item-desc">Clare Valley, SA</span></span>
+      <span class="menu-item-price">$14 / $63</span>
     </div>
     <div class="menu-item">
-      <span class="menu-item-name">Okonomiyaki Toast<span class="menu-item-desc">Sourdough, cabbage, bonito, kewpie</span></span>
-      <span class="menu-item-price">$12</span>
+      <span class="menu-item-name">2025 Alpha Box &amp; Dice — Tarot Pinot Grigio<span class="menu-item-desc">McLaren Vale, SA</span></span>
+      <span class="menu-item-price">$14 / $63</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">2024 Digiorgio — Lucindale Chardonnay<span class="menu-item-desc">Limestone Coast, SA</span></span>
+      <span class="menu-item-price">$73</span>
+    </div>
+
+    <div class="menu-subhead">Red</div>
+    <div class="menu-item">
+      <span class="menu-item-name">2022 Sevenhill — Inigo Shiraz<span class="menu-item-desc">Clare Valley, SA</span></span>
+      <span class="menu-item-price">$16 / $72</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">2024 Nevis Bluff — The Bluff Pinot Noir<span class="menu-item-desc">Central Otago, New Zealand</span></span>
+      <span class="menu-item-price">$18 / $81</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">2022 Tscharke — A Thing of Beauty Grenache<span class="menu-item-desc">Barossa Valley, SA</span></span>
+      <span class="menu-item-price">$73</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">2019 Grace Wine — Yamanashi De Grace<span class="menu-item-desc">Yamanashi, Japan</span></span>
+      <span class="menu-item-price">$106</span>
+    </div>
+
+    <div class="menu-subhead">Skin</div>
+    <div class="menu-item">
+      <span class="menu-item-name">2024 Digiorgio — Head In The Clouds Pinot Rosé<span class="menu-item-desc">Coonawarra, SA</span></span>
+      <span class="menu-item-price">$16 / $72</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">2025 Delinquente Wine Co. — Jaybird Bianco Macerato<span class="menu-item-desc">Riverland, SA</span></span>
+      <span class="menu-item-price">$72</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">2022 Soumah — Ai Fiori Rosato<span class="menu-item-desc">Yarra Valley, VIC</span></span>
+      <span class="menu-item-price">$83</span>
+    </div>
+
+    <div class="menu-subhead">Sake</div>
+    <p class="menu-note" style="margin-bottom:0.75rem;">Priced by pour / half-carafe / bottle — "—" means not sold by that pour.</p>
+    <div class="menu-item">
+      <span class="menu-item-name">Kubota Junmai Daiginjo<span class="menu-item-desc">Asahi Shuzo</span></span>
+      <span class="menu-item-price">$22 / $31 / $110</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Kubota Hyakuju Junmai Daiginjo<span class="menu-item-desc">Asahi Shuzo</span></span>
+      <span class="menu-item-price">$22 / $31 / $110</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Dassai 45 Junmai Daiginjo<span class="menu-item-desc">Asahi Shuzo</span></span>
+      <span class="menu-item-price">$22 / $31 / $110</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Dassai 39 Junmai Daiginjo<span class="menu-item-desc">Asahi Shuzo</span></span>
+      <span class="menu-item-price">— / — / $158</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Hyaku Moku Junmai Daiginjo</span>
+      <span class="menu-item-price">— / — / $179</span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-name">Dassai 45 Happo Nigorizake<span class="menu-item-desc">Sparkling sake, Asahi Shuzo, 360ml</span></span>
+      <span class="menu-item-price">— / — / $66</span>
     </div>
   </div>
 
-  <p style="color: var(--cream-dim); font-size:0.85rem;">Menu items and prices are placeholders — update with your final offering.</p>
+  <div class="menu-section">
+    <h2>Spirits</h2>
+    <p class="menu-note" style="margin-bottom:1rem;">Priced 30ml / 60ml. Choice of mixers +$2 — Coke, Coke Zero, soda, tonic, lemonade, ginger ale, cranberry, orange, apple or pineapple juice. Redbull +$1.</p>
+    <div class="menu-columns">
+      <div>
+        <div class="menu-subhead">Vodka</div>
+        <div class="menu-item"><span class="menu-item-name">Greenside</span><span class="menu-item-price">$10 / $17</span></div>
+        <div class="menu-item"><span class="menu-item-name">Absolut</span><span class="menu-item-price">$11 / $19</span></div>
+        <div class="menu-item"><span class="menu-item-name">Haku / Haku Yuzu</span><span class="menu-item-price">$13 / $23</span></div>
+        <div class="menu-item"><span class="menu-item-name">Grey Goose</span><span class="menu-item-price">$15 / $26</span></div>
+
+        <div class="menu-subhead">Gin</div>
+        <div class="menu-item"><span class="menu-item-name">Beefeater London Dry</span><span class="menu-item-price">$11 / $19</span></div>
+        <div class="menu-item"><span class="menu-item-name">Bombay Sapphire</span><span class="menu-item-price">$12 / $21</span></div>
+        <div class="menu-item"><span class="menu-item-name">Hendrick's</span><span class="menu-item-price">$13 / $23</span></div>
+        <div class="menu-item"><span class="menu-item-name">Suntory Roku</span><span class="menu-item-price">$13 / $23</span></div>
+        <div class="menu-item"><span class="menu-item-name">Slingsby London Dry</span><span class="menu-item-price">$14 / $24</span></div>
+
+        <div class="menu-subhead">Tequila</div>
+        <div class="menu-item"><span class="menu-item-name">Soldada Blanco</span><span class="menu-item-price">$11 / $19</span></div>
+        <div class="menu-item"><span class="menu-item-name">El Jimador Reposado</span><span class="menu-item-price">$12 / $21</span></div>
+        <div class="menu-item"><span class="menu-item-name">Orendain Blanco</span><span class="menu-item-price">$12 / $21</span></div>
+        <div class="menu-item"><span class="menu-item-name">Orendain Reposado</span><span class="menu-item-price">$13 / $23</span></div>
+        <div class="menu-item"><span class="menu-item-name">1800 Blanco</span><span class="menu-item-price">$15 / $26</span></div>
+      </div>
+      <div>
+        <div class="menu-subhead">Rum</div>
+        <div class="menu-item"><span class="menu-item-name">Bacardi Spiced</span><span class="menu-item-price">$11 / $19</span></div>
+        <div class="menu-item"><span class="menu-item-name">Bacardi White</span><span class="menu-item-price">$11 / $19</span></div>
+        <div class="menu-item"><span class="menu-item-name">Sailor Jerry Spiced</span><span class="menu-item-price">$12 / $21</span></div>
+        <div class="menu-item"><span class="menu-item-name">Kraken Black Spiced</span><span class="menu-item-price">$13 / $23</span></div>
+        <div class="menu-item"><span class="menu-item-name">Plantation 3 Stars</span><span class="menu-item-price">$14 / $24</span></div>
+        <div class="menu-item"><span class="menu-item-name">Plantation Ori Dark</span><span class="menu-item-price">$14 / $24</span></div>
+
+        <div class="menu-subhead">Whiskey</div>
+        <div class="menu-item"><span class="menu-item-name">Jameson Irish</span><span class="menu-item-price">$12 / $21</span></div>
+        <div class="menu-item"><span class="menu-item-name">Jack Daniel's No.7</span><span class="menu-item-price">$12 / $21</span></div>
+        <div class="menu-item"><span class="menu-item-name">Johnnie Walker Black</span><span class="menu-item-price">$13 / $23</span></div>
+        <div class="menu-item"><span class="menu-item-name">Four Roses Bourbon</span><span class="menu-item-price">$13 / $23</span></div>
+        <div class="menu-item"><span class="menu-item-name">Maker's Mark Bourbon</span><span class="menu-item-price">$13 / $23</span></div>
+        <div class="menu-item"><span class="menu-item-name">Suntory Toki</span><span class="menu-item-price">$15 / $26</span></div>
+        <div class="menu-item"><span class="menu-item-name">Glenfiddich 12 Scotch</span><span class="menu-item-price">$16 / $28</span></div>
+        <div class="menu-item"><span class="menu-item-name">Fuji Single Blended</span><span class="menu-item-price">$18 / $31</span></div>
+        <div class="menu-item"><span class="menu-item-name">Hibiki Harmony</span><span class="menu-item-price">$24 / $41</span></div>
+        <div class="menu-item"><span class="menu-item-name">The Hakushu 12</span><span class="menu-item-price">$38 / $66</span></div>
+        <div class="menu-item"><span class="menu-item-name">The Yamazaki 12</span><span class="menu-item-price">$38 / $66</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="menu-section">
+    <h2>Bites</h2>
+    <div class="menu-item">
+      <span class="menu-item-name">Crisps</span>
+      <span class="menu-item-price">$5 per serve</span>
+    </div>
+  </div>
 
 </section>
 
 <footer class="site-footer">
   <div class="footer-social">
-    <a href="#">Instagram</a>
-    <a href="#">Facebook</a>
+    <a href="https://www.instagram.com/acidity.bar_n_coffee" target="_blank" rel="noopener">Instagram</a>
   </div>
-  <p>&copy; 2026 Acidity Bar &amp; Coffee, Victoria Street, Richmond.</p>
+  <p>&copy; 2026 Acidity Bar &amp; Coffee, 3/240 Victoria Street, Richmond VIC 3121.</p>
 </footer>
 
 <script src="assets/js/main.js"></script>
