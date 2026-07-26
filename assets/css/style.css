@@ -99,7 +99,7 @@ img{ max-width: 100%; display: block; }
 .nav-wrap{
   max-width: 1100px;
   margin: 0 auto;
-  padding: 1rem 1.5rem;
+  padding: 0.6rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -113,7 +113,14 @@ img{ max-width: 100%; display: block; }
   align-items: center;
 }
 .brand span{ color: var(--amber); }
-.brand-logo{ height: 42px; width: auto; }
+.brand-logo{ height: 84px; width: auto; }
+.brand-text{
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.05em;
+  margin-left: 0.6rem;
+}
+.brand-text span{ color: var(--amber); }
 
 .nav-links{
   display: flex;
