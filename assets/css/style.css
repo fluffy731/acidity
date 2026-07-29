@@ -1,23 +1,29 @@
 /* ============================================
    Acidity Bar & Coffee — shared styles
-   Palette: deep forest green + warm wood tones,
-   with an amber "gig night" accent for energy.
+   Dark, moody bar palette: a lighter, fresher
+   forest green (not near-black) + warm wood
+   tones, with an amber accent for gig-night
+   energy.
    ============================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
 
 :root{
-  --green-deep:   #223b30;
-  --green-mid:    #2f4d3f;
-  --green-soft:   #4a6b57;
+  --ink:          #1c1a16;
+  --cream:        #f3ead9;
+  --cream-dim:    #e6d9bf;
+
+  --green-deep:   #33513f;
+  --green-mid:    #3f6350;
+  --green-soft:   #6f9179;
+
   --wood-dark:    #3b2a1f;
   --wood-mid:     #6b4a30;
   --wood-light:   #b98a5e;
-  --cream:        #f3ead9;
-  --cream-dim:    #e6d9bf;
+
   --amber:        #d99a3d;
   --amber-dim:    #c1802a;
-  --ink:          #1c1a16;
+  --amber-wash:   rgba(217,154,61,0.18);
 
   --font-display: 'Shippori Mincho', serif;
   --font-body: 'Noto Sans JP', sans-serif;
@@ -91,7 +97,7 @@ img{ max-width: 100%; display: block; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(34, 59, 48, 0.94);
+  background: rgba(28, 44, 34, 0.94);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid rgba(217, 154, 61, 0.25);
 }
@@ -152,14 +158,14 @@ img{ max-width: 100%; display: block; }
 /* ---------------- Hero ---------------- */
 .hero{
   position: relative;
-  min-height: 88vh;
+  min-height: 82vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   padding: 2rem 1.5rem;
   background:
-    linear-gradient(180deg, rgba(20,32,26,0.55) 0%, rgba(20,32,26,0.85) 100%),
+    linear-gradient(180deg, rgba(20,32,26,0.5) 0%, rgba(20,32,26,0.82) 100%),
     linear-gradient(135deg, var(--green-mid), var(--wood-dark));
   overflow: hidden;
 }
@@ -276,7 +282,7 @@ img{ max-width: 100%; display: block; }
 }
 
 .card{
-  background: rgba(255,255,255,0.03);
+  background: rgba(255,255,255,0.04);
   border: 1px solid rgba(217,154,61,0.15);
   border-radius: var(--radius);
   padding: 1.75rem;
@@ -295,7 +301,7 @@ img{ max-width: 100%; display: block; }
 .gallery-item{
   aspect-ratio: 1/1;
   border-radius: var(--radius);
-  background: linear-gradient(150deg, var(--green-deep), var(--wood-dark));
+  background: linear-gradient(150deg, var(--green-mid), var(--wood-dark));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -322,7 +328,7 @@ img{ max-width: 100%; display: block; }
 }
 .hours-table td{
   padding: 0.6rem 0;
-  border-bottom: 1px solid rgba(243,234,217,0.1);
+  border-bottom: 1px solid rgba(243,234,217,0.12);
   font-size: 0.95rem;
 }
 .hours-table td:last-child{ text-align: right; color: var(--amber); }
@@ -347,7 +353,7 @@ img{ max-width: 100%; display: block; }
   justify-content: space-between;
   gap: 1rem;
   padding: 0.85rem 0;
-  border-bottom: 1px solid rgba(243,234,217,0.1);
+  border-bottom: 1px solid rgba(243,234,217,0.12);
   font-size: 0.92rem;
 }
 .event-date{ color: var(--amber); white-space: nowrap; }
@@ -371,11 +377,11 @@ img{ max-width: 100%; display: block; }
   border: 1px solid rgba(217,154,61,0.15);
   border-radius: var(--radius);
   overflow: hidden;
-  background: rgba(255,255,255,0.03);
+  background: rgba(255,255,255,0.04);
 }
 .drink-card-photo{
   aspect-ratio: 4/5;
-  background: linear-gradient(150deg, var(--green-deep), var(--wood-dark));
+  background: linear-gradient(150deg, var(--green-mid), var(--wood-dark));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -392,7 +398,7 @@ img{ max-width: 100%; display: block; }
 
 /* ---------------- Availability calendar ---------------- */
 .cal{
-  background: rgba(255,255,255,0.03);
+  background: rgba(255,255,255,0.04);
   border: 1px solid rgba(217,154,61,0.15);
   border-radius: var(--radius);
   padding: 1.25rem;
@@ -433,6 +439,7 @@ img{ max-width: 100%; display: block; }
   padding-bottom: 0.4rem;
 }
 .cal-day{
+  position: relative;
   aspect-ratio: 1/1;
   display: flex;
   align-items: center;
@@ -440,11 +447,59 @@ img{ max-width: 100%; display: block; }
   border-radius: var(--radius);
   font-size: 0.85rem;
   color: var(--cream-dim);
-  background: rgba(255,255,255,0.02);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid transparent;
+  font-family: inherit;
+  padding: 0;
+  width: 100%;
 }
 .cal-day.empty{ background: transparent; }
-.cal-day.session{ background: rgba(217,154,61,0.25); color: var(--cream); font-weight: 600; }
-.cal-day.private{ background: rgba(111,191,115,0.2); color: var(--cream); font-weight: 600; }
+.cal-day.past{ color: rgba(230,217,191,0.35); cursor: default; }
+.cal-day.session{ background: var(--amber-wash); color: var(--cream); font-weight: 600; cursor: pointer; }
+.cal-day.private{ background: rgba(111,191,115,0.2); color: var(--cream); font-weight: 600; cursor: pointer; }
+.cal-day.available{ cursor: pointer; }
+.cal-day.available:hover, .cal-day.available:focus-visible{
+  background: rgba(217,154,61,0.15);
+  border-color: rgba(217,154,61,0.5);
+  color: var(--cream);
+  outline: none;
+}
+.cal-day.session:hover, .cal-day.session:focus-visible,
+.cal-day.private:hover, .cal-day.private:focus-visible{
+  outline: none;
+  border-color: currentColor;
+}
+
+.cal-tip{
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--ink);
+  color: var(--cream);
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius);
+  font-size: 0.72rem;
+  line-height: 1.45;
+  font-weight: 400;
+  white-space: normal;
+  width: max-content;
+  max-width: 200px;
+  text-align: left;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 20;
+}
+.cal-day:hover .cal-tip, .cal-day:focus-visible .cal-tip, .cal-day.tip-open .cal-tip{
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+.cal-tip strong{ display: block; color: var(--amber); font-weight: 600; margin-bottom: 0.15rem; }
+
 .cal-legend{
   display: flex;
   gap: 1.25rem;
@@ -457,6 +512,7 @@ img{ max-width: 100%; display: block; }
 .cal-legend i{ width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
 .cal-legend .dot-session{ background: var(--amber); }
 .cal-legend .dot-private{ background: #6fbf73; }
+.cal-hint{ margin-top: 0.75rem; font-size: 0.78rem; color: var(--cream-dim); }
 
 /* ---------------- Menu page ---------------- */
 .menu-hero{
@@ -530,7 +586,7 @@ img{ max-width: 100%; display: block; }
 .package-card{
   border: 1px solid rgba(217,154,61,0.15);
   border-radius: var(--radius);
-  background: rgba(255,255,255,0.03);
+  background: rgba(255,255,255,0.04);
   padding: 1.75rem;
 }
 .package-card.featured{ border-color: rgba(217,154,61,0.45); }
@@ -625,6 +681,7 @@ img{ max-width: 100%; display: block; }
   border-top: 1px solid rgba(217,154,61,0.25);
 }
 .plan-event-cta p{ color: var(--cream-dim); max-width: 560px; margin: 0.5rem 0 1rem; }
+.plan-event-note{ font-size: 0.85rem; color: var(--amber); margin: 0 0 1rem; }
 .cta-link{ font-weight: 600; color: var(--amber); text-decoration: underline; }
 .cta-link:hover{ color: var(--cream); }
 
@@ -653,17 +710,27 @@ img{ max-width: 100%; display: block; }
   color: var(--cream-dim);
   margin-bottom: 0.4rem;
 }
+.required-mark{ color: var(--amber); }
+
 .form-group input,
 .form-group textarea,
 .form-group select{
   width: 100%;
   padding: 0.75rem 0.9rem;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.06);
   border: 1px solid rgba(243,234,217,0.2);
   border-radius: var(--radius);
   color: var(--cream);
   font-family: var(--font-body);
   font-size: 0.95rem;
+}
+.form-group select{ cursor: pointer; }
+/* Force the native dropdown popup to a light bg + dark text — the page's
+   own light-on-dark styling doesn't reach the OS-rendered option list,
+   which otherwise defaults to a white popup and becomes unreadable. */
+.form-group select option{
+  background: #fff;
+  color: var(--ink);
 }
 .form-group input:focus,
 .form-group textarea:focus,
@@ -672,6 +739,15 @@ img{ max-width: 100%; display: block; }
   border-color: var(--amber);
 }
 .form-group textarea{ resize: vertical; min-height: 120px; }
+.form-note{
+  font-size: 0.85rem;
+  color: var(--amber);
+  background: var(--amber-wash);
+  border: 1px solid rgba(217,154,61,0.3);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+}
 
 .contact-info{ color: var(--cream-dim); font-size: 0.95rem; }
 .contact-info h3{ font-size: 1rem; margin-top: 1.5rem; }
@@ -679,18 +755,53 @@ img{ max-width: 100%; display: block; }
 /* ---------------- Footer ---------------- */
 .site-footer{
   background: var(--wood-dark);
-  padding: 2.5rem 1.5rem;
-  text-align: center;
-  font-size: 0.85rem;
-  color: rgba(243,234,217,0.6);
+  color: rgba(243,234,217,0.7);
+  padding: 3.5rem 1.5rem 2rem;
+  font-size: 0.9rem;
 }
+.footer-inner{
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(243,234,217,0.12);
+}
+.footer-brand{ display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+.footer-brand img{ height: 44px; width: auto; }
+.footer-brand span{ font-family: var(--font-display); font-size: 1.15rem; color: var(--cream); }
+.footer-tagline{ max-width: 260px; font-size: 0.85rem; }
+.footer-col h4{
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin: 0 0 0.9rem;
+}
+.footer-col ul{ list-style: none; margin: 0; padding: 0; }
+.footer-col li{ margin-bottom: 0.55rem; }
+.footer-col a:hover{ color: var(--amber); }
 .footer-social{
   display: flex;
-  gap: 1.25rem;
-  justify-content: center;
-  margin-bottom: 1rem;
+  align-items: center;
+  gap: 0.5rem;
 }
+.footer-social svg{ width: 18px; height: 18px; flex-shrink: 0; }
+.footer-social a{ display: inline-flex; align-items: center; gap: 0.5rem; }
 .footer-social a:hover{ color: var(--amber); }
+.footer-bottom{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+}
 
 /* ---------------- Responsive ---------------- */
 @media (max-width: 860px){
@@ -700,6 +811,7 @@ img{ max-width: 100%; display: block; }
   .drinks-grid{ grid-template-columns: repeat(2, 1fr); }
   .availability{ grid-template-columns: 1fr; }
   .contact-layout{ grid-template-columns: 1fr; }
+  .footer-inner{ grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 640px){
@@ -720,4 +832,5 @@ img{ max-width: 100%; display: block; }
   .card-grid{ grid-template-columns: 1fr; }
   .gallery-grid{ grid-template-columns: repeat(2, 1fr); }
   .drinks-grid{ grid-template-columns: 1fr; }
+  .footer-inner{ grid-template-columns: 1fr; }
 }

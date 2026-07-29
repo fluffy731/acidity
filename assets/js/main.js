@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initOpenStatus();
   initAvailabilityCalendar();
+  initDateHandoff();
 });
 
 const VENUE_TZ = 'Australia/Melbourne';
@@ -69,6 +70,12 @@ function initOpenStatus() {
   }
 }
 
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
 function initAvailabilityCalendar() {
   const el = document.getElementById('availability-cal');
   if (!el) return;
@@ -77,10 +84,16 @@ function initAvailabilityCalendar() {
   const monthLabel = document.getElementById('cal-month-label');
   const prevBtn = document.getElementById('cal-prev');
   const nextBtn = document.getElementById('cal-next');
+  const bookingUrl = el.dataset.bookingUrl || 'events.html';
 
-  const sessionDates = (el.dataset.sessions || '').split(',').map(s => s.trim()).filter(Boolean);
-  const privateDates = (el.dataset.private || '').split(',').map(s => s.trim()).filter(Boolean);
+  let events = {};
+  try {
+    events = JSON.parse(el.dataset.events || '{}');
+  } catch (e) {
+    events = {};
+  }
 
+  const todayIso = getMelbourneTodayIso();
   const now = new Date();
   let viewYear = now.getFullYear();
   let viewMonth = now.getMonth();
@@ -105,13 +118,46 @@ function initAvailabilityCalendar() {
 
     for (let d = 1; d <= daysInMonth; d++) {
       const iso = `${viewYear}-${pad(viewMonth + 1)}-${pad(d)}`;
-      let cls = 'cal-day';
-      if (sessionDates.includes(iso)) cls += ' session';
-      if (privateDates.includes(iso)) cls += ' private';
-      html += `<div class="${cls}">${d}</div>`;
+      const event = events[iso];
+      const isPast = iso < todayIso;
+
+      if (isPast) {
+        html += `<div class="cal-day past">${d}</div>`;
+        continue;
+      }
+
+      if (event) {
+        const cls = event.type === 'private' ? 'private' : 'session';
+        const title = event.title || (event.type === 'private' ? 'Private event' : 'Live session');
+        const time = event.time ? ` — ${escapeHtml(event.time)}` : '';
+        const tipLabel = event.type === 'private' ? 'Venue unavailable' : 'Live session';
+        html += `<button type="button" class="cal-day ${cls}" data-iso="${iso}">${d}` +
+          `<span class="cal-tip"><strong>${tipLabel}${time}</strong>${escapeHtml(title)}</span>` +
+          `</button>`;
+      } else {
+        html += `<button type="button" class="cal-day available" data-iso="${iso}">${d}` +
+          `<span class="cal-tip"><strong>Available</strong>Tap to enquire about ${new Date(viewYear, viewMonth, d).toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}</span>` +
+          `</button>`;
+      }
     }
 
     grid.innerHTML = html;
+
+    grid.querySelectorAll('.cal-day.available').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const iso = btn.dataset.iso;
+        window.location.href = `${bookingUrl}?date=${iso}#functions`;
+      });
+    });
+
+    // Tap-to-toggle tooltip for touch devices on non-navigable (occupied) days
+    grid.querySelectorAll('.cal-day.session, .cal-day.private').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const wasOpen = btn.classList.contains('tip-open');
+        grid.querySelectorAll('.cal-day.tip-open').forEach(b => b.classList.remove('tip-open'));
+        if (!wasOpen) btn.classList.add('tip-open');
+      });
+    });
   }
 
   prevBtn.addEventListener('click', () => {
@@ -126,4 +172,48 @@ function initAvailabilityCalendar() {
   });
 
   render();
+}
+
+function getMelbourneTodayIso() {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: VENUE_TZ,
+    year: 'numeric', month: '2-digit', day: '2-digit'
+  }).formatToParts(new Date());
+  const map = {};
+  parts.forEach(p => { map[p.type] = p.value; });
+  return `${map.year}-${map.month}-${map.day}`;
+}
+
+function initDateHandoff() {
+  const params = new URLSearchParams(window.location.search);
+  const iso = params.get('date');
+  if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return;
+
+  const formatted = new Date(`${iso}T00:00:00`).toLocaleDateString('en-AU', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+  });
+
+  // On events.html: point the "Enquire Now" CTA at the contact form with the date carried over
+  const ctaLink = document.querySelector('.plan-event-cta .cta-link');
+  if (ctaLink) {
+    ctaLink.href = `index.html?date=${iso}#contact`;
+    const note = document.createElement('p');
+    note.className = 'plan-event-note';
+    note.textContent = `Enquiring about: ${formatted}`;
+    ctaLink.parentElement.insertBefore(note, ctaLink);
+  }
+
+  // On index.html: prefill the contact form
+  const dateField = document.getElementById('preferred_date');
+  const reasonField = document.getElementById('reason');
+  const note = document.getElementById('date-handoff-note');
+  if (dateField) {
+    dateField.value = iso;
+    if (reasonField) reasonField.value = 'Private Event / Venue Booking';
+    if (note) {
+      note.hidden = false;
+      note.textContent = `Enquiring about ${formatted} — feel free to adjust the date above if needed.`;
+    }
+    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 }
