@@ -13,20 +13,46 @@ document.addEventListener('DOMContentLoaded', () => {
   initOpenStatus();
   initAvailabilityCalendar();
   initDateHandoff();
-  initWhatsOnCarousels();
+  initWhatsOnCarousel();
 });
 
-function initWhatsOnCarousels() {
-  document.querySelectorAll('.wo-month').forEach(month => {
-    const track = month.querySelector('.wo-track');
-    const prev = month.querySelector('.wo-prev');
-    const next = month.querySelector('.wo-next');
-    if (!track) return;
+function initWhatsOnCarousel() {
+  const track = document.getElementById('wo-track');
+  if (!track) return;
 
-    const scrollAmount = () => (track.querySelector('.wo-card')?.offsetWidth || 300) + 20;
-    prev?.addEventListener('click', () => track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
-    next?.addEventListener('click', () => track.scrollBy({ left: scrollAmount(), behavior: 'smooth' }));
+  const label = document.getElementById('wo-current-month');
+  const prev = document.querySelector('.whats-on .wo-prev');
+  const next = document.querySelector('.whats-on .wo-next');
+  const cards = Array.from(track.querySelectorAll('.wo-card'));
+
+  function updateLabel() {
+    if (!label || !cards.length) return;
+    const trackRect = track.getBoundingClientRect();
+    const trackCenter = trackRect.left + trackRect.width / 2;
+    let closest = cards[0];
+    let closestDist = Infinity;
+    cards.forEach(card => {
+      const r = card.getBoundingClientRect();
+      const dist = Math.abs((r.left + r.width / 2) - trackCenter);
+      if (dist < closestDist) { closestDist = dist; closest = card; }
+    });
+    const month = closest.dataset.month;
+    if (month && label.textContent !== month) label.textContent = month;
+  }
+
+  let ticking = false;
+  track.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => { updateLabel(); ticking = false; });
+      ticking = true;
+    }
   });
+
+  const scrollAmount = () => (cards[0]?.offsetWidth || 300) + 20;
+  prev?.addEventListener('click', () => track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
+  next?.addEventListener('click', () => track.scrollBy({ left: scrollAmount(), behavior: 'smooth' }));
+
+  updateLabel();
 }
 
 const VENUE_TZ = 'Australia/Melbourne';

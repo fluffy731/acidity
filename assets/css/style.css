@@ -1,24 +1,25 @@
 /* ============================================
    Acidity Bar & Coffee — shared styles
-   Dark, moody bar palette: a lighter, fresher
-   forest green (not near-black) + warm wood
-   tones, with an amber accent for gig-night
-   energy.
+   "Amber Glow" palette: near-black warm charcoal
+   base with a deep bottle-green secondary (from
+   the real venue's wall paint) + walnut wood
+   tones, lit by a single amber/brass highlight
+   matching the room's actual under-shelf lighting.
    ============================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
 
 :root{
-  --ink:          #1c1a16;
+  --ink:          #14120f;
   --cream:        #f3ead9;
   --cream-dim:    #e6d9bf;
 
-  --green-deep:   #33513f;
-  --green-mid:    #3f6350;
-  --green-soft:   #6f9179;
+  --green-deep:   #26382c;
+  --green-mid:    #32493a;
+  --green-soft:   #5c7d68;
 
-  --wood-dark:    #3b2a1f;
-  --wood-mid:     #6b4a30;
+  --wood-dark:    #2b1e15;
+  --wood-mid:     #5c3f2a;
   --wood-light:   #b98a5e;
 
   --amber:        #d99a3d;
@@ -836,33 +837,18 @@ img{ max-width: 100%; display: block; }
 .whats-on-inner{ max-width: 1200px; margin: 0 auto; }
 .whats-on .section-intro{ color: rgba(243,234,217,0.6); }
 
-.wo-month{ margin-top: 2.75rem; }
-.wo-month:first-of-type{ margin-top: 2rem; }
-
-.wo-month-head{
+.wo-head{
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 1.1rem;
+  margin-bottom: 0.5rem;
 }
-.wo-month-head h3{
-  font-size: clamp(1.6rem, 4vw, 2.4rem);
+.wo-head h2{
+  font-size: clamp(1.8rem, 4.5vw, 2.6rem);
   margin: 0;
   letter-spacing: 0.02em;
-}
-.wo-month-tag{
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 0.9rem;
-  font-family: var(--font-body);
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--amber);
-  border: 1px solid rgba(217,154,61,0.5);
-  border-radius: 999px;
-  padding: 0.3rem 0.8rem;
+  transition: opacity 0.15s ease;
 }
 .wo-nav{ display: flex; gap: 0.5rem; flex-shrink: 0; }
 .wo-nav button{
@@ -897,9 +883,24 @@ img{ max-width: 100%; display: block; }
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 .wo-card.is-upcoming{ border-color: rgba(217,154,61,0.5); }
-.wo-card-photo{ aspect-ratio: 3/4; overflow: hidden; }
+.wo-card-badge{
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  background: var(--amber);
+  color: var(--ink);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  z-index: 2;
+}
+.wo-card-photo{ aspect-ratio: 3/4; overflow: hidden; position: relative; }
 .wo-card-photo img{ width: 100%; height: 100%; object-fit: cover; display: block; }
 .wo-card-photo.tba{
   display: flex;
