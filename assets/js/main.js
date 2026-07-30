@@ -11,11 +11,34 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   initOpenStatus();
+  initHeaderStatus();
   initAvailabilityCalendar();
   initDateHandoff();
   initWhatsOnCarousel();
   initMenuToggle();
 });
+
+function initHeaderStatus() {
+  const header = document.querySelector('.site-header');
+  const badge = document.getElementById('header-status');
+  if (!header || !badge || !header.dataset.hours) return;
+
+  let hours;
+  try {
+    hours = JSON.parse(header.dataset.hours);
+  } catch (e) {
+    return;
+  }
+
+  const now = getMelbourneNow();
+  const ranges = hours[String(now.day)] || [];
+  const isOpen = ranges.some(([start, end]) => {
+    return now.minutes >= toMinutes(start) && now.minutes < toMinutes(end);
+  });
+
+  badge.textContent = isOpen ? 'Open Now' : 'Closed';
+  badge.classList.toggle('is-open', isOpen);
+}
 
 function initMenuToggle() {
   const buttons = document.querySelectorAll('.menu-toggle-btn');
