@@ -36,7 +36,9 @@ function initMenuToggle() {
 
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
-      btn.classList.toggle('active');
+      const wasActive = btn.classList.contains('active');
+      buttons.forEach(b => b.classList.remove('active'));
+      if (!wasActive) btn.classList.add('active');
       applyFilter();
     });
   });
@@ -50,6 +52,16 @@ function initWhatsOnCarousel() {
   const prev = document.querySelector('.whats-on .wo-prev');
   const next = document.querySelector('.whats-on .wo-next');
   const cards = Array.from(track.querySelectorAll('.wo-card'));
+
+  // Treat every card as a numbered programme file, oldest = 01.
+  cards.forEach((card, i) => {
+    const photo = card.querySelector('.wo-card-photo');
+    if (!photo || photo.querySelector('.wo-card-file')) return;
+    const file = document.createElement('span');
+    file.className = 'wo-card-file';
+    file.textContent = `FILE ${String(i + 1).padStart(2, '0')}`;
+    photo.appendChild(file);
+  });
 
   function updateLabel() {
     if (!label || !cards.length) return;
