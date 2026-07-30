@@ -14,7 +14,33 @@ document.addEventListener('DOMContentLoaded', () => {
   initAvailabilityCalendar();
   initDateHandoff();
   initWhatsOnCarousel();
+  initMenuToggle();
 });
+
+function initMenuToggle() {
+  const buttons = document.querySelectorAll('.menu-toggle-btn');
+  if (!buttons.length) return;
+
+  const sections = document.querySelectorAll('.menu-section[data-period]');
+
+  function applyFilter() {
+    const activePeriods = Array.from(buttons)
+      .filter(b => b.classList.contains('active'))
+      .map(b => b.dataset.period);
+
+    sections.forEach(section => {
+      const show = activePeriods.length === 0 || activePeriods.includes(section.dataset.period);
+      section.style.display = show ? '' : 'none';
+    });
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active');
+      applyFilter();
+    });
+  });
+}
 
 function initWhatsOnCarousel() {
   const track = document.getElementById('wo-track');
@@ -105,6 +131,13 @@ function initOpenStatus() {
   const isOpen = ranges.some(([start, end]) => {
     return now.minutes >= toMinutes(start) && now.minutes < toMinutes(end);
   });
+
+  const today = document.getElementById('hours-today');
+  const todayRow = table.rows[now.day];
+  if (today && todayRow) {
+    today.innerHTML = `<span class="hours-today-day">${todayRow.cells[0].textContent}</span>` +
+      `<span class="hours-today-time">${todayRow.cells[1].textContent}</span>`;
+  }
 
   const dot = status.querySelector('.status-dot');
   if (isOpen) {

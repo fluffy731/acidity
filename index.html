@@ -205,22 +205,33 @@
   <div class="availability">
     <div>
       <h3>Opening Hours</h3>
-      <table class="hours-table" id="hours-table"
-        data-hours='{"0":[["08:00","16:00"]],"1":[["08:00","17:00"]],"2":[],"3":[["08:00","17:00"]],"4":[["08:00","17:00"],["18:00","23:00"]],"5":[["08:00","16:00"],["18:00","24:00"]],"6":[["08:00","16:00"],["19:00","24:00"]]}'>
-        <tr><td>Sunday</td><td>8:00am – 4:00pm</td></tr>
-        <tr><td>Monday</td><td>8:00am – 5:00pm</td></tr>
-        <tr><td>Tuesday</td><td>Closed</td></tr>
-        <tr><td>Wednesday</td><td>8:00am – 5:00pm</td></tr>
-        <tr><td>Thursday</td><td>8:00am – 5:00pm, 6:00pm – 11:00pm</td></tr>
-        <tr><td>Friday</td><td>8:00am – 4:00pm, 6:00pm – 12:00am</td></tr>
-        <tr><td>Saturday</td><td>8:00am – 4:00pm, 7:00pm – 12:00am</td></tr>
-      </table>
+      <div class="hours-today" id="hours-today">Loading hours…</div>
       <div class="status-badge" id="open-status"><span class="status-dot"></span> Checking hours…</div>
+      <details class="fine-print" style="margin-top:1.25rem;">
+        <summary>Full weekly hours</summary>
+        <table class="hours-table" id="hours-table"
+          data-hours='{"0":[["08:00","16:00"]],"1":[["08:00","17:00"]],"2":[],"3":[["08:00","17:00"]],"4":[["08:00","17:00"],["18:00","23:00"]],"5":[["08:00","16:00"],["18:00","24:00"]],"6":[["08:00","16:00"],["19:00","24:00"]]}'>
+          <tr><td>Sunday</td><td>8:00am – 4:00pm</td></tr>
+          <tr><td>Monday</td><td>8:00am – 5:00pm</td></tr>
+          <tr><td>Tuesday</td><td>Closed</td></tr>
+          <tr><td>Wednesday</td><td>8:00am – 5:00pm</td></tr>
+          <tr><td>Thursday</td><td>8:00am – 5:00pm, 6:00pm – 11:00pm</td></tr>
+          <tr><td>Friday</td><td>8:00am – 4:00pm, 6:00pm – 12:00am</td></tr>
+          <tr><td>Saturday</td><td>8:00am – 4:00pm, 7:00pm – 12:00am</td></tr>
+        </table>
+      </details>
     </div>
     <div>
       <h3>Upcoming Sessions</h3>
+      <!-- Keep in sync with the "August 2026" cards in the What's On carousel above. -->
       <ul class="event-list">
-        <li><span>Music of Wes Montgomery — Tony Yang Jazz Trio, Live</span><span class="event-date">Sat, 1 Aug</span></li>
+        <li><span>The Music of Wes Montgomery — Tony Yang Trio</span><span class="event-date">Sat, 1 Aug</span></li>
+        <li><span>Coffee Rave + Jazz Jam — Session 04</span><span class="event-date">Sun, 2 Aug</span></li>
+        <li><span>Tripside Life</span><span class="event-date">Sat, 8 Aug</span></li>
+        <li><span>Cerros / Marks Quintet</span><span class="event-date">Mon, 10 Aug</span></li>
+        <li><span>Live Session — Lineup TBA</span><span class="event-date">Fri, 14 Aug</span></li>
+        <li><span>Late Night Jazz</span><span class="event-date">Sat, 15 Aug</span></li>
+        <li><span>Live Session — Lineup TBA</span><span class="event-date">Sat, 22 Aug</span></li>
       </ul>
       <div class="performer-feature">
         <img src="assets/images/performers/tony-yang.jpg" alt="Tony Yang, guitarist">
@@ -239,7 +250,7 @@
   </div>
 
   <div class="cal" id="availability-cal" style="margin-top: 2.5rem;"
-    data-events='{"2026-08-01":{"type":"session","title":"Music of Wes Montgomery — Tony Yang Jazz Trio, Live Performance","time":"7:30pm"},"2026-08-08":{"type":"session","title":"Live Session — Lineup TBA","time":"TBA"},"2026-08-10":{"type":"session","title":"Live Session — Lineup TBA","time":"TBA"},"2026-08-14":{"type":"session","title":"Live Session — Lineup TBA","time":"TBA"},"2026-08-15":{"type":"session","title":"Late Night Jazz — poster TBD","time":"9pm – late"},"2026-08-22":{"type":"session","title":"Live Session — Lineup TBA","time":"TBA"}}'
+    data-events='{"2026-08-01":{"type":"session","title":"The Music of Wes Montgomery — Tony Yang Trio","time":"8pm"},"2026-08-02":{"type":"session","title":"Coffee Rave + Jazz Jam — Session 04","time":"2pm – 10pm"},"2026-08-08":{"type":"session","title":"Tripside Life — Acid Jazz / Funk","time":"7:30pm"},"2026-08-10":{"type":"session","title":"Cerros / Marks Quintet","time":"7:30pm"},"2026-08-14":{"type":"session","title":"Live Session — Lineup TBA","time":"TBA"},"2026-08-15":{"type":"session","title":"Late Night Jazz — poster TBD","time":"9pm – late"},"2026-08-22":{"type":"session","title":"Live Session — Lineup TBA","time":"TBA"}}'
     data-booking-url="events.html">
     <div class="cal-head">
       <h4 id="cal-month-label"></h4>
@@ -256,6 +267,8 @@
     <p class="cal-hint">Hover a date for details. Open dates link through to an enquiry for that day.</p>
   </div>
 </section>
+
+<div class="section-divider"><i></i></div>
 
 <section class="section" id="signature-drinks">
   <div class="section-label">On The Menu</div>
@@ -299,6 +312,8 @@
     </div>
   </div>
 </section>
+
+<div class="section-divider"><i></i></div>
 
 <section class="section" id="contact">
   <div class="section-label">Get In Touch</div>

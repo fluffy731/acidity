@@ -31,15 +31,15 @@
     Scanned this from a table? You're in the right place — full menu below,
     updated seasonally.
   </p>
-  <div class="qr-block">
-    <img src="assets/images/menu-qr.png" alt="QR code linking to this menu page">
-    <p>Scan to open this menu on your phone, or share the QR code — it always points here.</p>
+  <div class="menu-toggle" role="group" aria-label="Filter menu">
+    <button type="button" class="menu-toggle-btn" data-period="day">Day Menu <span>Coffee &amp; Food</span></button>
+    <button type="button" class="menu-toggle-btn" data-period="night">Night Menu <span>Cocktails, Wine &amp; Spirits</span></button>
   </div>
 </section>
 
 <section class="section">
 
-  <div class="menu-section">
+  <div class="menu-section" data-period="day">
     <h2>Coffee</h2>
 
     <div class="menu-subhead">Espresso Blend</div>
@@ -101,7 +101,7 @@
     </div>
   </div>
 
-  <div class="menu-section">
+  <div class="menu-section" data-period="day">
     <h2>Coffee-Inspired</h2>
     <div class="menu-item">
       <span class="menu-item-name">Pistachio Coco<span class="menu-item-desc">Espresso, coconut purée, finished with pistachio cream. Aromatic, rich and clean.</span></span>
@@ -133,7 +133,7 @@
     </div>
   </div>
 
-  <div class="menu-section">
+  <div class="menu-section" data-period="day">
     <h2>Refresher &amp; Bodied</h2>
     <div class="menu-item">
       <span class="menu-item-name">Citrus Matcha Rave<span class="menu-item-desc">Passionfruit, grapefruit and matcha. Refreshing, balanced and blooming.</span></span>
@@ -165,7 +165,7 @@
     </div>
   </div>
 
-  <div class="menu-section">
+  <div class="menu-section" data-period="night">
     <h2>Cocktails</h2>
 
     <div class="menu-subhead">Bright &amp; Refreshing</div>
@@ -216,7 +216,7 @@
     <p class="menu-note" style="margin-top:1rem;">* Inspired by cocktails from Bar Leone, Hong Kong, and reinterpreted by Acidity.</p>
   </div>
 
-  <div class="menu-section">
+  <div class="menu-section" data-period="night">
     <h2>Wine &amp; Sake</h2>
     <p class="menu-note" style="margin-bottom:1rem;">Where two prices are shown, that's glass / bottle.</p>
 
@@ -304,7 +304,7 @@
     </div>
   </div>
 
-  <div class="menu-section">
+  <div class="menu-section" data-period="night">
     <h2>Spirits</h2>
     <p class="menu-note" style="margin-bottom:1rem;">Priced 30ml / 60ml. Choice of mixers +$2 — Coke, Coke Zero, soda, tonic, lemonade, ginger ale, cranberry, orange, apple or pineapple juice. Redbull +$1.</p>
     <div class="menu-columns">
