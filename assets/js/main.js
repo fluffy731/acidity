@@ -13,7 +13,21 @@ document.addEventListener('DOMContentLoaded', () => {
   initOpenStatus();
   initAvailabilityCalendar();
   initDateHandoff();
+  initWhatsOnCarousels();
 });
+
+function initWhatsOnCarousels() {
+  document.querySelectorAll('.wo-month').forEach(month => {
+    const track = month.querySelector('.wo-track');
+    const prev = month.querySelector('.wo-prev');
+    const next = month.querySelector('.wo-next');
+    if (!track) return;
+
+    const scrollAmount = () => (track.querySelector('.wo-card')?.offsetWidth || 300) + 20;
+    prev?.addEventListener('click', () => track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
+    next?.addEventListener('click', () => track.scrollBy({ left: scrollAmount(), behavior: 'smooth' }));
+  });
+}
 
 const VENUE_TZ = 'Australia/Melbourne';
 
