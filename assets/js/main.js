@@ -52,6 +52,12 @@ function initWhatsOnCarousel() {
   prev?.addEventListener('click', () => track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
   next?.addEventListener('click', () => track.scrollBy({ left: scrollAmount(), behavior: 'smooth' }));
 
+  // Cards are laid out oldest-to-newest (left = past, right = future) so the
+  // nav arrows read naturally, but the track opens scrolled to the first
+  // upcoming card so visitors see what's on next without scrolling left.
+  const firstUpcoming = cards.find(c => c.classList.contains('is-upcoming'));
+  if (firstUpcoming) track.scrollLeft = firstUpcoming.offsetLeft;
+
   updateLabel();
 }
 
@@ -103,10 +109,10 @@ function initOpenStatus() {
   const dot = status.querySelector('.status-dot');
   if (isOpen) {
     status.lastChild.textContent = ' Open now';
-    if (dot) dot.style.background = '#6fbf73';
+    if (dot) dot.style.background = '#d99a3d';
   } else {
     status.lastChild.textContent = ' Closed — see hours above';
-    if (dot) dot.style.background = '#c1622d';
+    if (dot) dot.style.background = '#5a5a56';
   }
 }
 
