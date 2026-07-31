@@ -447,17 +447,30 @@ img{ max-width: 100%; display: block; }
 /* ---------------- Signature drinks ---------------- */
 .drinks-grid{
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem 1.25rem;
+  align-items: start;
 }
-.drink-card{
-  border: 1px solid rgba(125,145,97,0.15);
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: rgba(255,255,255,0.04);
+.drink-card{ display: flex; flex-direction: column; }
+.dc-feature{ grid-column: span 7; }
+.dc-feature .drink-card-photo{ aspect-ratio: 4/3; }
+.dc-narrow{ grid-column: span 5; margin-top: 3rem; }
+.dc-narrow .drink-card-photo{ aspect-ratio: 3/5; }
+.dc-detail{ grid-column: span 4; }
+.dc-detail .drink-card-photo{ aspect-ratio: 1/1; }
+.dc-standard{ grid-column: span 4; }
+.dc-standard.dc-offset{ margin-top: 2.5rem; }
+.dc-standard .drink-card-photo{ aspect-ratio: 4/5; }
+.drink-card-cat{
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 0.6rem;
 }
 .drink-card-photo{
-  aspect-ratio: 4/5;
   background: linear-gradient(150deg, var(--green-mid), var(--wood-dark));
   display: flex;
   align-items: center;
@@ -842,6 +855,91 @@ img{ max-width: 100%; display: block; }
 .contact-info{ color: var(--cream-dim); font-size: 0.95rem; }
 .contact-info h3{ font-size: 1rem; margin-top: 1.5rem; }
 
+.visit-block{ display: flex; flex-direction: column; gap: 1.75rem; }
+.visit-eyebrow{
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 0.5rem;
+}
+.visit-map{ border: 1px solid rgba(237,232,222,0.15); }
+.visit-map iframe{
+  display: block;
+  width: 100%;
+  height: 300px;
+  border: 0;
+  filter: grayscale(0.35) contrast(1.05);
+}
+.visit-map-link{
+  display: block;
+  padding: 0.85rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--amber);
+  border-top: 1px solid rgba(237,232,222,0.15);
+}
+.visit-map-link:hover{ color: var(--cream); }
+
+/* ---------------- Package / Flight selector ---------------- */
+.pkg-head{ display: flex; justify-content: flex-end; margin-bottom: 1rem; }
+.pkg-nav{ display: flex; align-items: center; gap: 1rem; }
+.pkg-nav button{
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(237,232,222,0.3);
+  background: transparent;
+  color: var(--cream);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.pkg-nav button:hover{ border-color: var(--amber); color: var(--amber); }
+.pkg-index{ font-family: var(--font-mono); font-size: 0.8rem; color: var(--cream-dim); }
+
+.pkg-track{
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 0.5rem;
+  scrollbar-width: none;
+}
+.pkg-track::-webkit-scrollbar{ display: none; }
+
+.pkg-panel{
+  flex: 0 0 min(82vw, 620px);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(237,232,222,0.12);
+  cursor: pointer;
+  transform: scale(0.95);
+  opacity: 0.7;
+  transition: transform 0.3s ease, opacity 0.3s ease, border-color 0.3s ease;
+}
+.pkg-panel.is-active{ transform: scale(1); opacity: 1; border-color: var(--amber); }
+.pkg-panel-media{ aspect-ratio: 16/10; overflow: hidden; }
+.pkg-panel-media img{ width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+.pkg-panel:hover .pkg-panel-media img{ transform: scale(1.04); }
+.pkg-panel-body{ padding: 1.5rem; }
+.pkg-panel-no{ display: block; font-family: var(--font-mono); font-size: 0.9rem; color: var(--amber); margin-bottom: 0.5rem; }
+.pkg-panel-meta{ font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.05em; color: var(--cream-dim); margin: 0 0 0.9rem; }
+.pkg-panel-desc{ color: var(--cream-dim); font-size: 0.92rem; margin: 0 0 1.1rem; }
+.pkg-panel-link{
+  color: var(--amber);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.pkg-panel-link:hover{ color: var(--cream); }
+
 /* ---------------- Footer ---------------- */
 .site-footer{
   background: var(--wood-dark);
@@ -1015,6 +1113,16 @@ img{ max-width: 100%; display: block; }
   text-align: center;
   padding: 1rem;
 }
+.wo-card-photo.tba-major{
+  flex-direction: column;
+  gap: 0.25rem;
+  background: var(--ink);
+  border: 1px dashed rgba(237,232,222,0.3);
+}
+.tba-major-date{ font-family: var(--font-display); font-size: 3.5rem; font-weight: 700; color: var(--cream); line-height: 1; }
+.tba-major-month{ font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.2em; color: var(--amber); }
+.wo-card-tba{ font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cream-dim); margin: 0; }
+
 .wo-card-body{ padding: 1.1rem 1.15rem 1.3rem; }
 .wo-card-date{
   display: block;
@@ -1067,6 +1175,8 @@ img{ max-width: 100%; display: block; }
   font-size: 0.85rem;
 }
 .pi-date{ color: var(--amber); width: 5.5rem; flex-shrink: 0; }
+.programme-index li.pi-tba{ border-bottom-style: dashed; }
+.programme-index li.pi-tba .pi-title{ color: var(--cream-dim); font-style: italic; }
 .pi-title{ font-family: var(--font-body); color: var(--cream); flex: 1 1 220px; }
 .pi-meta{ color: var(--cream-dim); font-size: 0.72rem; letter-spacing: 0.04em; }
 .pi-link{ color: var(--amber); text-decoration: underline; font-size: 0.72rem; margin-left: auto; }
@@ -1107,7 +1217,12 @@ img{ max-width: 100%; display: block; }
   .about{ grid-template-columns: 1fr; }
   .card-grid{ grid-template-columns: repeat(2, 1fr); }
   .gallery-grid{ grid-template-columns: repeat(2, 1fr); }
-  .drinks-grid{ grid-template-columns: repeat(2, 1fr); }
+  .drinks-grid{ grid-template-columns: 1fr; gap: 2.5rem; }
+  .drink-card{ grid-column: 1 / -1 !important; margin-top: 0 !important; }
+  .dc-feature .drink-card-photo{ aspect-ratio: 4/3; }
+  .dc-narrow .drink-card-photo,
+  .dc-detail .drink-card-photo,
+  .dc-standard .drink-card-photo{ aspect-ratio: 16/10; }
   .availability{ grid-template-columns: 1fr; }
   .contact-layout{ grid-template-columns: 1fr; }
   .footer-inner{ grid-template-columns: 1fr 1fr; }

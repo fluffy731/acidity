@@ -16,7 +16,60 @@ document.addEventListener('DOMContentLoaded', () => {
   initDateHandoff();
   initWhatsOnCarousel();
   initMenuToggle();
+  initPackageSelector();
+  initPackageHandoff();
 });
+
+function initPackageSelector() {
+  const track = document.getElementById('pkg-track');
+  if (!track) return;
+
+  const panels = Array.from(track.querySelectorAll('.pkg-panel'));
+  const indexLabel = document.getElementById('pkg-index');
+  const prev = document.querySelector('.pkg-prev');
+  const next = document.querySelector('.pkg-next');
+  let activeIndex = 0;
+
+  function setActive(i) {
+    activeIndex = Math.max(0, Math.min(panels.length - 1, i));
+    panels.forEach((p, idx) => p.classList.toggle('is-active', idx === activeIndex));
+    if (indexLabel) {
+      indexLabel.textContent = `${String(activeIndex + 1).padStart(2, '0')} / ${String(panels.length).padStart(2, '0')}`;
+    }
+  }
+
+  panels.forEach((p, idx) => {
+    p.addEventListener('click', () => {
+      setActive(idx);
+      p.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    });
+  });
+
+  prev?.addEventListener('click', () => {
+    setActive(activeIndex - 1);
+    panels[activeIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  });
+  next?.addEventListener('click', () => {
+    setActive(activeIndex + 1);
+    panels[activeIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  });
+
+  setActive(0);
+}
+
+function initPackageHandoff() {
+  const params = new URLSearchParams(window.location.search);
+  const pkg = params.get('package');
+  if (!pkg) return;
+
+  const reasonField = document.getElementById('reason');
+  const messageField = document.getElementById('message');
+  if (reasonField) reasonField.value = 'Private Event / Venue Booking';
+  if (messageField && !messageField.value) {
+    messageField.value = `Enquiring about the ${pkg} package. `;
+  }
+  document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
 
 function initHeaderStatus() {
   const header = document.querySelector('.site-header');
