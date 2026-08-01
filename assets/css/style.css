@@ -1166,21 +1166,28 @@ img{ max-width: 100%; display: block; }
   font-family: var(--font-mono);
 }
 .programme-index li{
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 4.5rem minmax(200px, 1fr) minmax(220px, 1.4fr) auto;
   align-items: baseline;
-  gap: 0.4rem 1rem;
+  column-gap: 1rem;
+  row-gap: 0.3rem;
   padding: 0.85rem 0;
   border-bottom: 1px dotted rgba(237,232,222,0.15);
   font-size: 0.85rem;
 }
-.pi-date{ color: var(--amber); width: 5.5rem; flex-shrink: 0; }
+.pi-date{ color: var(--amber); }
 .programme-index li.pi-tba{ border-bottom-style: dashed; }
 .programme-index li.pi-tba .pi-title{ color: var(--cream-dim); font-style: italic; }
-.pi-title{ font-family: var(--font-body); color: var(--cream); flex: 1 1 220px; }
+.pi-title{ font-family: var(--font-body); color: var(--cream); }
 .pi-meta{ color: var(--cream-dim); font-size: 0.72rem; letter-spacing: 0.04em; }
-.pi-link{ color: var(--amber); text-decoration: underline; font-size: 0.72rem; margin-left: auto; }
+.pi-link{ color: var(--amber); text-decoration: underline; font-size: 0.72rem; justify-self: end; }
+.pi-status{ color: var(--cream-dim); font-size: 0.72rem; letter-spacing: 0.04em; justify-self: end; }
 .programme-index li.pi-upcoming .pi-date{ color: var(--cream); font-weight: 600; }
+@media (max-width: 640px){
+  .programme-index li{ grid-template-columns: 3.5rem 1fr; }
+  .pi-meta{ grid-column: 2 / -1; }
+  .pi-link, .pi-status{ grid-column: 2 / -1; justify-self: start; }
+}
 
 /* ---------------- Featured performer ---------------- */
 .performer-feature{
