@@ -33,6 +33,10 @@
   --amber-dim:    #62744a;
   --amber-wash:   rgba(125,145,97,0.18);
 
+  --rust:         #b1543a;
+  --rust-dim:     #8a4029;
+  --rust-wash:    rgba(177,84,58,0.22);
+
   --font-display: 'Oswald', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-body: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
@@ -547,7 +551,7 @@ img{ max-width: 100%; display: block; }
 .cal-day.empty{ background: transparent; }
 .cal-day.past{ color: rgba(230,217,191,0.35); cursor: default; }
 .cal-day.session{ background: var(--amber-wash); color: var(--cream); font-weight: 600; cursor: pointer; }
-.cal-day.private{ background: rgba(201,200,194,0.18); color: var(--cream); font-weight: 600; cursor: pointer; }
+.cal-day.private{ background: var(--rust-wash); color: var(--cream); font-weight: 600; cursor: pointer; }
 .cal-day.available{ cursor: pointer; }
 .cal-day.available:hover, .cal-day.available:focus-visible{
   background: rgba(125,145,97,0.15);
@@ -555,10 +559,13 @@ img{ max-width: 100%; display: block; }
   color: var(--cream);
   outline: none;
 }
-.cal-day.session:hover, .cal-day.session:focus-visible,
+.cal-day.session:hover, .cal-day.session:focus-visible{
+  outline: none;
+  border-color: var(--amber);
+}
 .cal-day.private:hover, .cal-day.private:focus-visible{
   outline: none;
-  border-color: currentColor;
+  border-color: var(--rust);
 }
 
 .cal-tip{
@@ -590,6 +597,7 @@ img{ max-width: 100%; display: block; }
   transform: translateX(-50%) translateY(0);
 }
 .cal-tip strong{ display: block; color: var(--amber); font-weight: 600; margin-bottom: 0.15rem; }
+.cal-day.private .cal-tip strong{ color: var(--rust); }
 
 .cal-legend{
   display: flex;
@@ -602,7 +610,7 @@ img{ max-width: 100%; display: block; }
 .cal-legend span{ display: inline-flex; align-items: center; gap: 0.4rem; }
 .cal-legend i{ width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
 .cal-legend .dot-session{ background: var(--amber); }
-.cal-legend .dot-private{ background: var(--cream-dim); }
+.cal-legend .dot-private{ background: var(--rust); }
 .cal-hint{ margin-top: 0.75rem; font-size: 0.78rem; color: var(--cream-dim); }
 
 /* ---------------- Menu page ---------------- */
