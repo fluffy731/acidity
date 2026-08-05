@@ -294,12 +294,14 @@ function initAvailabilityCalendar() {
       }
 
       if (event) {
-        const cls = event.type === 'private' ? 'private' : 'session';
-        const title = event.title || (event.type === 'private' ? 'Private event' : 'Live session');
+        const typeInfo = {
+          private: { cls: 'private', tip: 'Venue unavailable', fallback: 'Private event' },
+          feature: { cls: 'feature', tip: 'Feature programme', fallback: 'Feature programme' }
+        }[event.type] || { cls: 'session', tip: 'Live session', fallback: 'Live session' };
+        const title = event.title || typeInfo.fallback;
         const time = event.time ? ` — ${escapeHtml(event.time)}` : '';
-        const tipLabel = event.type === 'private' ? 'Venue unavailable' : 'Live session';
-        html += `<button type="button" class="cal-day ${cls}" data-iso="${iso}">${d}` +
-          `<span class="cal-tip"><strong>${tipLabel}${time}</strong>${escapeHtml(title)}</span>` +
+        html += `<button type="button" class="cal-day ${typeInfo.cls}" data-iso="${iso}">${d}` +
+          `<span class="cal-tip"><strong>${typeInfo.tip}${time}</strong>${escapeHtml(title)}</span>` +
           `</button>`;
       } else {
         html += `<button type="button" class="cal-day available" data-iso="${iso}">${d}` +

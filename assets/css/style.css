@@ -281,6 +281,89 @@ img{ max-width: 100%; display: block; }
   .hero-feature-body{ padding: 2rem 1.5rem; }
 }
 
+/* ---------------- Feature programme (multi-night headline event, dark/cinematic) ---------------- */
+.feature-programme{
+  background: var(--ink);
+  background-image: radial-gradient(ellipse at top, rgba(125,145,97,0.09), transparent 62%);
+  border-top: 1px solid rgba(237,232,222,0.08);
+  border-bottom: 1px solid rgba(237,232,222,0.08);
+  padding: 5.5rem 1.5rem;
+}
+.feature-programme-inner{ max-width: 760px; margin: 0 auto; text-align: center; }
+.feature-eyebrow{
+  color: var(--cream-dim);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  margin-bottom: 1.25rem;
+}
+.feature-tag{
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+  border: 1px solid var(--amber);
+  padding: 0.3rem 0.8rem;
+  margin-bottom: 1.5rem;
+}
+.feature-title{
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  line-height: 1.02;
+  margin-bottom: 0.6rem;
+}
+.feature-subtitle{
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  color: var(--cream-dim);
+  margin-bottom: 1.5rem;
+}
+.feature-desc{
+  color: var(--cream-dim);
+  font-size: 1.05rem;
+  max-width: 560px;
+  margin: 0 auto 2.25rem;
+}
+.feature-nights{
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(237,232,222,0.1);
+  border: 1px solid rgba(237,232,222,0.1);
+}
+.feature-nights li{
+  background: var(--ink);
+  padding: 1.25rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.feature-night-no{
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.feature-night-date{ font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; }
+.feature-meta{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--cream-dim);
+}
+@media (max-width: 640px){
+  .feature-nights{ grid-template-columns: 1fr; }
+}
+
 /* ---------------- Buttons ---------------- */
 .btn{
   display: inline-block;
@@ -552,6 +635,7 @@ img{ max-width: 100%; display: block; }
 .cal-day.past{ color: rgba(230,217,191,0.35); cursor: default; }
 .cal-day.session{ background: var(--amber-wash); color: var(--cream); font-weight: 600; cursor: pointer; }
 .cal-day.private{ background: var(--rust-wash); color: var(--cream); font-weight: 600; cursor: pointer; }
+.cal-day.feature{ background: rgba(21,19,15,0.9); color: var(--cream); font-weight: 600; cursor: pointer; border: 1px solid var(--amber); }
 .cal-day.available{ cursor: pointer; }
 .cal-day.available:hover, .cal-day.available:focus-visible{
   background: rgba(125,145,97,0.15);
@@ -566,6 +650,10 @@ img{ max-width: 100%; display: block; }
 .cal-day.private:hover, .cal-day.private:focus-visible{
   outline: none;
   border-color: var(--rust);
+}
+.cal-day.feature:hover, .cal-day.feature:focus-visible{
+  outline: none;
+  background: rgba(125,145,97,0.15);
 }
 
 .cal-tip{
@@ -611,6 +699,7 @@ img{ max-width: 100%; display: block; }
 .cal-legend i{ width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
 .cal-legend .dot-session{ background: var(--amber); }
 .cal-legend .dot-private{ background: var(--rust); }
+.cal-legend .dot-feature{ background: var(--ink); border: 1px solid var(--amber); }
 .cal-hint{ margin-top: 0.75rem; font-size: 0.78rem; color: var(--cream-dim); }
 
 /* ---------------- Menu page ---------------- */
@@ -1081,6 +1170,7 @@ img{ max-width: 100%; display: block; }
   position: relative;
 }
 .wo-card.is-upcoming{ border-color: rgba(125,145,97,0.5); }
+.wo-card.wo-card-feature{ border-color: var(--amber); background: rgba(125,145,97,0.05); }
 .wo-card-badge{
   position: absolute;
   top: 0.6rem;
@@ -1132,6 +1222,17 @@ img{ max-width: 100%; display: block; }
 .wo-card-tba{ font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cream-dim); margin: 0; }
 
 .wo-card-body{ padding: 1.1rem 1.15rem 1.3rem; }
+.wo-card-series{
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  border: 1px solid rgba(237,232,222,0.25);
+  padding: 0.2rem 0.55rem;
+  margin-bottom: 0.6rem;
+}
 .wo-card-date{
   display: block;
   font-family: var(--font-mono);
@@ -1139,6 +1240,17 @@ img{ max-width: 100%; display: block; }
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--amber);
+  margin-bottom: 0.4rem;
+}
+.wo-card-earlybird{
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+  border: 1px solid var(--amber);
+  padding: 0.15rem 0.55rem;
   margin-bottom: 0.4rem;
 }
 .wo-card-body h4{ margin: 0 0 0.5rem; font-size: 1.02rem; line-height: 1.3; }
