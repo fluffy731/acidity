@@ -76,21 +76,19 @@ function initHeaderStatus() {
   const badge = document.getElementById('header-status');
   if (!header || !badge || !header.dataset.hours) return;
 
-  let hours;
   try {
-    hours = JSON.parse(header.dataset.hours);
+    const hours = JSON.parse(header.dataset.hours);
+    const now = getMelbourneNow();
+    const ranges = hours[String(now.day)] || [];
+    const isOpen = ranges.some(([start, end]) => {
+      return now.minutes >= toMinutes(start) && now.minutes < toMinutes(end);
+    });
+
+    badge.textContent = isOpen ? 'Open Now' : 'Closed';
+    badge.classList.toggle('is-open', isOpen);
   } catch (e) {
-    return;
+    // Leave the neutral "···" placeholder already in the HTML.
   }
-
-  const now = getMelbourneNow();
-  const ranges = hours[String(now.day)] || [];
-  const isOpen = ranges.some(([start, end]) => {
-    return now.minutes >= toMinutes(start) && now.minutes < toMinutes(end);
-  });
-
-  badge.textContent = isOpen ? 'Open Now' : 'Closed';
-  badge.classList.toggle('is-open', isOpen);
 }
 
 function initMenuToggle() {
@@ -193,37 +191,40 @@ function toMinutes(hhmm) {
 }
 
 function initOpenStatus() {
+  // The full weekly hours table is always visible in the HTML (see the
+  // `open` attribute on its <details>) as a static fallback, so this only
+  // needs to *enhance* that with today's line + a live open/closed dot.
+  // Wrapped in try/catch so any unexpected runtime issue leaves the static
+  // "See hours below" text in place rather than nothing at all.
   const table = document.getElementById('hours-table');
   const status = document.getElementById('open-status');
+  const today = document.getElementById('hours-today');
   if (!table || !status) return;
 
-  let hours;
   try {
-    hours = JSON.parse(table.dataset.hours);
+    const hours = JSON.parse(table.dataset.hours);
+    const now = getMelbourneNow();
+    const ranges = hours[String(now.day)] || [];
+    const isOpen = ranges.some(([start, end]) => {
+      return now.minutes >= toMinutes(start) && now.minutes < toMinutes(end);
+    });
+
+    const todayRow = table.rows[now.day];
+    if (today && todayRow) {
+      today.innerHTML = `<span class="hours-today-day">${todayRow.cells[0].textContent}</span>` +
+        `<span class="hours-today-time">${todayRow.cells[1].textContent}</span>`;
+    }
+
+    const dot = status.querySelector('.status-dot');
+    if (isOpen) {
+      status.lastChild.textContent = ' Open now';
+      if (dot) dot.style.background = '#d99a3d';
+    } else {
+      status.lastChild.textContent = ' Closed — see hours below';
+      if (dot) dot.style.background = '#5a5a56';
+    }
   } catch (e) {
-    return;
-  }
-
-  const now = getMelbourneNow();
-  const ranges = hours[String(now.day)] || [];
-  const isOpen = ranges.some(([start, end]) => {
-    return now.minutes >= toMinutes(start) && now.minutes < toMinutes(end);
-  });
-
-  const today = document.getElementById('hours-today');
-  const todayRow = table.rows[now.day];
-  if (today && todayRow) {
-    today.innerHTML = `<span class="hours-today-day">${todayRow.cells[0].textContent}</span>` +
-      `<span class="hours-today-time">${todayRow.cells[1].textContent}</span>`;
-  }
-
-  const dot = status.querySelector('.status-dot');
-  if (isOpen) {
-    status.lastChild.textContent = ' Open now';
-    if (dot) dot.style.background = '#d99a3d';
-  } else {
-    status.lastChild.textContent = ' Closed — see hours above';
-    if (dot) dot.style.background = '#5a5a56';
+    // Static fallback text already in the HTML covers this case.
   }
 }
 
