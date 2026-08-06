@@ -1254,12 +1254,13 @@ img{ max-width: 100%; display: block; }
   color: var(--amber);
   margin-bottom: 0.4rem;
 }
-.wo-card-earlybird{
+.wo-card-artist-credit{
   display: inline-block;
   font-family: var(--font-mono);
   font-size: 0.6rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  font-style: italic;
   color: var(--amber);
   border: 1px solid var(--amber);
   padding: 0.15rem 0.55rem;
@@ -1324,7 +1325,6 @@ img{ max-width: 100%; display: block; }
 .pi-meta{ color: var(--cream-dim); font-size: 0.72rem; letter-spacing: 0.04em; }
 .pi-link{ color: var(--amber); text-decoration: underline; font-size: 0.72rem; justify-self: end; }
 .pi-status{ color: var(--cream-dim); font-size: 0.72rem; letter-spacing: 0.04em; justify-self: end; }
-.pi-status.pi-status-earlybird{ color: var(--amber); }
 .pi-status.pi-status-occupied{ color: var(--rust-dim); }
 .programme-index li.pi-upcoming .pi-date{ color: var(--cream); font-weight: 600; }
 .programme-index li.pi-occupied .pi-title{ color: var(--cream-dim); }
@@ -1368,7 +1368,6 @@ img{ max-width: 100%; display: block; }
 }
 .run-status.is-link{ color: var(--amber); text-decoration: underline; }
 .run-status.is-details{ color: var(--cream-dim); }
-.run-status.is-earlybird{ color: var(--amber); }
 .run-status.is-occupied{ color: var(--rust-dim); }
 @media (max-width: 640px){
   .run-item{ flex-wrap: wrap; gap: 0.75rem 1.25rem; }
