@@ -1300,7 +1300,7 @@ img{ max-width: 100%; display: block; }
 .programme-index li{
   display: grid;
   grid-template-columns: 4.75rem minmax(230px, 1.3fr) minmax(190px, 1fr) auto;
-  align-items: baseline;
+  align-items: center;
   column-gap: 1.35rem;
   row-gap: 0.3rem;
   padding: 0.85rem 0;
@@ -1320,6 +1320,7 @@ img{ max-width: 100%; display: block; }
 .programme-index li:first-child.pi-month{ margin-top: 0; }
 .pi-date{ color: var(--amber); }
 .pi-title{ font-family: var(--font-body); color: var(--cream); }
+.pi-artist{ font-style: italic; color: var(--cream-dim); }
 .pi-meta{ color: var(--cream-dim); font-size: 0.72rem; letter-spacing: 0.04em; }
 .pi-link{ color: var(--amber); text-decoration: underline; font-size: 0.72rem; justify-self: end; }
 .pi-status{ color: var(--cream-dim); font-size: 0.72rem; letter-spacing: 0.04em; justify-self: end; }
@@ -1327,6 +1328,53 @@ img{ max-width: 100%; display: block; }
 .pi-status.pi-status-occupied{ color: var(--rust-dim); }
 .programme-index li.pi-upcoming .pi-date{ color: var(--cream); font-weight: 600; }
 .programme-index li.pi-occupied .pi-title{ color: var(--cream-dim); }
+
+/* ---------------- Running order (events.html Programme list — deliberately
+   distinct from the homepage's compact Programme Index) ---------------- */
+.run-list{ list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(237,232,222,0.15); }
+.run-item{
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid rgba(237,232,222,0.15);
+}
+.run-date{
+  flex: 0 0 4.1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0.6rem 0.3rem;
+  border: 1px solid rgba(125,145,97,0.35);
+  background: rgba(125,145,97,0.05);
+}
+.run-date-day{ font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; line-height: 1; color: var(--cream); }
+.run-date-month{ font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber); margin-top: 0.25rem; }
+.run-body{ flex: 1 1 auto; min-width: 0; }
+.run-title{ display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; color: var(--cream); margin-bottom: 0.25rem; }
+.run-title a{ color: var(--cream); }
+.run-title a:hover{ color: var(--amber); }
+.run-artist{ font-style: italic; color: var(--cream-dim); font-weight: 400; }
+.run-meta{ font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--cream-dim); }
+.run-status{
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: right;
+  white-space: nowrap;
+}
+.run-status.is-link{ color: var(--amber); text-decoration: underline; }
+.run-status.is-details{ color: var(--cream-dim); }
+.run-status.is-earlybird{ color: var(--amber); }
+.run-status.is-occupied{ color: var(--rust-dim); }
+@media (max-width: 640px){
+  .run-item{ flex-wrap: wrap; gap: 0.75rem 1.25rem; }
+  .run-body{ flex: 1 1 100%; order: 2; }
+  .run-status{ flex: 1 0 100%; text-align: left; order: 3; }
+}
 @media (max-width: 640px){
   .programme-index li{ grid-template-columns: 3.5rem 1fr; row-gap: 0.2rem; }
   .pi-meta{ grid-column: 2 / -1; margin-top: 0.35rem; }
