@@ -129,16 +129,6 @@ function initWhatsOnCarousel() {
   const next = document.querySelector('.whats-on .wo-next');
   const cards = Array.from(track.querySelectorAll('.wo-card'));
 
-  // Treat every card as a numbered programme file, oldest = 01.
-  cards.forEach((card, i) => {
-    const photo = card.querySelector('.wo-card-photo');
-    if (!photo || photo.querySelector('.wo-card-file')) return;
-    const file = document.createElement('span');
-    file.className = 'wo-card-file';
-    file.textContent = `FILE ${String(i + 1).padStart(2, '0')}`;
-    photo.appendChild(file);
-  });
-
   function updateLabel() {
     if (!label || !cards.length) return;
     const trackRect = track.getBoundingClientRect();
