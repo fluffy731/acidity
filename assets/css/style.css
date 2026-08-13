@@ -642,7 +642,7 @@ img{ max-width: 100%; display: block; }
   width: 100%;
 }
 .cal-day.empty{ background: transparent; }
-.cal-day.past{ color: rgba(230,217,191,0.35); cursor: default; }
+.cal-day.past{ color: rgba(230,217,191,0.25); background: rgba(0,0,0,0.2); cursor: default; }
 .cal-day.session{ background: var(--amber-wash); color: var(--cream); font-weight: 600; cursor: pointer; }
 .cal-day.private{ background: var(--rust-wash); color: var(--cream); font-weight: 600; cursor: pointer; }
 .cal-day.feature{ background: rgba(21,19,15,0.9); color: var(--cream); font-weight: 600; cursor: pointer; border: 1px solid var(--amber); }
