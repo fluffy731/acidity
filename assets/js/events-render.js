@@ -99,14 +99,16 @@
 
   // ---- CTA builders ----------------------------------------------------
 
+  const DEFAULT_CTA_LABELS = { book: 'Book Tickets ↗', rsvp: 'RSVP ↗' };
+  function ctaLabel(ev) { return ev.ctaLabel || DEFAULT_CTA_LABELS[ev.ctaType] || ''; }
+
   function ctaWoCard(ev) {
     switch (ev.ctaType) {
       case 'book':
-        return `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="wo-card-link">Book Tickets ↗</a>`;
+      case 'rsvp':
+        return `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="wo-card-link">${escapeHtml(ctaLabel(ev))}</a>`;
       case 'free':
         return `<span class="pi-status">Free Entry</span>`;
-      case 'rsvp':
-        return `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="wo-card-link">RSVP ↗</a>`;
       case 'occupied':
         return `<span class="pi-status pi-status-occupied">Occupied</span>`;
       default:
@@ -117,11 +119,10 @@
   function ctaPiLink(ev) {
     switch (ev.ctaType) {
       case 'book':
-        return `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="pi-link">Book Tickets ↗</a>`;
+      case 'rsvp':
+        return `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="pi-link">${escapeHtml(ctaLabel(ev))}</a>`;
       case 'free':
         return `<span class="pi-status">Free Entry</span>`;
-      case 'rsvp':
-        return `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="pi-link">RSVP ↗</a>`;
       case 'occupied':
         return `<span class="pi-status pi-status-occupied">Occupied</span>`;
       default:
@@ -132,11 +133,10 @@
   function ctaRunStatus(ev) {
     switch (ev.ctaType) {
       case 'book':
-        return `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="run-status is-link">Book Tickets ↗</a>`;
+      case 'rsvp':
+        return `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="run-status is-link">${escapeHtml(ctaLabel(ev))}</a>`;
       case 'free':
         return `<span class="run-status is-details">Free Entry</span>`;
-      case 'rsvp':
-        return `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="run-status is-link">RSVP ↗</a>`;
       case 'occupied':
         return `<span class="run-status is-occupied">Occupied</span>`;
       default:
@@ -256,8 +256,7 @@
     else if (ev.status === 'occupied') statusLabel = 'Occupied';
 
     let primaryCta;
-    if (ev.ctaType === 'book') primaryCta = `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="btn btn-primary">Book Tickets ↗</a>`;
-    else if (ev.ctaType === 'rsvp') primaryCta = `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="btn btn-primary">RSVP ↗</a>`;
+    if (ev.ctaType === 'book' || ev.ctaType === 'rsvp') primaryCta = `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="btn btn-primary">${escapeHtml(ctaLabel(ev))}</a>`;
     else if (ev.ctaType === 'free') primaryCta = `<span class="btn btn-outline" style="cursor:default;">Free Entry</span>`;
     else primaryCta = `<span class="btn btn-outline" style="cursor:default;">Details Soon</span>`;
 
