@@ -158,7 +158,9 @@ function initWhatsOnCarousel() {
   // nav arrows read naturally, but the track opens scrolled to the first
   // upcoming card so visitors see what's on next without scrolling left.
   const firstUpcoming = cards.find(c => c.classList.contains('is-upcoming'));
-  if (firstUpcoming) track.scrollLeft = firstUpcoming.offsetLeft;
+  if (firstUpcoming) {
+    track.scrollLeft = firstUpcoming.offsetLeft - (track.clientWidth - firstUpcoming.offsetWidth) / 2;
+  }
 
   updateLabel();
 }

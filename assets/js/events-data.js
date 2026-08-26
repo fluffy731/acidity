@@ -129,12 +129,18 @@ const VENUE_EVENTS = [
     isPublic: false
   },
   {
-    id: 'rock-lineup',
+    id: 'allara-night-of-folk-pop',
     dateStart: '2026-08-29',
-    title: 'Rock Lineup',
-    genres: ['Independent Rock', 'Alternative'],
-    status: 'details-soon',
-    ctaType: 'details',
+    title: 'Allara',
+    artist: 'with Foggy Josh',
+    genres: ['Folk-Pop', 'Blues'],
+    doors: '19:00',
+    music: '21:00',
+    status: 'ticketed',
+    ctaType: 'door',
+    ctaLabel: 'Tickets $10',
+    poster: 'allara.png',
+    heroDescription: 'A night of folk-pop with Allara and blues from Foggy Josh.',
     calType: 'session',
     isPublic: true
   },

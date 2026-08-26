@@ -109,6 +109,8 @@
         return `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="wo-card-link">${escapeHtml(ctaLabel(ev))}</a>`;
       case 'free':
         return `<span class="pi-status">Free Entry</span>`;
+      case 'door':
+        return `<span class="pi-status">${escapeHtml(ctaLabel(ev))}</span>`;
       case 'occupied':
         return `<span class="pi-status pi-status-occupied">Occupied</span>`;
       default:
@@ -123,6 +125,8 @@
         return `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="pi-link">${escapeHtml(ctaLabel(ev))}</a>`;
       case 'free':
         return `<span class="pi-status">Free Entry</span>`;
+      case 'door':
+        return `<span class="pi-status">${escapeHtml(ctaLabel(ev))}</span>`;
       case 'occupied':
         return `<span class="pi-status pi-status-occupied">Occupied</span>`;
       default:
@@ -137,6 +141,8 @@
         return `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="run-status is-link">${escapeHtml(ctaLabel(ev))}</a>`;
       case 'free':
         return `<span class="run-status is-details">Free Entry</span>`;
+      case 'door':
+        return `<span class="run-status is-details">${escapeHtml(ctaLabel(ev))}</span>`;
       case 'occupied':
         return `<span class="run-status is-occupied">Occupied</span>`;
       default:
@@ -146,19 +152,21 @@
 
   // ---- What's On card ----------------------------------------------------
 
-  function renderWoCard(ev) {
+  function renderWoCard(ev, isUpcoming) {
     const monthAttr = `${monthLong(ev.dateStart)} ${yearOf(ev.dateStart)}`;
-    const classes = ['wo-card', 'is-upcoming'];
+    const classes = ['wo-card'];
+    if (isUpcoming) classes.push('is-upcoming');
     if (ev.isFeature) classes.push('wo-card-feature');
     const badgeLabel = ev.ctaType === 'occupied' ? 'Occupied' : 'Upcoming';
+    const badgeHtml = isUpcoming ? `<span class="wo-card-badge">${badgeLabel}</span>` : '';
 
     let photo;
     if (ev.poster) {
-      photo = `<div class="wo-card-photo"><span class="wo-card-badge">${badgeLabel}</span><img src="assets/images/${ev.poster}" alt="${escapeHtml(fullTitle(ev))} poster"></div>`;
+      photo = `<div class="wo-card-photo">${badgeHtml}<img src="assets/images/${ev.poster}" alt="${escapeHtml(fullTitle(ev))} poster"></div>`;
     } else {
       const sepText = ev.piArtistSeparator || ' — ';
       const subLine = ev.artist ? `<span class="wo-placeholder-sub">${escapeHtml(sepText)}${escapeHtml(ev.artist)}</span>` : '';
-      photo = `<div class="wo-card-photo wo-placeholder"><span class="wo-card-badge">${badgeLabel}</span>
+      photo = `<div class="wo-card-photo wo-placeholder">${badgeHtml}
           <div class="wo-placeholder-text">
             <span class="wo-placeholder-date">${escapeHtml(placeholderDateLabel(ev))}</span>
             <span class="wo-placeholder-title">${escapeHtml(ev.title)}</span>
@@ -184,7 +192,7 @@
     const note = ev.note ? ` ${escapeHtml(ev.note)}` : '';
     const lineup = lineupLine(ev);
     const bodyPara = desc ? `<p>${desc}${note}${lineup}</p>` : (note || lineup ? `<p>${note}${lineup}</p>` : '');
-    const cta = ctaWoCard(ev);
+    const cta = isUpcoming ? ctaWoCard(ev) : '';
 
     return `<article class="${classes.join(' ')}" data-month="${monthAttr}">
         ${photo}
@@ -200,12 +208,13 @@
 
   // ---- Programme Index list-item -----------------------------------------
 
-  function renderPiItem(ev) {
-    const classes = ['pi-upcoming'];
+  function renderPiItem(ev, isUpcoming) {
+    const classes = [];
+    if (isUpcoming) classes.push('pi-upcoming');
     if (ev.ctaType === 'occupied') classes.push('pi-occupied');
     const dateLabel = dateRangeLabel(ev);
     const title = titleWithArtist(ev, 'pi-artist') + (ev.locationTag ? ` — ${escapeHtml(ev.locationTag)}` : '');
-    return `<li class="${classes.join(' ')}"><span class="pi-date">${dateLabel}</span><span class="pi-title">${title}</span><span class="pi-meta">${escapeHtml(metaLine(ev).toUpperCase())}</span> ${ctaPiLink(ev)}</li>`;
+    return `<li class="${classes.join(' ')}"><span class="pi-date">${dateLabel}</span><span class="pi-title">${title}</span><span class="pi-meta">${escapeHtml(metaLine(ev).toUpperCase())}</span> ${isUpcoming ? ctaPiLink(ev) : ''}</li>`;
   }
 
   // ---- events.html running-order item ------------------------------------
@@ -258,6 +267,7 @@
     let primaryCta;
     if (ev.ctaType === 'book' || ev.ctaType === 'rsvp') primaryCta = `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="btn btn-primary">${escapeHtml(ctaLabel(ev))}</a>`;
     else if (ev.ctaType === 'free') primaryCta = `<span class="btn btn-outline" style="cursor:default;">Free Entry</span>`;
+    else if (ev.ctaType === 'door') primaryCta = `<span class="btn btn-outline" style="cursor:default;">${escapeHtml(ctaLabel(ev))}</span>`;
     else primaryCta = `<span class="btn btn-outline" style="cursor:default;">Details Soon</span>`;
 
     const fileTag = ev.fileNumber ? ` · ${ev.fileNumber}` : '';
@@ -319,6 +329,9 @@
       .filter(ev => ev.dateStart >= today || (ev.dateEnd && ev.dateEnd >= today))
       .sort((a, b) => a.dateStart.localeCompare(b.dateStart));
     const upcomingPublic = upcoming.filter(ev => ev.isPublic);
+    const programmePublic = VENUE_EVENTS
+      .filter(ev => ev.isPublic)
+      .sort((a, b) => a.dateStart.localeCompare(b.dateStart));
 
     // Hero — first upcoming public event
     renderHero(upcomingPublic[0]);
@@ -326,7 +339,7 @@
     // What's On — append generated cards after the wo-anchor marker
     const woAnchor = document.getElementById('wo-anchor-upcoming');
     if (woAnchor) {
-      woAnchor.insertAdjacentHTML('afterend', upcomingPublic.map(renderWoCard).join('\n'));
+      woAnchor.insertAdjacentHTML('afterend', programmePublic.map(ev => renderWoCard(ev, ev.dateEnd ? ev.dateEnd >= today : ev.dateStart >= today)).join('\n'));
     }
 
     // Programme Index — group by month, insert after pi-anchor
@@ -334,13 +347,13 @@
     if (piAnchor) {
       let html = '';
       let lastMonth = null;
-      upcomingPublic.forEach(ev => {
+      programmePublic.forEach(ev => {
         const m = monthLong(ev.dateStart);
         if (m !== lastMonth) {
           html += `<li class="pi-month">${m}</li>`;
           lastMonth = m;
         }
-        html += renderPiItem(ev);
+        html += renderPiItem(ev, ev.dateEnd ? ev.dateEnd >= today : ev.dateStart >= today);
       });
       piAnchor.insertAdjacentHTML('afterend', html);
     }

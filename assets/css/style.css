@@ -50,6 +50,7 @@
 html{ scroll-behavior: smooth; }
 
 body{
+  overflow-x: hidden;
   margin: 0;
   font-family: var(--font-body);
   color: var(--cream);
