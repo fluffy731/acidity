@@ -70,6 +70,46 @@
     return ' ' + escapeHtml(ev.lineup.join(', ')) + '.';
   }
 
+  function earlyBirdCountdown(ev, variant) {
+    if (!ev.earlyBirdEnds || Date.now() >= Date.parse(ev.earlyBirdEnds)) return '';
+    const modifier = variant ? ` is-${variant}` : '';
+    return `<div class="early-bird-countdown${modifier}" data-countdown-until="${escapeHtml(ev.earlyBirdEnds)}" aria-live="polite">
+      <span class="early-bird-label">${escapeHtml(ev.earlyBirdLabel || 'EARLY BIRD')}</span>
+      <span class="early-bird-time">Calculating…</span>
+    </div>`;
+  }
+
+  function initEarlyBirdCountdowns() {
+    const countdowns = Array.from(document.querySelectorAll('[data-countdown-until]'));
+    if (!countdowns.length) return;
+
+    const update = () => {
+      const now = Date.now();
+      countdowns.forEach(el => {
+        if (!el.isConnected) return;
+        const remaining = Date.parse(el.dataset.countdownUntil) - now;
+        if (remaining <= 0) {
+          el.remove();
+          return;
+        }
+        const totalSeconds = Math.floor(remaining / 1000);
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        const value = `${days}D ${String(hours).padStart(2, '0')}H ${String(minutes).padStart(2, '0')}M ${String(seconds).padStart(2, '0')}S`;
+        const output = el.querySelector('.early-bird-time');
+        if (output) output.textContent = value;
+      });
+    };
+
+    update();
+    const timer = window.setInterval(() => {
+      update();
+      if (!document.querySelector('[data-countdown-until]')) window.clearInterval(timer);
+    }, 1000);
+  }
+
   function dateRangeLabel(ev) {
     if (!ev.dateEnd) return `${dayNum(ev.dateStart)} ${monthShort(ev.dateStart)}`.toUpperCase();
     return `${String(dayNum(ev.dateStart)).padStart(2, '0')}–${String(dayNum(ev.dateEnd)).padStart(2, '0')} ${monthShort(ev.dateStart)}`.toUpperCase();
@@ -162,7 +202,8 @@
 
     let photo;
     if (ev.poster) {
-      photo = `<div class="wo-card-photo">${badgeHtml}<img src="assets/images/${ev.poster}" alt="${escapeHtml(fullTitle(ev))} poster"></div>`;
+      const preserveClass = ev.preservePoster ? ' is-contain' : '';
+      photo = `<div class="wo-card-photo${preserveClass}">${badgeHtml}<img src="assets/images/${ev.poster}" alt="${escapeHtml(fullTitle(ev))} poster"></div>`;
     } else {
       const sepText = ev.piArtistSeparator || ' — ';
       const subLine = ev.artist ? `<span class="wo-placeholder-sub">${escapeHtml(sepText)}${escapeHtml(ev.artist)}</span>` : '';
@@ -200,6 +241,7 @@
           ${series}
           <span class="wo-card-date">${dateLine}</span>${badge}
           <h4>${escapeHtml(fullTitle(ev))}</h4>
+          ${isUpcoming ? earlyBirdCountdown(ev, 'card') : ''}
           ${bodyPara}
           ${cta}
         </div>
@@ -224,7 +266,7 @@
     const title = titleWithArtist(ev, 'run-artist') + (ev.locationTag ? ` — ${escapeHtml(ev.locationTag)}` : '');
     return `<li class="run-item">
       <span class="run-date"><span class="run-date-day">${day}</span><span class="run-date-month">${monthShort(ev.dateStart)}</span></span>
-      <span class="run-body"><span class="run-title">${title}</span><span class="run-meta">${escapeHtml(metaLine(ev))}</span></span>
+      <span class="run-body"><span class="run-title">${title}</span><span class="run-meta">${escapeHtml(metaLine(ev))}</span>${earlyBirdCountdown(ev, 'run')}</span>
       ${ctaRunStatus(ev)}
     </li>`;
   }
@@ -272,7 +314,7 @@
 
     const fileTag = ev.fileNumber ? ` · ${ev.fileNumber}` : '';
 
-    root.innerHTML = `<div class="hero-feature-media">
+    root.innerHTML = `<div class="hero-feature-media${ev.preservePoster ? ' is-contain' : ''}">
     <img src="${posterSrc}" alt="${escapeHtml(fullTitle(ev))} poster">
   </div>
   <div class="hero-feature-body">
@@ -281,6 +323,7 @@
     <span class="hero-feature-tag">Next Session${fileTag}</span>
     <h1>${titleHtml}</h1>
     <p class="hero-feature-desc">${desc}</p>
+    ${earlyBirdCountdown(ev, 'hero')}
     <div class="hero-feature-meta">
       ${metaParts.map(m => `<span>${escapeHtml(m)}</span>`).join('\n      ')}
       <span class="hero-feature-status">${statusLabel}</span>
@@ -375,5 +418,7 @@
     if (runAnchor) {
       runAnchor.insertAdjacentHTML('afterend', upcomingPublic.map(renderRunItem).join('\n'));
     }
+
+    initEarlyBirdCountdowns();
   });
 })();

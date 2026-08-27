@@ -223,6 +223,8 @@ img{ max-width: 100%; display: block; }
 
 .hero-feature-media{ overflow: hidden; }
 .hero-feature-media img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-feature-media.is-contain{ background: #071d55; }
+.hero-feature-media.is-contain img{ object-fit: contain; }
 
 .hero-feature-body{
   display: flex;
@@ -1227,6 +1229,8 @@ img{ max-width: 100%; display: block; }
 }
 .wo-card-photo{ aspect-ratio: 3/4; overflow: hidden; position: relative; }
 .wo-card-photo img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+.wo-card-photo.is-contain{ background: #071d55; }
+.wo-card-photo.is-contain img{ object-fit: contain; }
 
 /* Editorial campaign placeholder — used only when no current, factually-correct
    artwork exists. Never a substitute for a real poster from a different edition. */
@@ -1319,6 +1323,46 @@ img{ max-width: 100%; display: block; }
   padding-bottom: 0.1rem;
 }
 .wo-card-link:hover{ border-color: var(--amber); color: var(--amber-dim); }
+
+.early-bird-countdown{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.75rem;
+  margin: 0.8rem 0;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--rust);
+  background: rgba(190,77,52,0.16);
+  color: var(--cream);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1.35;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: inset 3px 0 0 var(--rust);
+}
+.early-bird-label{ color: var(--rust-dim); font-weight: 700; }
+.early-bird-time{
+  color: var(--cream);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.early-bird-countdown.is-hero{
+  max-width: 31rem;
+  margin: 1rem 0 1.25rem;
+  padding: 0.85rem 1rem;
+  font-size: 0.74rem;
+}
+.early-bird-countdown.is-run{
+  display: inline-flex;
+  margin: 0.55rem 0 0;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.6rem;
+}
+@media (max-width: 640px){
+  .early-bird-countdown{ align-items: flex-start; flex-direction: column; }
+  .early-bird-countdown.is-run{ display: flex; }
+}
 
 /* ---------------- Programme index (compact chronological list) ---------------- */
 .programme-index-heading{
