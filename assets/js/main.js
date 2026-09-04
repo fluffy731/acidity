@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMenuToggle();
   initPackageSelector();
   initPackageHandoff();
+  initContactReasonHandoff();
   initEditorialMotion();
 });
 
@@ -147,6 +148,16 @@ function initPackageHandoff() {
     messageField.value = `Enquiring about the ${pkg} package. `;
   }
   document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function initContactReasonHandoff() {
+  const reason = new URLSearchParams(window.location.search).get('reason');
+  if (!reason) return;
+  const reasonField = document.getElementById('reason');
+  if (reasonField && Array.from(reasonField.options).some(option => option.value === reason)) {
+    reasonField.value = reason;
+    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 }
 
 function initHeaderStatus() {

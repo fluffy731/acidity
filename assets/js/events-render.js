@@ -159,8 +159,11 @@
 
   const DEFAULT_CTA_LABELS = { book: 'Book Tickets ↗', rsvp: 'RSVP ↗' };
   function ctaLabel(ev) { return ev.ctaLabel || DEFAULT_CTA_LABELS[ev.ctaType] || ''; }
+  function bookingIsActive(ev) { return !['sold-out', 'cancelled'].includes(ev.ticketStatus); }
 
   function ctaWoCard(ev) {
+    if (ev.ticketStatus === 'sold-out') return '<span class="pi-status is-sold-out">Sold Out</span>';
+    if (ev.ticketStatus === 'cancelled') return '<span class="pi-status is-cancelled">Cancelled</span>';
     switch (ev.ctaType) {
       case 'book':
       case 'rsvp':
@@ -177,6 +180,8 @@
   }
 
   function ctaPiLink(ev) {
+    if (ev.ticketStatus === 'sold-out') return '<span class="pi-status is-sold-out">Sold Out</span>';
+    if (ev.ticketStatus === 'cancelled') return '<span class="pi-status is-cancelled">Cancelled</span>';
     switch (ev.ctaType) {
       case 'book':
       case 'rsvp':
@@ -193,6 +198,8 @@
   }
 
   function ctaRunStatus(ev) {
+    if (ev.ticketStatus === 'sold-out') return '<span class="run-status is-sold-out">Sold Out</span>';
+    if (ev.ticketStatus === 'cancelled') return '<span class="run-status is-cancelled">Cancelled</span>';
     switch (ev.ctaType) {
       case 'book':
       case 'rsvp':
@@ -208,6 +215,21 @@
     }
   }
 
+  function eventDetailHtml(ev, variant) {
+    const rows = [];
+    if (ev.price) rows.push(`<div><dt>Tickets</dt><dd>${escapeHtml(ev.price)}</dd></div>`);
+    if (ev.schedule && ev.schedule.length) rows.push(`<div><dt>Running order</dt><dd>${ev.schedule.map(escapeHtml).join('<br>')}</dd></div>`);
+    if (ev.lineup && ev.lineup.length) rows.push(`<div><dt>Line-up</dt><dd>${ev.lineup.map(escapeHtml).join('<br>')}</dd></div>`);
+    if (ev.admission) rows.push(`<div><dt>Admission</dt><dd>${escapeHtml(ev.admission)}</dd></div>`);
+    const copy = ev.detailDescription || ev.description;
+    if (!rows.length && !copy) return '';
+    return `<details class="event-detail is-${variant}">
+      <summary>Event details</summary>
+      ${copy ? `<p>${copy}</p>` : ''}
+      ${rows.length ? `<dl>${rows.join('')}</dl>` : ''}
+    </details>`;
+  }
+
   // ---- What's On card ----------------------------------------------------
 
   function renderWoCard(ev, isUpcoming) {
@@ -215,13 +237,18 @@
     const classes = ['wo-card'];
     if (isUpcoming) classes.push('is-upcoming');
     if (ev.isFeature) classes.push('wo-card-feature');
-    const badgeLabel = ev.ctaType === 'occupied' ? 'Occupied' : 'Upcoming';
+    const statusLabels = { 'selling-fast': 'Selling Fast', 'sold-out': 'Sold Out', door: 'Door Tickets', cancelled: 'Cancelled' };
+    const badgeLabel = statusLabels[ev.ticketStatus] || (ev.ctaType === 'occupied' ? 'Occupied' : 'Upcoming');
     const badgeHtml = isUpcoming ? `<span class="wo-card-badge">${badgeLabel}</span>` : '';
 
     let photo;
     if (ev.poster) {
       const preserveClass = ev.preservePoster ? ' is-contain' : '';
-      photo = `<div class="wo-card-photo${preserveClass}">${badgeHtml}<img src="assets/images/${ev.poster}" alt="${escapeHtml(fullTitle(ev))} poster"></div>`;
+      const posterImage = `<img src="assets/images/${ev.poster}" alt="${escapeHtml(fullTitle(ev))} poster">`;
+      const linkedPoster = ev.ticketUrl && bookingIsActive(ev) && (ev.ctaType === 'book' || ev.ctaType === 'rsvp')
+        ? `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="wo-card-poster-link" aria-label="${escapeHtml(ctaLabel(ev))} for ${escapeHtml(fullTitle(ev))}">${posterImage}</a>`
+        : posterImage;
+      photo = `<div class="wo-card-photo${preserveClass}">${badgeHtml}${linkedPoster}</div>`;
     } else {
       const sepText = ev.piArtistSeparator || ' — ';
       const subLine = ev.artist ? `<span class="wo-placeholder-sub">${escapeHtml(sepText)}${escapeHtml(ev.artist)}</span>` : '';
@@ -261,6 +288,7 @@
           <h4>${escapeHtml(fullTitle(ev))}</h4>
           ${isUpcoming ? earlyBirdCountdown(ev, 'card') : ''}
           ${bodyPara}
+          ${eventDetailHtml(ev, 'card')}
           ${cta}
         </div>
       </article>`;
@@ -284,7 +312,7 @@
     const title = titleWithArtist(ev, 'run-artist') + (ev.locationTag ? ` — ${escapeHtml(ev.locationTag)}` : '');
     return `<li class="run-item">
       <span class="run-date"><span class="run-date-day">${day}</span><span class="run-date-month">${monthShort(ev.dateStart)}</span></span>
-      <span class="run-body"><span class="run-title">${title}</span><span class="run-meta">${escapeHtml(metaLine(ev))}</span>${earlyBirdCountdown(ev, 'run')}</span>
+      <span class="run-body"><span class="run-title">${title}</span><span class="run-meta">${escapeHtml(metaLine(ev))}</span>${earlyBirdCountdown(ev, 'run')}${eventDetailHtml(ev, 'run')}</span>
       ${ctaRunStatus(ev)}
     </li>`;
   }
@@ -334,7 +362,9 @@
 
     root.innerHTML = `<div class="hero-folio" aria-hidden="true"><span>ACD.</span><span>01</span></div>
   <div class="hero-feature-media${ev.preservePoster ? ' is-contain' : ''}">
-    <img src="${posterSrc}" alt="${escapeHtml(fullTitle(ev))} poster">
+    ${ev.ticketUrl && bookingIsActive(ev) && (ev.ctaType === 'book' || ev.ctaType === 'rsvp')
+      ? `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="hero-poster-link" aria-label="${escapeHtml(ctaLabel(ev))} for ${escapeHtml(fullTitle(ev))}"><img src="${posterSrc}" alt="${escapeHtml(fullTitle(ev))} poster"></a>`
+      : `<img src="${posterSrc}" alt="${escapeHtml(fullTitle(ev))} poster">`}
   </div>
   <div class="hero-feature-body">
     <div class="hero-eyebrow">CURRENT PROGRAMME / RICHMOND, MELBOURNE</div>
@@ -352,6 +382,33 @@
       <a href="events.html" class="btn btn-outline">Full Programme</a>
     </div>
   </div>`;
+  }
+
+  function addEventStructuredData(events) {
+    if (!document.head) return;
+    const items = events.map(ev => {
+      const time = ev.music || ev.doors;
+      const offsetName = time ? new Intl.DateTimeFormat('en', { timeZone: 'Australia/Melbourne', timeZoneName: 'longOffset' })
+        .formatToParts(new Date(`${ev.dateStart}T12:00:00Z`)).find(part => part.type === 'timeZoneName').value.replace('GMT', '') : '';
+      const item = {
+        '@type': 'MusicEvent',
+        name: fullTitle(ev),
+        startDate: time ? `${ev.dateStart}T${time}:00${offsetName}` : ev.dateStart,
+        location: { '@type': 'Place', name: 'Acidity Bar & Coffee', address: { '@type': 'PostalAddress', streetAddress: '3/240 Victoria Street', addressLocality: 'Richmond', addressRegion: 'VIC', postalCode: '3121', addressCountry: 'AU' } },
+        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+        eventStatus: ev.ticketStatus === 'cancelled' ? 'https://schema.org/EventCancelled' : 'https://schema.org/EventScheduled'
+      };
+      if (ev.dateEnd) item.endDate = ev.dateEnd;
+      if (ev.poster) item.image = `${location.origin}/assets/images/${ev.poster}`;
+      const description = ev.detailDescription || ev.description || (ev.genres || []).join(', ');
+      if (description) item.description = description.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&');
+      if (ev.ticketUrl) item.offers = { '@type': 'Offer', url: ev.ticketUrl, availability: ev.ticketStatus === 'sold-out' ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock' };
+      return item;
+    });
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': items });
+    document.head.appendChild(script);
   }
 
   // ---- Availability calendar data-events ----------------------------------
@@ -394,6 +451,7 @@
     const programmePublic = VENUE_EVENTS
       .filter(ev => ev.isPublic)
       .sort((a, b) => a.dateStart.localeCompare(b.dateStart));
+    addEventStructuredData(programmePublic);
 
     // Hero — first upcoming public event
     renderHero(upcomingPublic[0]);

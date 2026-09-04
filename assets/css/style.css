@@ -2639,6 +2639,17 @@ h1, h2{
 }
 #events-preview .wo-card-photo.is-contain{ background: var(--journal-ink); }
 #events-preview .wo-card-photo img{ object-position: center; }
+.wo-card-poster-link,
+.hero-poster-link{
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.wo-card-poster-link:focus-visible,
+.hero-poster-link:focus-visible{
+  outline: 4px solid var(--journal-signal);
+  outline-offset: -4px;
+}
 #events-preview .wo-card-badge{
   inset: 0 auto auto 0;
   color: var(--journal-ink);
@@ -3176,6 +3187,56 @@ h1, h2{
   .page-events .run-title,
   .page-events .run-title a{ font-size: 1.4rem; }
   .page-events .run-status{ grid-column: 1 / -1; justify-content: flex-start; }
+}
+
+/* Programme detail and information modules */
+.event-detail{ margin-top:.8rem; border-top:1px solid currentColor; }
+.event-detail summary{ padding:.65rem 0; cursor:pointer; font-family:var(--font-mono); font-size:.68rem; letter-spacing:.13em; text-transform:uppercase; }
+.event-detail p{ margin:.2rem 0 .8rem; }
+.event-detail dl{ margin:0 0 .9rem; }
+.event-detail dl>div{ display:grid; grid-template-columns:7rem 1fr; gap:1rem; padding:.45rem 0; border-top:1px solid rgba(9,9,9,.18); }
+.event-detail dt{ font-family:var(--font-mono); font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; }
+.event-detail dd{ margin:0; font-size:.8rem; line-height:1.55; }
+.event-detail.is-run{ max-width:700px; }
+.page-events .event-detail dl>div{ border-color:rgba(238,234,225,.2); }
+.pi-status.is-sold-out,.run-status.is-sold-out{ color:var(--journal-signal); }
+.pi-status.is-cancelled,.run-status.is-cancelled{ color:var(--journal-red); text-decoration:line-through; }
+.programme-newsletter{ display:grid; grid-template-columns:auto 1fr minmax(300px,.8fr); gap:2rem; align-items:end; margin-top:3rem; padding:2rem 0; border:solid var(--journal-ink); border-width:1px 0; }
+.newsletter-index{ align-self:start; font-family:var(--font-mono); font-size:.62rem; color:var(--journal-blue); }
+.programme-newsletter h3{ margin:0; font-size:clamp(2rem,4vw,4rem); text-transform:uppercase; }
+.programme-newsletter p{ max-width:38rem; margin:.4rem 0 0; color:var(--journal-grey); }
+.programme-newsletter form{ display:flex; gap:.6rem; }
+.programme-newsletter input{ min-width:0; width:100%; padding:.8rem; color:var(--journal-ink); background:transparent; border:1px solid var(--journal-ink); font-family:var(--font-mono); }
+.visit-faq{
+  --cream:var(--journal-ink);
+  --cream-dim:var(--journal-grey);
+  color:var(--journal-ink);
+  background:var(--journal-paper);
+}
+.visit-faq h2,.artists-call h2{ max-width:10ch; font-size:clamp(3.5rem,9vw,8rem); line-height:.8; }
+.visit-faq h2{ color:var(--journal-blue); }
+.faq-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin-top:2rem; border-top:1px solid currentColor; }
+.faq-grid details{ padding:1rem 0; border-bottom:1px solid currentColor; }
+.faq-grid details:nth-child(odd){ padding-right:2rem; }
+.faq-grid details:nth-child(even){ padding-left:2rem; border-left:1px solid currentColor; }
+.faq-grid summary{ cursor:pointer; color:var(--journal-ink); font-family:var(--font-display); font-size:1.4rem; text-transform:uppercase; transition:color var(--motion-fast) ease; }
+.faq-grid summary::marker{ color:var(--journal-blue); }
+.faq-grid details[open] summary,.faq-grid summary:hover{ color:var(--journal-blue); }
+.faq-grid p{ max-width:42rem; color:var(--journal-grey); }
+.artist-submission-grid{ display:grid; grid-template-columns:repeat(3,1fr); margin:2.5rem 0; border:solid currentColor; border-width:1px 0; }
+.artist-submission-grid>div{ padding:1.5rem; }
+.artist-submission-grid>div+div{ border-left:1px solid currentColor; }
+.artist-submission-grid span{ font-family:var(--font-mono); color:var(--journal-blue); }
+.artist-submission-grid h3{ margin:2rem 0 .5rem; font-size:2rem; text-transform:uppercase; }
+.artist-submission-grid p{ color:var(--cream-dim); }
+.sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+@media (max-width:760px){
+  .programme-newsletter{ grid-template-columns:1fr; }
+  .programme-newsletter form{ flex-direction:column; }
+  .faq-grid,.artist-submission-grid{ grid-template-columns:1fr; }
+  .faq-grid details:nth-child(odd),.faq-grid details:nth-child(even){ padding-left:0; padding-right:0; border-left:0; }
+  .artist-submission-grid>div+div{ border-left:0; border-top:1px solid currentColor; }
+  .event-detail dl>div{ grid-template-columns:1fr; gap:.25rem; }
 }
 
 /* Menu issue — the same journal shell, with a catalogue-like price list. */

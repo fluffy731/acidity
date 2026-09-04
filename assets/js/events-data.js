@@ -24,6 +24,10 @@
  *   poster       path relative to assets/images/, or null for the editorial placeholder
  *   description  optional custom body copy; auto-built from genres when omitted
  *   lineup       optional array of "Role — Name" strings
+ *   price        optional confirmed ticket-price text
+ *   schedule     optional confirmed running-order lines
+ *   admission    optional confirmed entry/access note
+ *   ticketStatus optional 'selling-fast' | 'sold-out' | 'door' | 'cancelled'
  *   note         optional short extra line (e.g. "From Nagoya, Japan")
  *   badge        optional small credit badge shown on the What's On card (e.g. "Ft. Early Bird")
  *   piArtistSeparator  override for how title/artist join in the Programme Index (default " — ")
@@ -156,6 +160,7 @@ const VENUE_EVENTS = [
     poster: 'posters/charlie-rank-trio.jpg',
     description: 'Contemporary jazz exploring improvisation &amp; interplay.',
     lineup: ['Saxophones — Tristan Meffre', 'Double Bass — Charlie Rank', 'Drums — Alfie Pleasance'],
+    price: 'Early Bird $15 · General Admission $20',
     calType: 'session',
     isPublic: true
   },
@@ -173,6 +178,7 @@ const VENUE_EVENTS = [
     preservePoster: true,
     description: 'Four acts. Four sets. 7pm–late.',
     lineup: ['7PM — KALO', '8PM — Amadou Suso', '9PM — Ferdinand Duo', '10PM — Izzy Skinner'],
+    price: '$20 + booking fee',
     earlyBirdEnds: '2026-09-03T00:00:00+10:00',
     earlyBirdLabel: 'EARLY BIRD ENDS 02 SEP',
     calType: 'session',
@@ -190,6 +196,8 @@ const VENUE_EVENTS = [
     ticketUrl: 'https://events.humanitix.com/coffee-rave-jazz-jam-or-jazz-jam-dj-sunday-party-at-acidity-cwuqad86',
     poster: 'posters/coffee-rave-06-sep.webp',
     preservePoster: true,
+    schedule: ['2–5PM — Coffee Rave', '5–10PM — House Band Showcase & Open Jazz Jam'],
+    admission: 'Free entry. RSVP recommended. Guests under 18 must be accompanied by a responsible adult.',
     calType: 'session',
     isPublic: true
   },
@@ -205,6 +213,9 @@ const VENUE_EVENTS = [
     ticketUrl: 'https://events.humanitix.com/jazz-quartet-and-originals-live-night-or-chris-pappas-quartet',
     poster: 'posters/chris-pappas-quartet.webp',
     preservePoster: true,
+    description: 'Original compositions, jazz standards and open improvisation shaped through conversation between four musicians.',
+    lineup: ['Chris Pappas — Tenor Sax', 'Dan Mamrot — Guitar', 'Aiden Effron — Double Bass', 'Paul Whitwood — Drums'],
+    price: '$15–$20',
     calType: 'session',
     isPublic: true
   },
@@ -221,6 +232,10 @@ const VENUE_EVENTS = [
     ticketUrl: 'https://events.humanitix.com/the-music-of-wes-montgomery-part-ii-or-tony-yang-jazz-trio',
     poster: 'posters/music-of-wes-montgomery.webp',
     preservePoster: true,
+    description: 'Part II explores Wes Montgomery’s repertoire, warm thumb-picked tone, octave language and melodic improvisation across two sets.',
+    lineup: ['Tony Yang — Guitar', 'Charlie Rank — Double Bass', 'Zayne Guo — Drums'],
+    schedule: ['7:30PM — Doors', '8PM — Set I', '8:45PM — Interval', '9:15PM — Set II', '10PM — Finish'],
+    price: 'Early Bird $15 · General $20',
     calType: 'session',
     isPublic: true
   },
@@ -245,6 +260,7 @@ const VENUE_EVENTS = [
     ticketUrl: 'https://events.humanitix.com/new-york-jazz-melbourne-or-jame-holmes-quartet-live-jazz',
     poster: 'posters/jamie-holmes-quartet.webp',
     preservePoster: true,
+    detailDescription: 'Contemporary New York jazz in dialogue with an Australian musical identity, featuring original compositions and music influenced by Immanuel Wilkins and Chris Potter.',
     earlyBirdEnds: '2026-09-12T00:00:00+10:00',
     earlyBirdLabel: 'EARLY BIRD ENDS 12 SEP',
     earlyBirdShowEnded: true,
