@@ -71,11 +71,13 @@
   }
 
   function earlyBirdCountdown(ev, variant) {
-    if (!ev.earlyBirdEnds || Date.now() >= Date.parse(ev.earlyBirdEnds)) return '';
+    if (!ev.earlyBirdEnds) return '';
+    const hasEnded = Date.now() >= Date.parse(ev.earlyBirdEnds);
+    if (hasEnded && !ev.earlyBirdShowEnded) return '';
     const modifier = variant ? ` is-${variant}` : '';
-    return `<div class="early-bird-countdown${modifier}" data-countdown-until="${escapeHtml(ev.earlyBirdEnds)}" aria-live="polite">
-      <span class="early-bird-label">${escapeHtml(ev.earlyBirdLabel || 'EARLY BIRD')}</span>
-      <span class="early-bird-time">Calculating…</span>
+    return `<div class="early-bird-countdown${modifier}${hasEnded ? ' is-ended' : ''}" data-countdown-until="${escapeHtml(ev.earlyBirdEnds)}" data-show-ended="${ev.earlyBirdShowEnded ? 'true' : 'false'}" aria-live="polite">
+      <span class="early-bird-label">${hasEnded ? 'EARLY BIRD ENDED' : escapeHtml(ev.earlyBirdLabel || 'EARLY BIRD')}</span>
+      <span class="early-bird-time"${hasEnded ? ' hidden' : ''}>Calculating…</span>
     </div>`;
   }
 
@@ -89,15 +91,22 @@
         if (!el.isConnected) return;
         const remaining = Date.parse(el.dataset.countdownUntil) - now;
         if (remaining <= 0) {
-          el.remove();
+          if (el.dataset.showEnded === 'true') {
+            el.classList.add('is-ended');
+            const label = el.querySelector('.early-bird-label');
+            const output = el.querySelector('.early-bird-time');
+            if (label) label.textContent = 'EARLY BIRD ENDED';
+            if (output) output.hidden = true;
+          } else {
+            el.remove();
+          }
           return;
         }
         const totalSeconds = Math.floor(remaining / 1000);
         const days = Math.floor(totalSeconds / 86400);
         const hours = Math.floor((totalSeconds % 86400) / 3600);
         const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-        const value = `${days}D ${String(hours).padStart(2, '0')}H ${String(minutes).padStart(2, '0')}M ${String(seconds).padStart(2, '0')}S`;
+        const value = `${days}D ${String(hours).padStart(2, '0')}H ${String(minutes).padStart(2, '0')}M`;
         const output = el.querySelector('.early-bird-time');
         if (output) output.textContent = value;
       });
@@ -107,7 +116,7 @@
     const timer = window.setInterval(() => {
       update();
       if (!document.querySelector('[data-countdown-until]')) window.clearInterval(timer);
-    }, 1000);
+    }, 30000);
   }
 
   function dateRangeLabel(ev) {
