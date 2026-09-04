@@ -2,12 +2,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.querySelector('.nav-toggle');
   const links = document.querySelector('.nav-links');
   if (toggle && links) {
+    if (!links.id) links.id = 'primary-navigation';
+    toggle.setAttribute('aria-controls', links.id);
+    toggle.setAttribute('aria-expanded', 'false');
     toggle.addEventListener('click', () => {
-      links.classList.toggle('open');
+      const isOpen = links.classList.toggle('open');
+      toggle.classList.toggle('is-open', isOpen);
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      toggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Toggle menu');
     });
     links.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => links.classList.remove('open'));
+      link.addEventListener('click', () => closeNavigation(toggle, links));
     });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeNavigation(toggle, links);
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 860) closeNavigation(toggle, links);
+    }, { passive: true });
   }
 
   initOpenStatus();
@@ -18,7 +30,73 @@ document.addEventListener('DOMContentLoaded', () => {
   initMenuToggle();
   initPackageSelector();
   initPackageHandoff();
+  initEditorialMotion();
 });
+
+function closeNavigation(toggle, links) {
+  links.classList.remove('open');
+  toggle.classList.remove('is-open');
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.setAttribute('aria-label', 'Toggle menu');
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function initEditorialMotion() {
+  document.documentElement.classList.add('motion-ready');
+
+  const hero = document.querySelector('.hero-feature');
+  if (hero) {
+    requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.add('is-entered')));
+  }
+
+  const revealSelectors = [
+    '.about > *',
+    '#events-preview .section-label',
+    '#events-preview .wo-head',
+    '#events-preview > .whats-on-inner > .section-intro',
+    '.feature-programme-inner',
+    '.field-note',
+    '.availability > *',
+    '.cal',
+    '.run-item',
+    '.programme-index li:not(.pi-month)',
+    '.gallery-item'
+  ];
+  const revealItems = Array.from(document.querySelectorAll(revealSelectors.join(',')));
+  revealItems.forEach(item => item.classList.add('motion-reveal'));
+
+  [
+    '.field-notes-track',
+    '.run-list',
+    '.programme-index',
+    '.gallery-grid',
+    '.availability'
+  ].forEach(selector => {
+    document.querySelectorAll(selector).forEach(group => {
+      Array.from(group.children).forEach((item, index) => {
+        item.style.setProperty('--reveal-delay', `${Math.min(index, 7) * 55}ms`);
+      });
+    });
+  });
+
+  if (prefersReducedMotion() || !('IntersectionObserver' in window)) {
+    revealItems.forEach(item => item.classList.add('is-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -7% 0px' });
+
+  revealItems.forEach(item => observer.observe(item));
+}
 
 function initPackageSelector() {
   const track = document.getElementById('pkg-track');
@@ -127,8 +205,8 @@ function initWhatsOnCarousel() {
   const next = document.querySelector('.whats-on .wo-next');
   const cards = Array.from(track.querySelectorAll('.wo-card'));
 
-  function updateLabel() {
-    if (!label || !cards.length) return;
+  function updateCarouselState() {
+    if (!cards.length) return;
     const trackRect = track.getBoundingClientRect();
     const trackCenter = trackRect.left + trackRect.width / 2;
     let closest = cards[0];
@@ -138,14 +216,24 @@ function initWhatsOnCarousel() {
       const dist = Math.abs((r.left + r.width / 2) - trackCenter);
       if (dist < closestDist) { closestDist = dist; closest = card; }
     });
+
+    cards.forEach(card => card.classList.toggle('is-focused', card === closest));
+
     const month = closest.dataset.month;
-    if (month && label.textContent !== month) label.textContent = month;
+    if (label && month && label.textContent !== month) {
+      label.textContent = month;
+      if (!prefersReducedMotion()) {
+        label.classList.remove('is-changing');
+        void label.offsetWidth;
+        label.classList.add('is-changing');
+      }
+    }
   }
 
   let ticking = false;
   track.addEventListener('scroll', () => {
     if (!ticking) {
-      requestAnimationFrame(() => { updateLabel(); ticking = false; });
+      requestAnimationFrame(() => { updateCarouselState(); ticking = false; });
       ticking = true;
     }
   });
@@ -153,6 +241,7 @@ function initWhatsOnCarousel() {
   const scrollAmount = () => (cards[0]?.offsetWidth || 300) + 20;
   prev?.addEventListener('click', () => track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
   next?.addEventListener('click', () => track.scrollBy({ left: scrollAmount(), behavior: 'smooth' }));
+  window.addEventListener('resize', () => requestAnimationFrame(updateCarouselState), { passive: true });
 
   // Cards are laid out oldest-to-newest (left = past, right = future) so the
   // nav arrows read naturally, but the track opens scrolled to the first
@@ -162,7 +251,7 @@ function initWhatsOnCarousel() {
     track.scrollLeft = firstUpcoming.offsetLeft - (track.clientWidth - firstUpcoming.offsetWidth) / 2;
   }
 
-  updateLabel();
+  updateCarouselState();
 }
 
 const VENUE_TZ = 'Australia/Melbourne';
@@ -257,10 +346,12 @@ function initAvailabilityCalendar() {
   const now = new Date();
   let viewYear = now.getFullYear();
   let viewMonth = now.getMonth();
+  let renderTimer = null;
 
   function pad(n) { return String(n).padStart(2, '0'); }
 
-  function render() {
+  function render(direction = 0) {
+    const draw = () => {
     const first = new Date(viewYear, viewMonth, 1);
     const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
     const startDow = first.getDay();
@@ -305,6 +396,14 @@ function initAvailabilityCalendar() {
 
     grid.innerHTML = html;
 
+    if (direction && !prefersReducedMotion()) {
+      grid.classList.remove('is-exiting-left', 'is-exiting-right');
+      grid.classList.add(direction > 0 ? 'is-entering-right' : 'is-entering-left');
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        grid.classList.remove('is-entering-left', 'is-entering-right');
+      }));
+    }
+
     grid.querySelectorAll('.cal-day.available').forEach(btn => {
       btn.addEventListener('click', () => {
         const iso = btn.dataset.iso;
@@ -320,17 +419,27 @@ function initAvailabilityCalendar() {
         if (!wasOpen) btn.classList.add('tip-open');
       });
     });
+    };
+
+    window.clearTimeout(renderTimer);
+    if (direction && !prefersReducedMotion()) {
+      grid.classList.remove('is-entering-left', 'is-entering-right');
+      grid.classList.add(direction > 0 ? 'is-exiting-left' : 'is-exiting-right');
+      renderTimer = window.setTimeout(draw, 140);
+    } else {
+      draw();
+    }
   }
 
   prevBtn.addEventListener('click', () => {
     viewMonth -= 1;
     if (viewMonth < 0) { viewMonth = 11; viewYear -= 1; }
-    render();
+    render(-1);
   });
   nextBtn.addEventListener('click', () => {
     viewMonth += 1;
     if (viewMonth > 11) { viewMonth = 0; viewYear += 1; }
-    render();
+    render(1);
   });
 
   render();

@@ -91,6 +91,7 @@
         if (!el.isConnected) return;
         const remaining = Date.parse(el.dataset.countdownUntil) - now;
         if (remaining <= 0) {
+          el.classList.remove('is-urgent');
           if (el.dataset.showEnded === 'true') {
             el.classList.add('is-ended');
             const label = el.querySelector('.early-bird-label');
@@ -108,7 +109,15 @@
         const minutes = Math.floor((totalSeconds % 3600) / 60);
         const value = `${days}D ${String(hours).padStart(2, '0')}H ${String(minutes).padStart(2, '0')}M`;
         const output = el.querySelector('.early-bird-time');
-        if (output) output.textContent = value;
+        el.classList.toggle('is-urgent', remaining <= 48 * 60 * 60 * 1000);
+        if (output && output.textContent !== value) {
+          output.textContent = value;
+          output.classList.remove('is-ticking');
+          if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            void output.offsetWidth;
+            output.classList.add('is-ticking');
+          }
+        }
       });
     };
 
@@ -323,12 +332,13 @@
 
     const fileTag = ev.fileNumber ? ` · ${ev.fileNumber}` : '';
 
-    root.innerHTML = `<div class="hero-feature-media${ev.preservePoster ? ' is-contain' : ''}">
+    root.innerHTML = `<div class="hero-folio" aria-hidden="true"><span>ACD.</span><span>01</span></div>
+  <div class="hero-feature-media${ev.preservePoster ? ' is-contain' : ''}">
     <img src="${posterSrc}" alt="${escapeHtml(fullTitle(ev))} poster">
   </div>
   <div class="hero-feature-body">
-    <div class="hero-eyebrow">01 &middot; Live Programme — Richmond, Melbourne</div>
-    <p class="hero-lead">A quiet room that gets loud on the right nights.</p>
+    <div class="hero-eyebrow">CURRENT PROGRAMME / RICHMOND, MELBOURNE</div>
+    <p class="hero-lead">Coffee by day.<br>Live sound after dark.</p>
     <span class="hero-feature-tag">Next Session${fileTag}</span>
     <h1>${titleHtml}</h1>
     <p class="hero-feature-desc">${desc}</p>
