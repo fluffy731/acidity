@@ -75,7 +75,12 @@
     const hasEnded = Date.now() >= Date.parse(ev.earlyBirdEnds);
     if (hasEnded && !ev.earlyBirdShowEnded) return '';
     const modifier = variant ? ` is-${variant}` : '';
+    const offer = ev.earlyBirdPrice && ev.generalPrice ? `<div class="early-bird-offer">
+      <span class="early-bird-general">GENERAL <s>${escapeHtml(ev.generalPrice)}</s></span>
+      <span class="early-bird-special">EARLY BIRD <strong>${escapeHtml(ev.earlyBirdPrice)}</strong></span>
+    </div>` : '';
     return `<div class="early-bird-countdown${modifier}${hasEnded ? ' is-ended' : ''}" data-countdown-until="${escapeHtml(ev.earlyBirdEnds)}" data-show-ended="${ev.earlyBirdShowEnded ? 'true' : 'false'}" aria-live="polite">
+      ${offer}
       <span class="early-bird-label">${hasEnded ? 'EARLY BIRD ENDED' : escapeHtml(ev.earlyBirdLabel || 'EARLY BIRD')}</span>
       <span class="early-bird-time"${hasEnded ? ' hidden' : ''}>Calculating…</span>
     </div>`;

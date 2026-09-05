@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  initProgrammeIntro();
   const toggle = document.querySelector('.nav-toggle');
   const links = document.querySelector('.nav-links');
   if (toggle && links) {
@@ -33,6 +34,75 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactReasonHandoff();
   initEditorialMotion();
 });
+
+function initProgrammeIntro() {
+  const intro = document.getElementById('programme-intro');
+  if (!intro) return;
+
+  const reducedMotion = prefersReducedMotion();
+  let lastSeen = '';
+  const introStorageKey = 'acidity-programme-intro-seen-v5';
+  try { lastSeen = localStorage.getItem(introStorageKey) || ''; } catch (error) {}
+
+  const dayParts = new Intl.DateTimeFormat('en', {
+    timeZone: 'Australia/Melbourne', year: 'numeric', month: '2-digit', day: '2-digit'
+  }).formatToParts(new Date()).reduce((parts, part) => {
+    if (part.type !== 'literal') parts[part.type] = part.value;
+    return parts;
+  }, {});
+  const melbourneDay = `${dayParts.year}-${dayParts.month}-${dayParts.day}`;
+  const isReturnVisit = lastSeen === melbourneDay;
+
+  if (typeof VENUE_EVENTS !== 'undefined') {
+    const today = melbourneDay;
+    const featured = VENUE_EVENTS.find(event => event.isPublic && event.poster && event.dateStart >= today);
+    if (featured) {
+      const poster = intro.querySelector('[data-intro-poster]');
+      const title = intro.querySelector('[data-intro-title]');
+      const date = intro.querySelector('[data-intro-date]');
+      if (poster) {
+        poster.src = `assets/images/${featured.poster}`;
+        poster.alt = `${featured.title} poster`;
+      }
+      if (title) title.textContent = featured.title;
+      if (date) {
+        const parts = featured.dateStart.split('-');
+        const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+        date.textContent = `${parts[2]} ${months[Number(parts[1]) - 1]} ${parts[0]}`;
+      }
+    }
+  }
+
+  if (reducedMotion) {
+    intro.remove();
+    return;
+  }
+
+  const duration = isReturnVisit ? 700 : 3200;
+  intro.classList.toggle('is-quick', isReturnVisit);
+  intro.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('programme-intro-open');
+  requestAnimationFrame(() => intro.classList.add('is-playing'));
+
+  let timer = window.setTimeout(close, duration);
+  function close() {
+    if (intro.classList.contains('is-closing')) return;
+    window.clearTimeout(timer);
+    intro.classList.add('is-closing');
+    document.body.classList.remove('programme-intro-open');
+    try { localStorage.setItem(introStorageKey, melbourneDay); } catch (error) {}
+    window.setTimeout(() => intro.remove(), 850);
+  }
+
+  intro.querySelector('.programme-intro-skip')?.addEventListener('click', close);
+  intro.addEventListener('click', event => {
+    if (event.target.closest('.programme-intro-skip')) return;
+    close();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' || event.key === 'Enter') close();
+  }, { once: true });
+}
 
 function closeNavigation(toggle, links) {
   links.classList.remove('open');
