@@ -3820,3 +3820,68 @@ h1, h2{
   }
   .page-home .programme-intro-feature h2{ font-size: clamp(1.65rem, 7vw, 2.4rem); }
 }
+
+/* Search-friendly individual programme pages reuse the journal system. */
+.event-page-link{
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--journal-blue, #244bd6);
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.page-event-detail{ color: var(--journal-ink, #090909); background: var(--journal-paper, #eeeae1); }
+.event-detail-hero{
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  min-height: calc(100vh - 146px);
+  border-bottom: 1px solid currentColor;
+}
+.event-detail-poster{ min-height: 0; padding: clamp(1rem, 3vw, 3rem); background: var(--journal-blue, #244bd6); }
+.event-detail-poster img{ display: block; width: 100%; height: 100%; max-height: 78vh; object-fit: contain; }
+.event-detail-copy{ display: flex; flex-direction: column; padding: clamp(1.5rem, 5vw, 5rem); }
+.event-detail-copy .section-label{ align-self: flex-start; }
+.event-detail-copy h1{ max-width: 12ch; margin: auto 0 1.5rem; font-size: clamp(3.2rem, 7vw, 7.5rem); line-height: .82; letter-spacing: -.07em; }
+.event-detail-copy .event-lead{ max-width: 48rem; color: var(--journal-grey, #666); font-size: clamp(1rem, 1.4vw, 1.3rem); }
+.event-facts{ display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); margin: 2rem 0; border-top: 1px solid currentColor; }
+.event-facts div{ padding: .9rem 0; border-bottom: 1px solid currentColor; }
+.event-facts div:nth-child(odd){ padding-right: 1rem; }
+.event-facts dt{ color: var(--journal-blue, #244bd6); font: 700 .62rem/1.2 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+.event-facts dd{ margin: .35rem 0 0; font-family: var(--font-mono); font-size: .78rem; line-height: 1.5; }
+.event-detail-actions{ display: flex; flex-wrap: wrap; gap: 0; margin-top: auto; }
+.event-detail-actions .btn{ border-color: currentColor; }
+.event-detail-notes{ max-width: 900px; margin: 0 auto; padding: clamp(3rem, 7vw, 7rem) clamp(1rem, 3vw, 2rem); }
+.event-detail-notes h2{ max-width: 10ch; font-size: clamp(3rem, 7vw, 6rem); line-height: .82; }
+.event-detail-notes p{ max-width: 56rem; color: var(--journal-grey, #666); }
+@media (max-width: 760px){
+  .event-detail-hero{ grid-template-columns: 1fr; min-height: 0; }
+  .event-detail-poster{ height: 62vh; }
+  .event-detail-copy h1{ margin-top: 4rem; font-size: clamp(3rem, 14vw, 5rem); }
+  .event-facts{ grid-template-columns: 1fr; }
+  .event-facts div:nth-child(odd){ padding-right: 0; }
+}
+
+/* The countdown is supporting information, not the dominant artwork. */
+.programme-offer{
+  display:table;
+  margin:.65rem 0 .2rem;
+  padding:.36rem .5rem .3rem;
+  color:var(--journal-paper,#eeeae1);
+  background:var(--journal-blue,#244bd6);
+  font:700 .6rem/1.25 var(--font-mono);
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.programme-offer strong{ color:var(--journal-signal,#d8ff3e); font-size:.78rem; }
+.programme-offer s{ opacity:.72; text-decoration-color:var(--journal-signal,#d8ff3e); }
+.programme-offer-was{ margin-left:.38rem; opacity:.78; }
+.early-bird-offer{ grid-template-columns:4.5rem 1fr; gap:.55rem; margin-bottom:.5rem; padding-bottom:.5rem; }
+.early-bird-general s{ font-size:1.5rem; }
+.early-bird-special strong{ font-size:2.35rem; line-height:.82; }
+.early-bird-countdown.is-card .early-bird-offer{ grid-template-columns:4.5rem 1fr; }
+.early-bird-countdown.is-card .early-bird-special strong{ font-size:2.35rem; }
+.early-bird-countdown.is-run .early-bird-offer{ max-width:260px; }
+.early-bird-countdown.is-run .early-bird-special strong{ font-size:2rem; }
+.early-bird-countdown.is-hero .early-bird-special strong{ font-size:2.8rem; }

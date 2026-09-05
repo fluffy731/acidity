@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://acidity.com.au/sitemap.xml

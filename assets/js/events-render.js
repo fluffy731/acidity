@@ -223,15 +223,17 @@
   function eventDetailHtml(ev, variant) {
     const rows = [];
     if (ev.price) rows.push(`<div><dt>Tickets</dt><dd>${escapeHtml(ev.price)}</dd></div>`);
+    if (ev.offer) rows.push(`<div><dt>Limited offer</dt><dd>${escapeHtml(ev.offer)}</dd></div>`);
     if (ev.schedule && ev.schedule.length) rows.push(`<div><dt>Running order</dt><dd>${ev.schedule.map(escapeHtml).join('<br>')}</dd></div>`);
     if (ev.lineup && ev.lineup.length) rows.push(`<div><dt>Line-up</dt><dd>${ev.lineup.map(escapeHtml).join('<br>')}</dd></div>`);
     if (ev.admission) rows.push(`<div><dt>Admission</dt><dd>${escapeHtml(ev.admission)}</dd></div>`);
     const copy = ev.detailDescription || ev.description;
-    if (!rows.length && !copy) return '';
+    if (!rows.length && !copy && !ev.pageUrl) return '';
     return `<details class="event-detail is-${variant}">
       <summary>Event details</summary>
       ${copy ? `<p>${copy}</p>` : ''}
       ${rows.length ? `<dl>${rows.join('')}</dl>` : ''}
+      ${ev.pageUrl ? `<a class="event-page-link" href="${ev.pageUrl}">Full event page →</a>` : ''}
     </details>`;
   }
 
@@ -291,6 +293,7 @@
           ${series}
           <span class="wo-card-date">${dateLine}</span>${badge}
           <h4>${escapeHtml(fullTitle(ev))}</h4>
+          ${ev.offer ? `<span class="programme-offer">Limited Offer <strong>${escapeHtml(ev.offerPrice || '')}</strong>${ev.offerOriginalPrice ? `<span class="programme-offer-was">Was <s>${escapeHtml(ev.offerOriginalPrice)}</s></span>` : ''} — Entry + selected drink</span>` : ''}
           ${isUpcoming ? earlyBirdCountdown(ev, 'card') : ''}
           ${bodyPara}
           ${eventDetailHtml(ev, 'card')}
@@ -317,7 +320,7 @@
     const title = titleWithArtist(ev, 'run-artist') + (ev.locationTag ? ` — ${escapeHtml(ev.locationTag)}` : '');
     return `<li class="run-item">
       <span class="run-date"><span class="run-date-day">${day}</span><span class="run-date-month">${monthShort(ev.dateStart)}</span></span>
-      <span class="run-body"><span class="run-title">${title}</span><span class="run-meta">${escapeHtml(metaLine(ev))}</span>${earlyBirdCountdown(ev, 'run')}${eventDetailHtml(ev, 'run')}</span>
+      <span class="run-body"><span class="run-title">${title}</span><span class="run-meta">${escapeHtml(metaLine(ev))}</span>${ev.offer ? `<span class="programme-offer">Limited Offer <strong>${escapeHtml(ev.offerPrice || '')}</strong>${ev.offerOriginalPrice ? `<span class="programme-offer-was">Was <s>${escapeHtml(ev.offerOriginalPrice)}</s></span>` : ''} — Entry + selected drink</span>` : ''}${earlyBirdCountdown(ev, 'run')}${eventDetailHtml(ev, 'run')}</span>
       ${ctaRunStatus(ev)}
     </li>`;
   }
@@ -398,6 +401,7 @@
       const item = {
         '@type': 'MusicEvent',
         name: fullTitle(ev),
+        url: ev.pageUrl ? `${location.origin}/${ev.pageUrl}` : `${location.origin}/events.html#${ev.id}`,
         startDate: time ? `${ev.dateStart}T${time}:00${offsetName}` : ev.dateStart,
         location: { '@type': 'Place', name: 'Acidity Bar & Coffee', address: { '@type': 'PostalAddress', streetAddress: '3/240 Victoria Street', addressLocality: 'Richmond', addressRegion: 'VIC', postalCode: '3121', addressCountry: 'AU' } },
         eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
@@ -407,7 +411,10 @@
       if (ev.poster) item.image = `${location.origin}/assets/images/${ev.poster}`;
       const description = ev.detailDescription || ev.description || (ev.genres || []).join(', ');
       if (description) item.description = description.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&');
-      if (ev.ticketUrl) item.offers = { '@type': 'Offer', url: ev.ticketUrl, availability: ev.ticketStatus === 'sold-out' ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock' };
+      if (ev.ticketUrl) {
+        item.offers = { '@type': 'Offer', url: ev.ticketUrl, priceCurrency: 'AUD', availability: ev.ticketStatus === 'sold-out' ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock' };
+        if (ev.earlyBirdPrice) item.offers.price = ev.earlyBirdPrice.replace(/[^0-9.]/g, '');
+      }
       return item;
     });
     const script = document.createElement('script');
