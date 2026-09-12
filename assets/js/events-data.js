@@ -18,8 +18,8 @@
  *   genres       array of genre/category strings
  *   doors        optional 24h "HH:MM" doors time
  *   music        optional 24h "HH:MM" music-start time (shown instead of/alongside doors)
- *   status       'ticketed' | 'free' | 'details-soon' | 'occupied'
- *   ctaType      'book' | 'free' | 'rsvp' | 'details' | 'occupied'
+ *   status       'ticketed' | 'free' | 'door' | 'details-soon' | 'occupied'
+ *   ctaType      'book' | 'free' | 'rsvp' | 'door' | 'details' | 'occupied'
  *   ticketUrl    Humanitix (or other) ticket URL — only ever reused, never invented
  *   poster       path relative to assets/images/, or null for the editorial placeholder
  *   description  optional custom body copy; auto-built from genres when omitted
@@ -249,12 +249,37 @@ const VENUE_EVENTS = [
     isPublic: true
   },
   {
+    id: 'sam-manzanza-ngati-kongo-blues-beat',
+    dateStart: '2026-09-13',
+    title: 'Ngati Kongo Blues Beat',
+    artist: 'Sam Manzanza Band',
+    genres: ['African Rhythms', 'Raw Blues', 'Live Band'],
+    music: '19:30',
+    status: 'ticketed',
+    ctaType: 'book',
+    ctaLabel: 'Pay What You Can ↗',
+    ticketUrl: 'https://events.humanitix.com/sam-manzanza-band-ngati-kongo-blues-beat',
+    poster: 'posters/sam-manzanza-ngati-kongo-blues-beat.jpg',
+    preservePoster: true,
+    description: 'African rhythms and raw blues performed by the four-piece Sam Manzanza Band.',
+    admission: 'Pay what you can.',
+    calType: 'session',
+    isPublic: true
+  },
+  {
     id: 'iso-jazz-quartet-17-sep',
     dateStart: '2026-09-17',
-    title: 'ISO Jazz Quartet',
-    genres: ['Jazz Quartet'],
-    status: 'details-soon',
-    ctaType: 'details',
+    title: 'Thursday Jazz Night',
+    artist: 'ISO Quartet',
+    genres: ['Jazz Quartet', 'Thursday Session'],
+    music: '20:00',
+    status: 'ticketed',
+    ctaType: 'book',
+    ctaLabel: 'Pay What You Can ↗',
+    ticketUrl: 'https://events.humanitix.com/thursday-jazz-night-iso-quartet-or-acidity-richmond',
+    poster: 'posters/thursday-jazz-night-iso-quartet.jpg',
+    preservePoster: true,
+    admission: 'Pay what you can.',
     calType: 'session',
     isPublic: true
   },
@@ -283,10 +308,16 @@ const VENUE_EVENTS = [
   {
     id: 'jazz-fusion-lineup',
     dateStart: '2026-09-19',
-    title: 'Jazz Fusion Lineup',
-    genres: ['Electric Jazz', 'Fusion', 'Groove'],
-    status: 'details-soon',
-    ctaType: 'details',
+    title: 'Passion Don’t Buy Houses',
+    genres: ['Jazz Fusion', 'Original Music'],
+    music: '20:00',
+    status: 'free',
+    ctaType: 'free',
+    poster: 'posters/passion-dont-buy-houses.jpg',
+    preservePoster: true,
+    description: 'Jazz fusion and original music. Happy hour runs all night.',
+    lineup: ['Anthony Mastrullo — Guitar', 'Sam Lees — Keys', 'Luke Holland — Bass', 'Charlie Wood — Drums'],
+    admission: 'Free entry.',
     calType: 'session',
     isPublic: true
   },
@@ -321,8 +352,9 @@ const VENUE_EVENTS = [
     dateStart: '2026-09-24',
     title: 'ISO Jazz Quartet',
     genres: ['Jazz Quartet'],
-    status: 'details-soon',
-    ctaType: 'details',
+    status: 'ticketed',
+    ctaType: 'book',
+    ticketUrl: 'https://events.humanitix.com/freedom-fly-siwei-dominic',
     calType: 'session',
     isPublic: true
   },
