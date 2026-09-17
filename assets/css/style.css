@@ -3885,3 +3885,179 @@ h1, h2{
 .early-bird-countdown.is-run .early-bird-offer{ max-width:260px; }
 .early-bird-countdown.is-run .early-bird-special strong{ font-size:2rem; }
 .early-bird-countdown.is-hero .early-bird-special strong{ font-size:2.8rem; }
+
+/* We Want Miles — poster-led homepage feature */
+.page-home .feature-programme{
+  min-height: 0;
+  display: block;
+  padding: clamp(3rem, 6vw, 6rem) 2vw;
+  color: var(--journal-ink);
+  background: #f5f3e8;
+}
+.page-home .feature-programme-inner{
+  display: block;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+.page-home .feature-programme .feature-eyebrow{
+  margin-bottom: .8rem;
+  color: #057a34;
+}
+.feature-programme-art{
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgba(11,12,12,.28);
+  background: #f7f6ed;
+}
+.feature-programme-art picture,
+.feature-programme-art img,
+.feature-programme-art video{
+  display: block;
+  width: 100%;
+}
+.feature-programme-art img,
+.feature-programme-art video{
+  height: auto;
+  aspect-ratio: 2 / 1;
+  object-fit: contain;
+  transition: transform 700ms var(--ease-jazz), filter 350ms ease;
+}
+.feature-programme-art video{ object-fit: cover; }
+.feature-programme-art:hover img,
+.feature-programme-art.is-playing video{
+  transform: scale(1.008);
+  filter: contrast(1.025);
+}
+.feature-video-cue{
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  padding: .45rem .6rem;
+  color: #f5f3e8;
+  background: #090a09;
+  font: 700 .58rem/1 var(--font-mono);
+  letter-spacing: .12em;
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+.feature-programme-art.is-playing .feature-video-cue{
+  opacity: 0;
+  transform: translateY(5px);
+}
+.feature-ticket-banner{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  color: #f5f3e8;
+  background: #090a09;
+  border-bottom: 8px solid #057a34;
+}
+.feature-ticket-banner .early-bird-countdown.is-feature{
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: .6rem clamp(1rem, 3vw, 3rem);
+  margin: 0;
+  padding: clamp(1rem, 2vw, 1.7rem) clamp(1rem, 2.5vw, 2.4rem);
+  color: #f5f3e8;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.early-bird-countdown.is-early-bird-ended .early-bird-offer{ display: none; }
+.feature-ticket-banner .early-bird-countdown.is-feature.is-early-bird-ended{
+  grid-template-columns: 1fr auto;
+}
+.feature-ticket-banner .early-bird-countdown.is-live{
+  grid-template-columns: 1fr;
+}
+.feature-ticket-banner .early-bird-countdown.is-live .early-bird-label{
+  color: #20a759;
+  font-size: clamp(1rem, 2vw, 1.8rem);
+}
+.feature-ticket-banner .early-bird-offer{
+  grid-template-columns: 5.2rem auto;
+  align-items: end;
+  gap: .75rem;
+  margin: 0;
+  padding: 0 clamp(1rem, 2vw, 2rem) 0 0;
+  border: 0;
+  border-right: 1px solid rgba(245,243,232,.4);
+}
+.feature-ticket-banner .early-bird-general{ color: #f5f3e8; }
+.feature-ticket-banner .early-bird-general s{
+  font-size: clamp(2.5rem, 4vw, 4.5rem);
+  text-decoration-color: #057a34;
+}
+.feature-ticket-banner .early-bird-special{ color: #f5f3e8; }
+.feature-ticket-banner .early-bird-special strong{
+  color: #20a759;
+  font-size: clamp(4rem, 7vw, 8rem);
+}
+.feature-ticket-banner .early-bird-label{
+  color: #20a759;
+  font-size: clamp(.72rem, 1.2vw, 1rem);
+}
+.feature-ticket-banner .early-bird-time{
+  justify-self: end;
+  color: #f5f3e8;
+  font-size: clamp(1rem, 2vw, 2rem);
+  letter-spacing: .12em;
+}
+.feature-ticket-banner .btn{
+  display: flex;
+  align-items: center;
+  min-width: 12rem;
+  padding: 1.25rem 2rem;
+  color: #f5f3e8;
+  background: #057a34;
+  border: 0;
+}
+.feature-programme-copy{
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0 1rem;
+  padding: clamp(3rem, 6vw, 6rem) 0 0;
+}
+.page-home .feature-programme-copy .feature-tag{ grid-column: 1 / 5; color: #057a34; border-color: #057a34; }
+.page-home .feature-programme-copy .feature-title{
+  grid-column: 4 / 13;
+  margin: 0;
+  color: var(--journal-ink);
+  font-size: clamp(5rem, 13vw, 14rem);
+  line-height: .74;
+  letter-spacing: -.09em;
+  text-align: right;
+}
+.page-home .feature-programme-copy .feature-subtitle,
+.page-home .feature-programme-copy .feature-desc,
+.page-home .feature-programme-copy .feature-meta{ grid-column: 7 / 13; color: var(--journal-ink); text-align: left; }
+.page-home .feature-programme-copy .feature-nights{ grid-column: 4 / 13; border-color: rgba(11,12,12,.7); }
+.page-home .feature-programme-copy .feature-nights li{ border-color: rgba(11,12,12,.35); }
+
+@media (max-width: 760px){
+  .page-home .feature-programme{ padding: 3rem 1rem; }
+  .feature-ticket-banner{ grid-template-columns: 1fr; }
+  .feature-ticket-banner .early-bird-countdown.is-feature{
+    grid-template-columns: 1fr 1fr;
+    padding: 1rem;
+  }
+  .feature-programme-art video{ aspect-ratio: 4 / 5; object-fit: cover; }
+  .feature-video-cue{ display: none; }
+  .feature-ticket-banner .early-bird-offer{ grid-column: 1 / -1; padding: 0 0 1rem; border: 0; border-bottom: 1px solid rgba(245,243,232,.4); }
+  .feature-ticket-banner .early-bird-time{ justify-self: end; }
+  .feature-ticket-banner .btn{ justify-content: center; min-width: 0; }
+  .feature-programme-copy{ grid-template-columns: 1fr; }
+  .page-home .feature-programme-copy .feature-tag,
+  .page-home .feature-programme-copy .feature-title,
+  .page-home .feature-programme-copy .feature-subtitle,
+  .page-home .feature-programme-copy .feature-desc,
+  .page-home .feature-programme-copy .feature-nights,
+  .page-home .feature-programme-copy .feature-meta{ grid-column: 1; text-align: left; }
+  .page-home .feature-programme-copy .feature-title{ margin-top: 2.5rem; font-size: clamp(4rem, 20vw, 7rem); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .feature-programme-art video{ transform: none !important; }
+  .feature-video-cue{ display: none; }
+}

@@ -73,22 +73,107 @@
   function earlyBirdCountdown(ev, variant) {
     if (!ev.earlyBirdEnds) return '';
     const hasEnded = Date.now() >= Date.parse(ev.earlyBirdEnds);
-    if (hasEnded && !ev.earlyBirdShowEnded) return '';
+    const showDates = Array.isArray(ev.showDates) ? ev.showDates : [];
+    if (hasEnded && !showDates.length && !ev.earlyBirdShowEnded) return '';
     const modifier = variant ? ` is-${variant}` : '';
+    const stateClass = hasEnded ? (showDates.length ? ' is-early-bird-ended' : ' is-ended') : '';
     const offer = ev.earlyBirdPrice && ev.generalPrice ? `<div class="early-bird-offer">
       <span class="early-bird-general">GENERAL <s>${escapeHtml(ev.generalPrice)}</s></span>
       <span class="early-bird-special">EARLY BIRD <strong>${escapeHtml(ev.earlyBirdPrice)}</strong></span>
     </div>` : '';
-    return `<div class="early-bird-countdown${modifier}${hasEnded ? ' is-ended' : ''}" data-countdown-until="${escapeHtml(ev.earlyBirdEnds)}" data-show-ended="${ev.earlyBirdShowEnded ? 'true' : 'false'}" aria-live="polite">
+    const showAttrs = showDates.length ? ` data-show-dates="${escapeHtml(showDates.join('|'))}" data-show-duration-hours="${escapeHtml(ev.showDurationHours || 3)}"` : '';
+    return `<div class="early-bird-countdown${modifier}${stateClass}" data-countdown-until="${escapeHtml(ev.earlyBirdEnds)}" data-show-ended="${ev.earlyBirdShowEnded ? 'true' : 'false'}"${showAttrs} aria-live="polite">
       ${offer}
-      <span class="early-bird-label">${hasEnded ? 'EARLY BIRD ENDED' : escapeHtml(ev.earlyBirdLabel || 'EARLY BIRD')}</span>
-      <span class="early-bird-time"${hasEnded ? ' hidden' : ''}>Calculating…</span>
+      <span class="early-bird-label">${hasEnded && showDates.length ? 'SHOW STARTS IN' : hasEnded ? 'EARLY BIRD ENDED' : escapeHtml(ev.earlyBirdLabel || 'EARLY BIRD')}</span>
+      <span class="early-bird-time"${hasEnded && !showDates.length ? ' hidden' : ''}>Calculating…</span>
     </div>`;
   }
 
   function initEarlyBirdCountdowns() {
     const countdowns = Array.from(document.querySelectorAll('[data-countdown-until]'));
     if (!countdowns.length) return;
+
+    const countdownValue = remaining => {
+      const totalSeconds = Math.max(0, Math.floor(remaining / 1000));
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      return `${days}D ${String(hours).padStart(2, '0')}H ${String(minutes).padStart(2, '0')}M`;
+    };
+
+    const melbourneDateKey = timestamp => {
+      const parts = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Australia/Melbourne', year: 'numeric', month: '2-digit', day: '2-digit'
+      }).formatToParts(new Date(timestamp));
+      const map = {};
+      parts.forEach(part => { if (part.type !== 'literal') map[part.type] = part.value; });
+      return `${map.year}-${map.month}-${map.day}`;
+    };
+
+    const showLabel = timestamp => new Intl.DateTimeFormat('en-AU', {
+      timeZone: 'Australia/Melbourne', weekday: 'short', day: 'numeric', month: 'short',
+      hour: 'numeric', minute: '2-digit', hour12: true
+    }).format(new Date(timestamp)).replace(':00', '').toUpperCase();
+
+    const showTime = timestamp => new Intl.DateTimeFormat('en-AU', {
+      timeZone: 'Australia/Melbourne', hour: 'numeric', minute: '2-digit', hour12: true
+    }).format(new Date(timestamp)).replace(':00', '').replace(/\s/g, '').toUpperCase();
+
+    const setTime = (el, value) => {
+      const output = el.querySelector('.early-bird-time');
+      if (!output) return;
+      output.hidden = false;
+      if (output.textContent === value) return;
+      output.textContent = value;
+      output.classList.remove('is-ticking');
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        void output.offsetWidth;
+        output.classList.add('is-ticking');
+      }
+    };
+
+    const updateShowCountdown = (el, now, showDates) => {
+      const starts = showDates.map(Date.parse).filter(Number.isFinite).sort((a, b) => a - b);
+      if (!starts.length) return false;
+      const duration = Number(el.dataset.showDurationHours || 3) * 60 * 60 * 1000;
+      const finalEnd = starts[starts.length - 1] + duration;
+      const label = el.querySelector('.early-bird-label');
+      const output = el.querySelector('.early-bird-time');
+
+      el.classList.add('is-early-bird-ended');
+      el.classList.remove('is-ended');
+
+      if (now >= finalEnd) {
+        const banner = el.closest('.feature-ticket-banner');
+        if (banner) banner.hidden = true;
+        el.remove();
+        return true;
+      }
+
+      const liveStart = starts.find(start => now >= start && now < start + duration);
+      if (liveStart) {
+        el.classList.add('is-live');
+        el.classList.remove('is-urgent');
+        if (label) label.textContent = `LIVE NOW — TONIGHT UNTIL ${showTime(liveStart + duration)}`;
+        if (output) output.hidden = true;
+        return true;
+      }
+
+      el.classList.remove('is-live');
+      const next = starts.find(start => start > now);
+      if (!next) return true;
+      const isTonight = melbourneDateKey(next) === melbourneDateKey(now);
+      const isAfterFirstShow = now > starts[0] + duration;
+      if (label) {
+        if (isTonight) label.textContent = `TONIGHT AT ${showTime(next)}`;
+        else if (isAfterFirstShow) label.textContent = `NEXT SHOW — ${showLabel(next)}`;
+        else label.textContent = 'SHOW STARTS IN';
+      }
+      const remaining = next - now;
+      el.classList.toggle('is-urgent', remaining <= 48 * 60 * 60 * 1000);
+      setTime(el, countdownValue(remaining));
+      return true;
+    };
 
     const update = () => {
       const now = Date.now();
@@ -97,6 +182,8 @@
         const remaining = Date.parse(el.dataset.countdownUntil) - now;
         if (remaining <= 0) {
           el.classList.remove('is-urgent');
+          const showDates = (el.dataset.showDates || '').split('|').filter(Boolean);
+          if (showDates.length && updateShowCountdown(el, now, showDates)) return;
           if (el.dataset.showEnded === 'true') {
             el.classList.add('is-ended');
             const label = el.querySelector('.early-bird-label');
@@ -108,21 +195,9 @@
           }
           return;
         }
-        const totalSeconds = Math.floor(remaining / 1000);
-        const days = Math.floor(totalSeconds / 86400);
-        const hours = Math.floor((totalSeconds % 86400) / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const value = `${days}D ${String(hours).padStart(2, '0')}H ${String(minutes).padStart(2, '0')}M`;
-        const output = el.querySelector('.early-bird-time');
+        el.classList.remove('is-early-bird-ended', 'is-live');
         el.classList.toggle('is-urgent', remaining <= 48 * 60 * 60 * 1000);
-        if (output && output.textContent !== value) {
-          output.textContent = value;
-          output.classList.remove('is-ticking');
-          if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            void output.offsetWidth;
-            output.classList.add('is-ticking');
-          }
-        }
+        setTime(el, countdownValue(remaining));
       });
     };
 

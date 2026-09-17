@@ -33,7 +33,42 @@ document.addEventListener('DOMContentLoaded', () => {
   initPackageHandoff();
   initContactReasonHandoff();
   initEditorialMotion();
+  initHoverVideos();
 });
+
+function initHoverVideos() {
+  const videos = Array.from(document.querySelectorAll('[data-hover-video]'));
+  if (!videos.length) return;
+
+  const reducedMotion = prefersReducedMotion();
+  const hasHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  videos.forEach(video => {
+    const frame = video.closest('.feature-programme-art');
+    if (!frame || reducedMotion) return;
+
+    const play = () => {
+      video.play().then(() => frame.classList.add('is-playing')).catch(() => {});
+    };
+    const pause = () => {
+      video.pause();
+      frame.classList.remove('is-playing');
+    };
+
+    if (hasHover) {
+      frame.addEventListener('mouseenter', play);
+      frame.addEventListener('mouseleave', pause);
+      frame.addEventListener('focusin', play);
+      frame.addEventListener('focusout', pause);
+      return;
+    }
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => entry.isIntersecting && entry.intersectionRatio >= 0.35 ? play() : pause());
+    }, { threshold: [0, 0.35, 0.75] });
+    observer.observe(frame);
+  });
+}
 
 function initProgrammeIntro() {
   const intro = document.getElementById('programme-intro');
