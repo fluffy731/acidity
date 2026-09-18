@@ -76,15 +76,16 @@
     const showDates = Array.isArray(ev.showDates) ? ev.showDates : [];
     if (hasEnded && !showDates.length && !ev.earlyBirdShowEnded) return '';
     const modifier = variant ? ` is-${variant}` : '';
-    const stateClass = hasEnded ? (showDates.length ? ' is-early-bird-ended' : ' is-ended') : '';
+    const stateClass = hasEnded ? (showDates.length ? ' is-early-bird-ended' : ` is-ended${ev.postEarlyBirdLabel ? ' is-ticket-alert' : ''}`) : '';
+    const postExpiryLabel = ev.postEarlyBirdLabel || 'EARLY BIRD ENDED';
     const offer = ev.earlyBirdPrice && ev.generalPrice ? `<div class="early-bird-offer">
       <span class="early-bird-general">GENERAL <s>${escapeHtml(ev.generalPrice)}</s></span>
       <span class="early-bird-special">EARLY BIRD <strong>${escapeHtml(ev.earlyBirdPrice)}</strong></span>
     </div>` : '';
     const showAttrs = showDates.length ? ` data-show-dates="${escapeHtml(showDates.join('|'))}" data-show-duration-hours="${escapeHtml(ev.showDurationHours || 3)}"` : '';
-    return `<div class="early-bird-countdown${modifier}${stateClass}" data-countdown-until="${escapeHtml(ev.earlyBirdEnds)}" data-show-ended="${ev.earlyBirdShowEnded ? 'true' : 'false'}"${showAttrs} aria-live="polite">
+    return `<div class="early-bird-countdown${modifier}${stateClass}" data-countdown-until="${escapeHtml(ev.earlyBirdEnds)}" data-show-ended="${ev.earlyBirdShowEnded ? 'true' : 'false'}" data-post-expiry-label="${escapeHtml(postExpiryLabel)}"${showAttrs} aria-live="polite">
       ${offer}
-      <span class="early-bird-label">${hasEnded && showDates.length ? 'SHOW STARTS IN' : hasEnded ? 'EARLY BIRD ENDED' : escapeHtml(ev.earlyBirdLabel || 'EARLY BIRD')}</span>
+      <span class="early-bird-label">${hasEnded && showDates.length ? 'SHOW STARTS IN' : hasEnded ? escapeHtml(postExpiryLabel) : escapeHtml(ev.earlyBirdLabel || 'EARLY BIRD')}</span>
       <span class="early-bird-time"${hasEnded && !showDates.length ? ' hidden' : ''}>Calculating…</span>
     </div>`;
   }
@@ -188,7 +189,7 @@
             el.classList.add('is-ended');
             const label = el.querySelector('.early-bird-label');
             const output = el.querySelector('.early-bird-time');
-            if (label) label.textContent = 'EARLY BIRD ENDED';
+            if (label) label.textContent = el.dataset.postExpiryLabel || 'EARLY BIRD ENDED';
             if (output) output.hidden = true;
           } else {
             el.remove();
@@ -412,59 +413,153 @@
 
   // ---- Hero -----------------------------------------------------------
 
-  function renderHero(ev) {
+  function renderHero(ev, featureEv) {
     const root = document.getElementById('hero-feature-root');
     if (!root || !ev) return;
 
-    const posterSrc = ev.poster ? `assets/images/${ev.poster}` : 'assets/images/posters/coffee-rave-24-may.jpg';
-    const titleHtml = ev.artist ? `${escapeHtml(ev.title)}<br>${escapeHtml(ev.artist)}` : escapeHtml(ev.title);
-    const genreLine = (ev.genres || []).join(' / ');
-    const desc = ev.heroDescription
-      ? ev.heroDescription
-      : ev.description
-        ? ev.description.replace(/<\/?strong[^>]*>/g, '')
-        : (genreLine ? `${genreLine} — live at Acidity.` : 'Details to follow soon.');
+    const slideHtml = (item, index, isFeature) => {
+      const posterSrc = isFeature
+        ? 'assets/images/posters/we-want-miles-landscape.jpg'
+        : item.poster ? `assets/images/${item.poster}` : 'assets/images/posters/coffee-rave-24-may.jpg';
+      const titleHtml = isFeature
+        ? 'We Want<br>Miles'
+        : item.artist ? `${escapeHtml(item.title)}<br>${escapeHtml(item.artist)}` : escapeHtml(item.title);
+      const genreLine = (item.genres || []).join(' / ');
+      const desc = item.heroDescription
+        ? item.heroDescription
+        : item.description
+          ? item.description.replace(/<\/?strong[^>]*>/g, '')
+          : (genreLine ? `${genreLine} — live at Acidity.` : 'Details to follow soon.');
+      const dateLabel = item.dateEnd
+        ? `${weekdayShort(item.dateStart)} ${dayNum(item.dateStart)} – ${weekdayShort(item.dateEnd)} ${dayNum(item.dateEnd)} ${monthShort(item.dateEnd)}`
+        : `${weekdayShort(item.dateStart)} ${dayNum(item.dateStart)} ${monthShort(item.dateStart)}`;
+      const metaParts = [dateLabel];
+      if (item.doors) metaParts.push(`Doors ${fmt12(item.doors)}`);
+      else if (item.music) metaParts.push(fmt12(item.music));
+      if (genreLine) metaParts.push(genreLine);
 
-    const metaParts = [`${weekdayShort(ev.dateStart)} ${dayNum(ev.dateStart)} ${monthShort(ev.dateStart)}`];
-    if (ev.doors) metaParts.push(`Doors ${fmt12(ev.doors)}`);
-    else if (ev.music) metaParts.push(fmt12(ev.music));
-    if (genreLine) metaParts.push(genreLine);
+      let statusLabel = isFeature ? 'Feature Programme' : 'Ticketed';
+      if (!isFeature && item.status === 'free') statusLabel = 'Free Entry';
+      else if (!isFeature && item.status === 'details-soon') statusLabel = 'Details Soon';
+      else if (!isFeature && item.status === 'occupied') statusLabel = 'Occupied';
 
-    let statusLabel = 'Ticketed';
-    if (ev.status === 'free') statusLabel = 'Free Entry';
-    else if (ev.status === 'details-soon') statusLabel = 'Details Soon';
-    else if (ev.status === 'occupied') statusLabel = 'Occupied';
+      let primaryCta;
+      if (item.ctaType === 'book' || item.ctaType === 'rsvp') primaryCta = `<a href="${item.ticketUrl}" target="_blank" rel="noopener" class="btn btn-primary">${escapeHtml(ctaLabel(item))}</a>`;
+      else if (item.ctaType === 'free') primaryCta = `<span class="btn btn-outline" style="cursor:default;">Free Entry</span>`;
+      else if (item.ctaType === 'door') primaryCta = `<span class="btn btn-outline" style="cursor:default;">${escapeHtml(ctaLabel(item))}</span>`;
+      else primaryCta = `<span class="btn btn-outline" style="cursor:default;">Details Soon</span>`;
 
-    let primaryCta;
-    if (ev.ctaType === 'book' || ev.ctaType === 'rsvp') primaryCta = `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="btn btn-primary">${escapeHtml(ctaLabel(ev))}</a>`;
-    else if (ev.ctaType === 'free') primaryCta = `<span class="btn btn-outline" style="cursor:default;">Free Entry</span>`;
-    else if (ev.ctaType === 'door') primaryCta = `<span class="btn btn-outline" style="cursor:default;">${escapeHtml(ctaLabel(ev))}</span>`;
-    else primaryCta = `<span class="btn btn-outline" style="cursor:default;">Details Soon</span>`;
+      const fileTag = item.fileNumber ? ` · ${item.fileNumber}` : '';
+      const media = isFeature
+        ? `<a href="${item.ticketUrl}" target="_blank" rel="noopener" class="hero-poster-link" aria-label="Book tickets for ${escapeHtml(fullTitle(item))}">
+            <video muted loop playsinline preload="metadata" poster="${posterSrc}" data-hero-video aria-label="${escapeHtml(fullTitle(item))} feature video">
+              <source src="assets/video/we-want-miles-original.mov" type="video/quicktime">
+              <source src="assets/video/we-want-miles.m4v" type="video/mp4">
+            </video>
+          </a>`
+        : item.ticketUrl && bookingIsActive(item) && (item.ctaType === 'book' || item.ctaType === 'rsvp')
+          ? `<a href="${item.ticketUrl}" target="_blank" rel="noopener" class="hero-poster-link" aria-label="${escapeHtml(ctaLabel(item))} for ${escapeHtml(fullTitle(item))}"><img src="${posterSrc}" alt="${escapeHtml(fullTitle(item))} poster"></a>`
+          : `<img src="${posterSrc}" alt="${escapeHtml(fullTitle(item))} poster">`;
 
-    const fileTag = ev.fileNumber ? ` · ${ev.fileNumber}` : '';
+      return `<article class="hero-carousel-slide${index === 0 ? ' is-active' : ''}${isFeature ? ' is-feature-slide' : ''}" data-hero-slide="${index}" aria-hidden="${index === 0 ? 'false' : 'true'}">
+        <div class="hero-folio" aria-hidden="true"><span>ACD.</span><span>${String(index + 1).padStart(2, '0')}</span></div>
+        <div class="hero-feature-media${item.preservePoster || isFeature ? ' is-contain' : ''}">${media}</div>
+        <div class="hero-feature-body">
+          <div class="hero-eyebrow">${isFeature ? 'FEATURE PROGRAMME / THREE NIGHTS' : 'CURRENT PROGRAMME / RICHMOND, MELBOURNE'}</div>
+          <p class="hero-lead">${isFeature ? '100 years of Miles.<br>Three eras after dark.' : 'Coffee by day.<br>Live sound after dark.'}</p>
+          <span class="hero-feature-tag">${isFeature ? '09—11 OCT 2026' : `Next Session${fileTag}`}</span>
+          <h1>${titleHtml}</h1>
+          <p class="hero-feature-desc">${desc}</p>
+          ${earlyBirdCountdown(item, 'hero')}
+          <div class="hero-feature-meta">
+            ${metaParts.map(m => `<span>${escapeHtml(m)}</span>`).join('\n            ')}
+            <span class="hero-feature-status">${statusLabel}</span>
+          </div>
+          <div class="hero-actions">
+            ${primaryCta}
+            <a href="${isFeature ? '#miles-davis-tribute' : 'events.html'}" class="btn btn-outline">${isFeature ? 'Feature Details' : 'Full Programme'}</a>
+          </div>
+        </div>
+      </article>`;
+    };
 
-    root.innerHTML = `<div class="hero-folio" aria-hidden="true"><span>ACD.</span><span>01</span></div>
-  <div class="hero-feature-media${ev.preservePoster ? ' is-contain' : ''}">
-    ${ev.ticketUrl && bookingIsActive(ev) && (ev.ctaType === 'book' || ev.ctaType === 'rsvp')
-      ? `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="hero-poster-link" aria-label="${escapeHtml(ctaLabel(ev))} for ${escapeHtml(fullTitle(ev))}"><img src="${posterSrc}" alt="${escapeHtml(fullTitle(ev))} poster"></a>`
-      : `<img src="${posterSrc}" alt="${escapeHtml(fullTitle(ev))} poster">`}
-  </div>
-  <div class="hero-feature-body">
-    <div class="hero-eyebrow">CURRENT PROGRAMME / RICHMOND, MELBOURNE</div>
-    <p class="hero-lead">Coffee by day.<br>Live sound after dark.</p>
-    <span class="hero-feature-tag">Next Session${fileTag}</span>
-    <h1>${titleHtml}</h1>
-    <p class="hero-feature-desc">${desc}</p>
-    ${earlyBirdCountdown(ev, 'hero')}
-    <div class="hero-feature-meta">
-      ${metaParts.map(m => `<span>${escapeHtml(m)}</span>`).join('\n      ')}
-      <span class="hero-feature-status">${statusLabel}</span>
-    </div>
-    <div class="hero-actions">
-      ${primaryCta}
-      <a href="events.html" class="btn btn-outline">Full Programme</a>
-    </div>
-  </div>`;
+    const slides = [slideHtml(ev, 0, false)];
+    if (featureEv && featureEv.id !== ev.id) slides.push(slideHtml(featureEv, 1, true));
+    root.innerHTML = `${slides.join('\n')}
+      ${slides.length > 1 ? `<nav class="hero-carousel-nav" aria-label="Featured programme slides">
+        ${slides.map((_, index) => `<button type="button" data-hero-dot="${index}" aria-label="Show slide ${index + 1}" aria-current="${index === 0 ? 'true' : 'false'}"><span>${String(index + 1).padStart(2, '0')}</span></button>`).join('')}
+      </nav>` : ''}`;
+    initHeroCarousel(root);
+  }
+
+  function initHeroCarousel(root) {
+    const slides = Array.from(root.querySelectorAll('[data-hero-slide]'));
+    const dots = Array.from(root.querySelectorAll('[data-hero-dot]'));
+    if (slides.length < 2) return;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let current = 0;
+    let timer = null;
+    let touchStartX = 0;
+
+    const syncVideo = () => {
+      slides.forEach((slide, index) => {
+        const video = slide.querySelector('[data-hero-video]');
+        if (!video) return;
+        if (index === current && !reducedMotion) video.play().catch(() => {});
+        else video.pause();
+      });
+    };
+
+    const restartProgress = () => {
+      root.classList.remove('is-cycling');
+      void root.offsetWidth;
+      if (!reducedMotion) root.classList.add('is-cycling');
+    };
+
+    const show = index => {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => {
+        const active = slideIndex === current;
+        slide.classList.toggle('is-active', active);
+        slide.setAttribute('aria-hidden', String(!active));
+        if ('inert' in slide) slide.inert = !active;
+      });
+      dots.forEach((dot, dotIndex) => dot.setAttribute('aria-current', String(dotIndex === current)));
+      syncVideo();
+      restartProgress();
+    };
+
+    const stop = () => {
+      if (timer) window.clearInterval(timer);
+      timer = null;
+      root.classList.add('is-paused');
+    };
+    const start = () => {
+      if (reducedMotion || document.hidden) return;
+      stop();
+      root.classList.remove('is-paused');
+      restartProgress();
+      timer = window.setInterval(() => show(current + 1), 6000);
+    };
+
+    dots.forEach((dot, index) => dot.addEventListener('click', () => {
+      show(index);
+      start();
+    }));
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', event => { if (!root.contains(event.relatedTarget)) start(); });
+    root.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].clientX; }, { passive: true });
+    root.addEventListener('touchend', event => {
+      const distance = event.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(distance) < 45) return;
+      show(current + (distance < 0 ? 1 : -1));
+      start();
+    }, { passive: true });
+    document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+    show(0);
+    start();
   }
 
   function addEventStructuredData(events) {
@@ -540,8 +635,8 @@
       .sort((a, b) => a.dateStart.localeCompare(b.dateStart));
     addEventStructuredData(programmePublic);
 
-    // Hero — first upcoming public event
-    renderHero(upcomingPublic[0]);
+    // Hero — current programme plus the multi-night feature programme
+    renderHero(upcomingPublic[0], programmePublic.find(ev => ev.isFeature));
 
     // What's On — append generated cards after the wo-anchor marker
     const woAnchor = document.getElementById('wo-anchor-upcoming');
