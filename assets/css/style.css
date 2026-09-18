@@ -4032,8 +4032,19 @@ h1, h2{
 .page-home .feature-programme-copy .feature-subtitle,
 .page-home .feature-programme-copy .feature-desc,
 .page-home .feature-programme-copy .feature-meta{ grid-column: 7 / 13; color: var(--journal-ink); text-align: left; }
-.page-home .feature-programme-copy .feature-nights{ grid-column: 4 / 13; border-color: rgba(11,12,12,.7); }
-.page-home .feature-programme-copy .feature-nights li{ border-color: rgba(11,12,12,.35); }
+.page-home .feature-programme-copy .feature-nights{
+  grid-column: 4 / 13;
+  color: #f5f3e8;
+  background: rgba(245,243,232,.42);
+  border-color: rgba(11,12,12,.72);
+}
+.page-home .feature-programme-copy .feature-nights li{
+  color: #f5f3e8;
+  background: #12110f;
+  border-color: rgba(245,243,232,.42);
+}
+.page-home .feature-programme-copy .feature-night-no{ color: #20a759; }
+.page-home .feature-programme-copy .feature-night-date{ color: #f5f3e8; }
 
 @media (max-width: 760px){
   .page-home .feature-programme{ padding: 3rem 1rem; }
