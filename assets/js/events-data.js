@@ -302,6 +302,8 @@ const VENUE_EVENTS = [
     earlyBirdEnds: '2026-09-12T00:00:00+10:00',
     earlyBirdLabel: 'EARLY BIRD ENDS 12 SEP',
     earlyBirdShowEnded: true,
+    postEarlyBirdLabel: 'FEW TICKETS LEFT',
+    ticketStatus: 'selling-fast',
     calType: 'session',
     isPublic: true
   },
@@ -350,10 +352,15 @@ const VENUE_EVENTS = [
   {
     id: 'iso-jazz-quartet-24-sep',
     dateStart: '2026-09-24',
-    title: 'ISO Jazz Quartet',
-    genres: ['Jazz Quartet'],
+    title: 'Thursday Jazz Night',
+    artist: 'ISO Quartet',
+    genres: ['Jazz Quartet', 'Thursday Session'],
+    music: '20:00',
     status: 'details-soon',
     ctaType: 'details',
+    poster: 'posters/thursday-jazz-night-iso-quartet.jpg',
+    preservePoster: true,
+    admission: 'Pay what you can.',
     calType: 'session',
     isPublic: true
   },
