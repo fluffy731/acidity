@@ -28,8 +28,8 @@
 
 ## Known gaps
 
-- Screens are read-only tables. Entry forms (new event, count, shift, ledger entry) are the
-  next build; the APIs and services behind them are complete and tested.
+- Programme has an entry form (live mode, managers). Stock counts, shifts and ledger entries
+  are still API-only from the browser; the form pattern is `src/components/event-form.tsx`.
 - No staff self-service beyond reading the roster.
 - Website export is copy-and-paste (D4).
 
