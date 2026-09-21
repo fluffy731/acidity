@@ -21,7 +21,12 @@
 
 - The four PostgreSQL integration tests against a real database (CI is configured to run
   them; it has not run yet because the workflow lands with this commit).
-- The Docker image build and the compose stacks (CI's `containers` job; not run here).
+- The Docker image build and the compose stacks: `docker compose … config` validates locally
+  with the live overlay and both profiles, but this sandbox has no Docker daemon, so the
+  build, migration and live-start checks run in CI's `containers` job (not run yet - the
+  workflow lands with this commit).
+- Post-deploy smoke (`scripts/smoke-live.mjs`) passes against the standalone build in
+  preview mode; the forms are correctly absent in preview.
 - Live sign-in, the live services and the audit log on your own installation.
 - Any real business data. The fixtures are illustrative; unit costs, rates and takings are
   invented, and only the August 2026 programme dates and titles are real.
