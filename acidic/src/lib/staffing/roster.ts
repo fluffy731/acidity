@@ -23,6 +23,9 @@ export const shiftInputSchema = z.object({
   breakMinutes: z.number().int().min(0).max(240).default(0),
   note: z.string().trim().max(300).nullable().default(null),
 }).strict().superRefine((value, ctx) => {
+  // The regex issues above are continuable, so a malformed time still reaches here; skip the
+  // arithmetic rather than let toMinutes throw a 503 for a typo.
+  if (!/^([01]\d|2[0-3]|24):[0-5]\d$/.test(value.startTime) || !/^([01]\d|2[0-3]|24):[0-5]\d$/.test(value.endTime)) return;
   const length = shiftMinutes(value);
   if (length <= 0) ctx.addIssue({ code: "custom", path: ["endTime"], message: "A shift must end after it starts (use 24:00 for midnight)." });
   if (length > 14 * 60) ctx.addIssue({ code: "custom", path: ["endTime"], message: "A shift longer than 14 hours needs to be split." });
@@ -36,15 +39,19 @@ export type StaffMember = { id: string; name: string; hourlyRate: number; employ
 export function shiftMinutes(shift: Pick<Shift, "startTime" | "endTime">): number {
   return toMinutes(shift.endTime) - toMinutes(shift.startTime);
 }
-/** Paid hours: the shift less its unpaid break, to two decimals. */
-export function paidHours(shift: Shift): number {
-  return Math.round(((shiftMinutes(shift) - shift.breakMinutes) / 60) * 100) / 100;
+/** Paid minutes: the shift less its unpaid break. */
+export function paidMinutes(shift: Shift): number {
+  return Math.max(shiftMinutes(shift) - shift.breakMinutes, 0);
 }
-/** Base cost of a shift in dollars, computed in cents: hours × rate, half up. No penalty
- * rates or loadings are applied - see ACIDIC_DECISIONS.md D3. */
+/** Paid hours to two decimals - a display figure; cost is computed from minutes. */
+export function paidHours(shift: Shift): number {
+  return Math.round((paidMinutes(shift) / 60) * 100) / 100;
+}
+/** Base cost of a shift in dollars, from paid minutes × rate in cents, half up - never from
+ * the display-rounded hours (10:00-17:20 at $34 is $249.33, not $249.22). No penalty rates
+ * or loadings are applied - see ACIDIC_DECISIONS.md D3. */
 export function shiftCost(shift: Shift, staff: StaffMember): number {
-  const cents = Math.round(toCents(staff.hourlyRate) * paidHours(shift));
-  return fromCents(cents);
+  return fromCents(Math.round((toCents(staff.hourlyRate) * paidMinutes(shift)) / 60));
 }
 
 export type RosterSummary = { hours: number; cost: number; shifts: number; byStaff: { staff: StaffMember; hours: number; cost: number; shifts: number }[] };

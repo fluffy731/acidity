@@ -31,6 +31,8 @@ export async function updateShift(actorId: string, id: string, raw: unknown) {
   return db().transaction(async (tx) => {
     const [current] = await tx.select().from(shifts).where(eq(shifts.id, id)).for("update");
     if (!current) throw new HttpError(404, "That shift no longer exists.");
+    const [member] = await tx.select({ id: staffMembers.id, active: staffMembers.active }).from(staffMembers).where(eq(staffMembers.id, input.staffId));
+    if (!member || member.active !== 1) throw new HttpError(404, "That staff member is not active.");
     const others = await tx.select().from(shifts).where(and(eq(shifts.staffId, input.staffId), eq(shifts.shiftDate, input.shiftDate), ne(shifts.id, id)));
     if (overlappingShifts([...others, input]).length) throw new HttpError(409, "That person already has a shift overlapping those hours.");
     const [row] = await tx.update(shifts).set({ ...input, updatedAt: new Date() }).where(eq(shifts.id, id)).returning();

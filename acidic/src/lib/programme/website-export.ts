@@ -88,6 +88,22 @@ export function calendarDataAttribute(events: readonly ProgrammeEvent[]): string
   return JSON.stringify(calendarData(events)).replace(/&/g, "&amp;").replace(/'/g, "&#39;");
 }
 
+/** Text or attribute value safe to paste into the site's HTML. */
+export function escapeHtml(value: string): string {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+/** One Programme Index `<li>` exactly as index.html carries it. */
+export function indexRowHtml(row: IndexRow): string {
+  const action = row.href ? `<a href="${escapeHtml(row.href)}" target="_blank" rel="noopener" class="pi-link">${escapeHtml(row.action)}</a>` : `<span class="pi-status">${escapeHtml(row.action)}</span>`;
+  return `<li class="pi-upcoming${row.tba ? " pi-tba" : ""}"><span class="pi-date">${row.date}</span><span class="pi-title">${escapeHtml(row.title)}</span><span class="pi-meta">${escapeHtml(row.meta)}</span> ${action}</li>`;
+}
+
+/** One Upcoming-list `<li>` as index.html's availability list and events.html carry it. */
+export function upcomingRowHtml(event: ProgrammeEvent): string {
+  return `<li><span>${escapeHtml(event.title)}${event.artist ? ` — ${escapeHtml(event.artist)}` : ""}</span><span class="event-date">${cardDate(event.eventDate)}</span></li>`;
+}
+
 /** The next public event on or after `today` - what the homepage hero should show. */
 export function heroEvent(events: readonly ProgrammeEvent[], today: string): ProgrammeEvent | null {
   return [...events].filter((event) => event.kind !== "private_booking" && event.status !== "cancelled" && event.eventDate >= today).sort((a, b) => a.eventDate.localeCompare(b.eventDate))[0] ?? null;

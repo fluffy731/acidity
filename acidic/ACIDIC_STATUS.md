@@ -1,15 +1,21 @@
 # Acidic status
 
-**Last updated:** 21 September 2026, 16:15 AEST
+**Last updated:** 21 September 2026, 16:20 AEST
 
 ## Verified in this checkout
 
-- `npm test` - 46 unit tests pass (10 files); 4 PostgreSQL integration tests skip without a database.
-- `npm run typecheck` - clean. `npm run lint` - clean.
+- `npm test` - 50 unit tests pass (10 files); 4 PostgreSQL integration tests skip without a database.
+- `npm run typecheck` - clean. `npm run lint` - clean, no warnings.
 - `npm run db:generate` - one migration, `drizzle/0000_short_rictor.sql`, 10 tables.
 - `npm run build` with `ACIDIC_STANDALONE=1` - production build, 23 routes.
 - Standalone server started in preview: every screen 200, `/api/events` 503 (live disabled),
   stylesheet served, desktop and phone screenshots reviewed.
+- A correctness review of the first commit found ten issues, all fixed and covered: screens
+  now enforce the same role as their APIs (Money, Stock, Website export are manager-only;
+  staff never see hourly rates), shift cost is computed from minutes not display-rounded
+  hours, pasted website HTML is escaped, a malformed shift time is a 400 not a 503, all
+  sums go through `sumMoney`, retired stock lines leave the reorder list, and `updateShift`
+  checks the person is active.
 
 ## Not yet verified
 

@@ -2,9 +2,11 @@ import { Kpi, PageHeading, Status, currency, date } from "@/components/ui";
 import { loadWorkspace } from "@/lib/data/source";
 import { basSummary, profitAndLoss } from "@/lib/accounting/ledger";
 import { melbourneDate } from "@/lib/dates";
+import { requirePageRole } from "@/lib/page-access";
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Money" };
 export default async function Accounting() {
+  await requirePageRole("manager");
   const { ledger } = await loadWorkspace();
   const today = process.env.ACIDIC_MODE === "live" ? melbourneDate() : "2026-08-10";
   const monthStart = `${today.slice(0, 7)}-01`;

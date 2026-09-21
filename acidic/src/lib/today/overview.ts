@@ -27,6 +27,7 @@ export function buildOverview(input: { today: string; events: readonly OverviewE
   const coverage = eventCoverage(events.filter((event) => event.kind !== "private_booking"), weekShifts);
   const roster = rosterSummary(weekShifts, input.staff);
   const belowPar = reorderList(input.items, input.latestCount?.lines ?? []);
+  const reorderValue = sumMoney(belowPar.map((row) => row.orderValue));
   const monthStart = `${today.slice(0, 7)}-01`;
   const weekStartDate = addDays(today, -6);
   const money = {
@@ -38,7 +39,7 @@ export function buildOverview(input: { today: string; events: readonly OverviewE
   for (const row of coverage.filter((row) => row.short > 0)) attention.push({ severity: row.eventDate <= addDays(today, 1) ? "urgent" : "soon", area: "staffing", message: `${row.title} on ${row.eventDate} is ${row.short} short on the roster (${row.rostered}/${row.required}).`, href: "/staffing" });
   for (const [a] of overlappingShifts(weekShifts)) attention.push({ severity: "soon", area: "staffing", message: `Overlapping shifts for one person on ${a.shiftDate}.`, href: "/staffing" });
   for (const event of events.filter((event) => event.status === "placeholder" && event.eventDate <= addDays(today, 3))) attention.push({ severity: "soon", area: "programme", message: `${event.title} on ${event.eventDate} still has details TBA.`, href: "/programme" });
-  if (belowPar.length) attention.push({ severity: belowPar.some((row) => row.onHand === 0) ? "urgent" : "soon", area: "stock", message: `${belowPar.length} line${belowPar.length === 1 ? "" : "s"} below par - order value ${belowPar.reduce((sum, row) => sum + row.orderValue, 0).toFixed(2)}.`, href: "/stock" });
+  if (belowPar.length) attention.push({ severity: belowPar.some((row) => row.onHand === 0) ? "urgent" : "soon", area: "stock", message: `${belowPar.length} line${belowPar.length === 1 ? "" : "s"} below par - order value $${reorderValue.toFixed(2)}.`, href: "/stock" });
   if (!input.latestCount || input.latestCount.countDate < addDays(today, -14)) attention.push({ severity: "note", area: "stock", message: input.latestCount ? `Last stocktake was ${input.latestCount.countDate}; count again this week.` : "No stocktake recorded yet.", href: "/stock" });
   if (today >= addDays(money.bas.end, -21)) attention.push({ severity: "note", area: "accounting", message: `${money.bas.label} ends ${money.bas.end}: net GST so far ${money.bas.netGst.toFixed(2)}.`, href: "/accounting" });
   const order = { urgent: 0, soon: 1, note: 2 };
@@ -46,7 +47,7 @@ export function buildOverview(input: { today: string; events: readonly OverviewE
   return {
     today,
     thisWeek: { events, coverage, roster },
-    stock: { value: stockValue(input.items, input.latestCount?.lines ?? []), belowPar, reorderValue: sumMoney(belowPar.map((row) => row.orderValue)), lastCount: input.latestCount?.countDate ?? null },
+    stock: { value: stockValue(input.items, input.latestCount?.lines ?? []), belowPar, reorderValue, lastCount: input.latestCount?.countDate ?? null },
     money,
     attention,
   };

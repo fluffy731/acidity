@@ -1,9 +1,12 @@
 import { Kpi, PageHeading, currency, date } from "@/components/ui";
 import { loadWorkspace } from "@/lib/data/source";
+import { sumMoney } from "@/lib/money";
+import { requirePageRole } from "@/lib/page-access";
 import { costOfGoods, reorderList, stockValue, usageBetweenCounts } from "@/lib/stock/engine";
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Stock" };
 export default async function Stock() {
+  await requirePageRole("manager");
   const { items, latestCount, previousCount, movements } = await loadWorkspace();
   const latestLines = latestCount?.lines ?? [];
   const reorder = reorderList(items, latestLines);
@@ -13,7 +16,7 @@ export default async function Stock() {
     <PageHeading title="Stock">Count the bar, record deliveries and waste, and let the difference tell you what was used. Sales are never entered per item.</PageHeading>
     <div className="kpis">
       <Kpi label="On hand at cost" value={currency(stockValue(items, latestLines))} hint={latestCount ? `Counted ${date(latestCount.countDate)}` : "No count yet"} />
-      <Kpi label="Reorder to par" value={currency(reorder.reduce((sum, row) => sum + row.orderValue, 0))} hint={`${reorder.length} line${reorder.length === 1 ? "" : "s"} below par`} />
+      <Kpi label="Reorder to par" value={currency(sumMoney(reorder.map((row) => row.orderValue)))} hint={`${reorder.length} line${reorder.length === 1 ? "" : "s"} below par`} />
       <Kpi label="Used since last count" value={currency(cogs.usedValue)} hint={previousCount ? `Since ${date(previousCount.countDate)}` : "Needs two counts"} />
       <Kpi label="Waste at cost" value={currency(cogs.wasteValue)} />
     </div>

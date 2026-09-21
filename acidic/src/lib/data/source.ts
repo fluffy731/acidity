@@ -59,7 +59,8 @@ export async function loadWorkspace(): Promise<Workspace> {
     events: eventRows.map((row) => ({ id: row.id, eventDate: row.eventDate, title: row.title, artist: row.artist, genre: row.genre, kind: row.kind, status: row.status as EventStatus, startTime: row.startTime, ticketUrl: row.ticketUrl, description: row.description, staffRequired: row.staffRequired })),
     staff: staffRows.map((row) => ({ id: row.id, name: row.name, hourlyRate: money(row.hourlyRate), employmentType: row.employmentType, defaultRole: row.defaultRole, active: row.active === 1 })),
     shifts: shiftRows.map((row) => ({ id: row.id, staffId: row.staffId, shiftDate: row.shiftDate, startTime: row.startTime, endTime: row.endTime, role: row.role, status: row.status, breakMinutes: row.breakMinutes })),
-    items: itemRows.map((row) => ({ id: row.id, name: row.name, category: row.category, unit: row.unit, unitCost: money(row.unitCost), parLevel: Number(row.parLevel), supplier: row.supplier, active: row.active === 1 })),
+    // Retired lines stay in the database for old counts but never in the reorder list or value.
+    items: itemRows.filter((row) => row.active === 1).map((row) => ({ id: row.id, name: row.name, category: row.category, unit: row.unit, unitCost: money(row.unitCost), parLevel: Number(row.parLevel), supplier: row.supplier, active: true })),
     latestCount, previousCount,
     movements: movementRows.filter((row) => row.movementDate >= movementFloor && (!latestCount || row.movementDate <= latestCount.countDate)).map((row) => ({ itemId: row.itemId, kind: row.kind as "delivery" | "waste" | "adjustment", quantity: Number(row.quantity) })),
     ledger: ledgerRows.map((row) => ({ id: row.id, entryDate: row.entryDate, kind: row.kind as LedgerEntry["kind"], category: row.category, description: row.description, total: money(row.total), gst: money(row.gst), subtotal: money(row.subtotal), paymentMethod: row.paymentMethod, voidedAt: row.voidedAt?.toISOString() ?? null })),

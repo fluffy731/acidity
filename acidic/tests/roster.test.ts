@@ -31,6 +31,17 @@ describe("roster", () => {
     expect(coverage.find((row) => row.eventDate === "2026-08-10")).toMatchObject({ required: 3, rostered: 2, short: 1 });
     expect(coverage.find((row) => row.eventDate === "2026-08-20")).toMatchObject({ required: 2, rostered: 0, short: 2 });
   });
+  it("costs a shift from its minutes, not from display-rounded hours", () => {
+    const shift = { staffId: "s2", shiftDate: "2026-08-12", startTime: "10:00", endTime: "17:20", role: "bartender", status: "rostered", breakMinutes: 0 };
+    expect(paidHours(shift)).toBe(7.33);
+    expect(shiftCost(shift, staff[1])).toBe(249.33); // 34 × 440/60, not 34 × 7.33 = 249.22
+  });
+  it("turns a malformed time into a field error, never a crash", () => {
+    const base = { staffId: "6b1f2f3e-1111-4a5b-8c9d-000000000001", shiftDate: "2026-08-08", role: "bartender" };
+    const result = shiftInputSchema.safeParse({ ...base, startTime: "9:00", endTime: "17:00" });
+    expect(result.success).toBe(false);
+    if (!result.success) expect(result.error.issues[0].path).toEqual(["startTime"]);
+  });
   it("refuses a shift that ends before it starts or runs past 14 hours", () => {
     const base = { staffId: "6b1f2f3e-1111-4a5b-8c9d-000000000001", shiftDate: "2026-08-08", role: "bartender" };
     expect(shiftInputSchema.safeParse({ ...base, startTime: "18:00", endTime: "17:00" }).success).toBe(false);

@@ -1,6 +1,22 @@
 import { describe, expect, it } from "vitest";
-import { calendarData, calendarDataAttribute, cardDate, editorialTime, heroEvent, indexDate, indexMeta, programmeIndexRows } from "../src/lib/programme/website-export";
+import { calendarData, calendarDataAttribute, cardDate, editorialTime, escapeHtml, heroEvent, indexDate, indexMeta, indexRowHtml, programmeIndexRows, upcomingRowHtml } from "../src/lib/programme/website-export";
 import { events } from "../src/lib/data/fixtures";
+
+describe("pasted HTML is escaped", () => {
+  const hostile = { eventDate: "2026-09-04", title: 'Jazz <b>Night</b> & "Friends"', artist: "A'B", genre: null, kind: "night_session" as const, status: "ticketed" as const, startTime: "20:00", ticketUrl: 'https://example.test/t?a=1&b="x"', description: null };
+  it("escapes titles, meta and links in the Programme Index row", () => {
+    const [row] = programmeIndexRows([hostile]);
+    const html = indexRowHtml(row);
+    expect(html).toContain("Jazz &lt;b&gt;Night&lt;/b&gt; &amp; &quot;Friends&quot;");
+    expect(html).toContain('href="https://example.test/t?a=1&amp;b=&quot;x&quot;"');
+    expect(html).not.toContain("<b>");
+    expect(escapeHtml("a<b>&\"'")).toBe("a&lt;b&gt;&amp;&quot;&#39;");
+  });
+  it("escapes the Upcoming list row and keeps the site's exact shape", () => {
+    expect(upcomingRowHtml(hostile)).toBe('<li><span>Jazz &lt;b&gt;Night&lt;/b&gt; &amp; &quot;Friends&quot; — A&#39;B</span><span class="event-date">Fri, 4 Sep</span></li>');
+    expect(upcomingRowHtml(events[2])).toBe('<li><span>Tripside Life Quartet</span><span class="event-date">Sat, 8 Aug</span></li>');
+  });
+});
 
 // These assert the exact strings that are hand-typed on acidity.com.au today, so the
 // export can replace the hand-typing without changing what the public sees.
