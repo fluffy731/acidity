@@ -1,0 +1,86 @@
+name: Verify Acidic
+on:
+  push:
+    paths: ["acidic/**", ".github/workflows/verify-acidic.yml"]
+  pull_request:
+    paths: ["acidic/**", ".github/workflows/verify-acidic.yml"]
+permissions:
+  contents: read
+defaults:
+  run:
+    working-directory: acidic
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: acidic
+          POSTGRES_PASSWORD: acidic-ci-only
+          POSTGRES_DB: acidic_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U acidic -d acidic_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: acidic/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run db:check
+      - name: Migrate disposable test database
+        run: npm run db:migrate
+        env:
+          DATABASE_MIGRATION_URL: postgres://acidic:acidic-ci-only@localhost:5432/acidic_test
+      - name: PostgreSQL integration tests
+        run: npm run test:db
+        env:
+          RUN_DATABASE_TESTS: "1"
+          TEST_DATABASE_URL: postgres://acidic:acidic-ci-only@localhost:5432/acidic_test
+      - run: npm run build
+  containers:
+    runs-on: ubuntu-latest
+    env:
+      ACIDIC_DOMAIN: acidic.example.invalid
+      ACIDIC_BACKUP_DIR: /tmp/acidic-backups
+      POSTGRES_PASSWORD: 0123456789abcdef0123456789abcdef
+      AUTH_SECRET: 0123456789abcdef0123456789abcdef0123456789abcdef
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Compose and Caddy configuration
+        run: |
+          mkdir -p /tmp/acidic-backups
+          docker compose -f compose.yaml -f compose.live.yaml --profile https config --quiet
+          docker run --rm -e ACIDIC_DOMAIN=localhost -v "$PWD/deploy/Caddyfile:/etc/caddy/Caddyfile:ro" caddy:2-alpine caddy validate --config /etc/caddy/Caddyfile
+      - name: Build and start the standalone preview
+        run: docker compose up --build --wait --wait-timeout 180 app
+      - name: Verify the preview and the disabled live API
+        run: |
+          curl --fail --silent http://localhost:3100/login | grep -q 'Open preview'
+          test "$(curl --silent -o /dev/null -w '%{http_code}' http://localhost:3100/api/events)" = 503
+      - name: Migrate a disposable self-hosted database
+        run: |
+          docker compose stop app
+          docker compose -f compose.yaml -f compose.live.yaml build tools
+          docker compose -f compose.yaml -f compose.live.yaml run --rm tools
+      - name: Verify the same image starts in live mode
+        run: |
+          docker compose -f compose.yaml -f compose.live.yaml up --wait --wait-timeout 120 app
+          curl --fail --silent http://localhost:3100/login | grep -q 'Sign in'
+          test "$(curl --silent -o /dev/null -w '%{http_code}' http://localhost:3100/api/events)" = 401
+      - name: Container diagnostics
+        if: failure()
+        run: docker compose -f compose.yaml -f compose.live.yaml logs --tail 60
+      - name: Remove disposable CI containers and volumes
+        if: always()
+        run: docker compose -f compose.yaml -f compose.live.yaml --profile https --profile tools down --volumes

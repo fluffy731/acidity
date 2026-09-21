@@ -1,0 +1,46 @@
+{
+  "name": "acidic",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Acidic - the Acidity Bar & Coffee operations workspace: programme, stocktake, staffing and accounting in one place.",
+  "engines": { "node": "22.x" },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:db": "node --env-file-if-exists=.env.test.local scripts/test-database.mjs",
+    "readiness": "node --env-file-if-exists=.env.local scripts/readiness.mjs",
+    "owner:create": "node --env-file-if-exists=.env.local scripts/create-owner.mjs",
+    "smoke": "node scripts/smoke-live.mjs",
+    "db:generate": "node --env-file-if-exists=.env.local node_modules/drizzle-kit/bin.cjs generate",
+    "db:migrate": "node --env-file-if-exists=.env.local node_modules/drizzle-kit/bin.cjs migrate",
+    "db:check": "node --env-file-if-exists=.env.local node_modules/drizzle-kit/bin.cjs check"
+  },
+  "dependencies": {
+    "bcryptjs": "latest",
+    "drizzle-orm": "latest",
+    "next": "latest",
+    "next-auth": "beta",
+    "postgres": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "latest",
+    "@types/bcryptjs": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "drizzle-kit": "latest",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
+    "tailwindcss": "latest",
+    "typescript": "latest",
+    "vitest": "latest"
+  }
+}

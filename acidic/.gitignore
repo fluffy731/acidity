@@ -1,0 +1,36 @@
+# dependencies
+/node_modules
+/.npm-cache/
+
+# Next.js
+/.next/
+/out/
+
+# production
+/build
+
+# local environment and secrets - .env.example is intentionally tracked
+.env
+.env.*
+!.env.example
+/deploy/.env
+
+# test output
+/coverage
+
+# logs
+npm-debug.log*
+
+# OS/editor
+.DS_Store
+Thumbs.db
+*.swp
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# generated local uploads/exports must never become persistence
+/uploads
+/exports
+/tmp

@@ -1,0 +1,68 @@
+# Apply alongside compose.yaml only after configuring deploy/.env and migrating:
+#   docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml up -d --build --wait app
+services:
+  app:
+    environment:
+      ACIDIC_MODE: live
+      DATABASE_URL: postgres://acidic:${POSTGRES_PASSWORD:?Set a generated hexadecimal database password}@db:5432/acidic
+      AUTH_SECRET: ${AUTH_SECRET:?Set a generated authentication secret}
+      APP_URL: https://${ACIDIC_DOMAIN:?Set the public domain name}
+      AUTH_URL: https://${ACIDIC_DOMAIN:?Set the public domain name}
+      AUTH_TRUST_HOST: "true"
+      ACIDIC_LEGAL_NAME: ${ACIDIC_LEGAL_NAME:-}
+      ACIDIC_ABN: ${ACIDIC_ABN:-}
+      ACIDIC_BUSINESS_ADDRESS: ${ACIDIC_BUSINESS_ADDRESS:-}
+      ACIDIC_BUSINESS_EMAIL: ${ACIDIC_BUSINESS_EMAIL:-}
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:17-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: acidic
+      POSTGRES_USER: acidic
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a generated hexadecimal database password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U acidic -d acidic"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    # No host port: PostgreSQL is reachable only within this Compose network.
+  # Nightly backup - see deploy/backup-loop.sh. Same postgres image as the database so
+  # pg_dump/pg_restore match its version exactly. Point ACIDIC_BACKUP_DIR at a folder that
+  # is itself synced or copied off the machine (OneDrive, Google Drive, external disk).
+  backup:
+    image: postgres:17-bookworm
+    restart: unless-stopped
+    entrypoint: ["/bin/sh", "-c", "tr -d '\\r' < /backup-loop.sh > /tmp/backup-loop.sh && exec /bin/sh /tmp/backup-loop.sh"]
+    environment:
+      PGHOST: db
+      PGUSER: acidic
+      PGDATABASE: acidic
+      PGPASSWORD: ${POSTGRES_PASSWORD:?Set a generated hexadecimal database password}
+      BACKUP_KEEP: "30"
+      BACKUP_MAX_AGE_HOURS: "20"
+    volumes:
+      - ./deploy/backup-loop.sh:/backup-loop.sh:ro
+      - ${ACIDIC_BACKUP_DIR:?Set the folder that receives nightly database backups}:/backups
+    depends_on:
+      db:
+        condition: service_healthy
+  tools:
+    image: acidic-tools:local
+    build:
+      context: .
+      target: tools
+    profiles: [tools]
+    environment:
+      DATABASE_URL: postgres://acidic:${POSTGRES_PASSWORD:?Set a generated hexadecimal database password}@db:5432/acidic
+      DATABASE_MIGRATION_URL: postgres://acidic:${POSTGRES_PASSWORD:?Set a generated hexadecimal database password}@db:5432/acidic
+      AUTH_SECRET: ${AUTH_SECRET:?Set a generated authentication secret}
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  postgres_data:
