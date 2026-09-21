@@ -28,8 +28,9 @@
 
 ## Known gaps
 
-- Programme has an entry form (live mode, managers). Stock counts, shifts and ledger entries
-  are still API-only from the browser; the form pattern is `src/components/event-form.tsx`.
+- Entry forms exist for events, stock counts, shifts and ledger entries (live mode; managers).
+  Stock deliveries/waste, new stock lines, new staff, event edits and voids are API-only from
+  the browser for now - the form pattern is `src/components/event-form.tsx`.
 - No staff self-service beyond reading the roster.
 - Website export is copy-and-paste (D4).
 

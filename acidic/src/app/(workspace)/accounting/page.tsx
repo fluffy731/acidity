@@ -1,5 +1,6 @@
 import { Kpi, PageHeading, Status, currency, date } from "@/components/ui";
-import { loadWorkspace } from "@/lib/data/source";
+import { LedgerForm } from "@/components/ledger-form";
+import { isLive, loadWorkspace } from "@/lib/data/source";
 import { basSummary, profitAndLoss } from "@/lib/accounting/ledger";
 import { melbourneDate } from "@/lib/dates";
 import { requirePageRole } from "@/lib/page-access";
@@ -14,6 +15,7 @@ export default async function Accounting() {
   const bas = basSummary(ledger, today);
   return <>
     <PageHeading title="Money">Takings, purchases and wages in one ledger. Every figure below is derived from the entries; nothing is typed twice.</PageHeading>
+    {isLive() ? <LedgerForm /> : null}
     <div className="kpis">
       <Kpi label="Income, month to date" value={currency(pnl.income)} hint="Ex GST" />
       <Kpi label="Cost of goods" value={currency(pnl.costOfGoods)} hint="Stock purchases" />

@@ -1,5 +1,6 @@
 import { Kpi, PageHeading, currency, date } from "@/components/ui";
-import { loadWorkspace } from "@/lib/data/source";
+import { StockCountForm } from "@/components/stock-count-form";
+import { isLive, loadWorkspace } from "@/lib/data/source";
 import { sumMoney } from "@/lib/money";
 import { requirePageRole } from "@/lib/page-access";
 import { costOfGoods, reorderList, stockValue, usageBetweenCounts } from "@/lib/stock/engine";
@@ -14,6 +15,7 @@ export default async function Stock() {
   const cogs = costOfGoods(usage);
   return <>
     <PageHeading title="Stock">Count the bar, record deliveries and waste, and let the difference tell you what was used. Sales are never entered per item.</PageHeading>
+    {isLive() ? <StockCountForm items={items.map((item) => ({ id: item.id, name: item.name, unit: item.unit, parLevel: item.parLevel }))} /> : null}
     <div className="kpis">
       <Kpi label="On hand at cost" value={currency(stockValue(items, latestLines))} hint={latestCount ? `Counted ${date(latestCount.countDate)}` : "No count yet"} />
       <Kpi label="Reorder to par" value={currency(sumMoney(reorder.map((row) => row.orderValue)))} hint={`${reorder.length} line${reorder.length === 1 ? "" : "s"} below par`} />

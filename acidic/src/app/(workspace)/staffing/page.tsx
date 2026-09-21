@@ -1,5 +1,6 @@
 import { Kpi, PageHeading, Status, currency, date } from "@/components/ui";
-import { loadWorkspace } from "@/lib/data/source";
+import { ShiftForm } from "@/components/shift-form";
+import { isLive, loadWorkspace } from "@/lib/data/source";
 import { requirePageRole } from "@/lib/page-access";
 import { eventCoverage, overlappingShifts, paidHours, rosterSummary, shiftCost } from "@/lib/staffing/roster";
 export const dynamic = "force-dynamic";
@@ -15,6 +16,7 @@ export default async function Staffing() {
   const byId = new Map(staff.map((member) => [member.id, member]));
   return <>
     <PageHeading title="Roster">{manager ? "Who is on, what it costs at base rate, and whether every gig night has the people it needs." : "Who is on, and whether every gig night has the people it needs."}</PageHeading>
+    {isLive() && manager ? <ShiftForm staff={staff.filter((member) => member.active).map((member) => ({ id: member.id, name: member.name, defaultRole: member.defaultRole }))} /> : null}
     <div className="kpis">
       <Kpi label="Rostered hours" value={`${summary.hours} h`} hint={`${summary.shifts} shifts`} />
       {manager ? <Kpi label="Rostered cost" value={currency(summary.cost)} hint="Base hourly rate only - no penalty rates" /> : null}
