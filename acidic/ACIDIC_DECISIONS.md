@@ -53,3 +53,8 @@ containers - app (512 MB, 1 CPU), db (384 MB, 1 CPU, PostgreSQL tuned small) and
 loop (128 MB, 0.25 CPU) - with hard limits so Acidic can never crowd Monnie; the tools
 container runs only on demand. Caddy was removed: HTTPS comes from the tunnel, so it was an
 unused service, an image and a CI step. No worker, no AI, no mail integration.
+
+**D11 - 22 Sept 2026 - Passwords are at least 6 characters, not 14.** Solomon: "we don't need
+such a strong security for acidic - just something simple like 6 characters." Accepted for a
+staff tool. What actually defends the public sign-in page is the five-failure, 15-minute
+lockout in `src/lib/auth/policy.ts`, which is unchanged; bcrypt cost 12 also stands.

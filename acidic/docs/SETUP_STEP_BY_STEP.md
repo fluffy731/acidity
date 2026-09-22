@@ -119,9 +119,10 @@ inside the network and never written to disk):
 docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml --profile tools run --rm -it tools node scripts/create-owner.mjs
 ```
 
-Enter your name, email and a password of at least 14 characters (typed twice, hidden). To add a
+Enter your name, email and a password of at least 6 characters (typed twice, hidden). To add a
 manager or staff sign-in later, append `--role manager` or `--role staff` to that command.
-There is no default account and no public registration.
+There is no default account and no public registration. Five wrong attempts lock an account
+for 15 minutes, which is what protects a short password on a public address.
 
 ## 7. Make it reachable over HTTPS
 
