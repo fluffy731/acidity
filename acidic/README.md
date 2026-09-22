@@ -36,6 +36,9 @@ A **working browser preview** and the implemented live workflow:
 - Profile-tile sign-in with a 6-digit passcode (owner / manager / staff), five-failure lockout,
   same-origin write protection, bounded JSON.
 - Five screens: Today (the cross-domain view), Programme (+ Website export), Stock, Roster, Money.
+- The programme as one editable file, `data/programme.json`, applied with `npm run programme:seed`
+  (dry run by default, keyed on date and title so it is safe to re-run, never deletes) and
+  validated against the app's own event rules in CI.
 - Docker multi-stage image, `compose.yaml` (preview) + `compose.live.yaml` (PostgreSQL, nightly
   backups, on-demand tools container) with hard memory/CPU caps so Acidic stays small next to
   Monnie, HTTPS from the existing Cloudflare tunnel, GitHub Actions running tests, typecheck,
@@ -59,7 +62,7 @@ compared with the live site. Nothing in the preview is saved.
 ## Verify
 
 ```bash
-npm test          # 46 unit tests
+npm test          # 57 unit tests
 npm run typecheck
 npm run lint
 npm run db:check  # migration metadata

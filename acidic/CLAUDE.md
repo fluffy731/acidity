@@ -33,5 +33,7 @@ repository root). Before doing anything else:
 
 `src/lib/{programme,stock,staffing,accounting}` - vocabulary, schemas, pure engine, live
 service. `src/lib/today/overview.ts` - the cross-domain view. `src/app/(workspace)` - screens.
-`src/app/api` - routes (thin: auth, origin, JSON, service, error). `docs/SETUP_STEP_BY_STEP.md`
-- how the live installation is built and operated.
+`src/app/api` - routes (thin: auth, origin, JSON, service, error). `data/programme.json` - the
+bar's programme, applied with `scripts/seed-programme.mjs` and checked against the app's own
+rules by `tests/programme-seed.test.ts`. `docs/SETUP_STEP_BY_STEP.md` - how the live
+installation is built and operated.

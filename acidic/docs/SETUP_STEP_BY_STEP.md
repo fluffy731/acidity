@@ -5,7 +5,7 @@ private container, the app in a container, nightly backups, and the existing Clo
 for HTTPS so the bar's phones can reach it. Follow it in order. Every command is run from the
 `acidic` folder unless it says otherwise. Nothing here needs a Neon/Vercel account.
 
-Expect about an hour the first time. Steps 1-4 are one-off; step 9 is how you deploy forever after.
+Expect about an hour the first time. Steps 1-4 are one-off; step 11 is how you deploy forever after.
 
 ---
 
@@ -171,7 +171,43 @@ Open `https://acidic.lingenious.com.au` on your phone: you should
 see **Sign in to Acidic**, not the preview. Sign in with the owner account. Today will be
 empty - that is correct; there are no records yet.
 
-## 9. Acceptance run (do this once, with fictional data, before real records)
+## 9. Load the programme
+
+The bar's programme lives in one editable file, `data/programme.json`, and is loaded with a
+command rather than typed into the app one gig at a time. Each event is one object; only the
+date and title are required. The file opens with a note listing every field.
+
+Look at what it would do first:
+
+```powershell
+docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml --profile tools run --rm tools node scripts/seed-programme.mjs
+```
+
+That reports what it would create or change and then rolls the whole thing back - nothing is
+written. When the list reads right, keep it:
+
+```powershell
+docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml --profile tools run --rm tools node scripts/seed-programme.mjs --apply
+```
+
+Things worth knowing:
+
+- An event is identified by its **date and title**, so re-running after an edit updates that
+  event rather than making a second one. Run it as often as you like.
+- Nothing is ever deleted. An event removed from the file stays in the database, because the
+  programme is the record of what was on - cancel it in the app instead.
+- An event you cancelled in the app is never revived by the file, and a private hire is never
+  written onto a date a public gig already holds. Both are reported as `SKIPPED`.
+- `data/` is mounted into the tools container, so editing the file on the desktop takes effect
+  on the next run with no rebuild.
+- After editing, `npm run test` checks the file against the app's own event rules - a ticketed
+  night with no booking link, a private booking left public, a date typed wrong. CI does this
+  too, and names the offending gig by date and title.
+
+Then open Programme in the app, and Programme -> **Website export** to render the site blocks
+from what you just loaded.
+
+## 10. Acceptance run (do this once, with fictional data, before real records)
 
 Signed in as the owner, using the entry forms on each screen:
 
@@ -190,14 +226,15 @@ Signed in as the owner, using the entry forms on each screen:
 
 Then reset before real records: from **this `acidic` folder, with this `--env-file`**,
 `docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml down --volumes`,
-and repeat steps 4-6. Never run `down --volumes` from Monnie's folder: it would delete
+and repeat steps 4-6, then step 9. Never run `down --volumes` from Monnie's folder: it would delete
 Monnie's database volume.
 
-## 10. Day-to-day
+## 11. Day-to-day
 
 - **Deploy a change:** `git pull`, then the step-8 `up -d --build --wait` command, then
   `node scripts/smoke-live.mjs`. If smoke fails, `docker compose … logs --tail 60 app`.
 - **New migration in the pull:** run step 5 before step 8.
+- **A gig changes:** edit `data/programme.json`, run step 9 (dry run, then `--apply`).
 - **Backups:** the `backup` container writes `acidic-<stamp>.dump` into `ACIDIC_BACKUP_DIR`
   every ~20 hours and keeps 30. Confirm a file appears there in the first day; that folder
   syncing off the machine is your disaster recovery.
@@ -208,7 +245,7 @@ Monnie's database volume.
 - **Reboot:** every container has `restart: unless-stopped`; Docker Desktop must be set to start
   at login and the PC must not sleep while the bar trades.
 
-## 11. Keep it in step with the website
+## 12. Keep it in step with the website
 
 Programme → **Website export** renders the Programme Index rows, the Upcoming lists, the
 calendar `data-events` attribute and the hero event from the live programme. Paste them into

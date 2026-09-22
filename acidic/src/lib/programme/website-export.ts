@@ -12,6 +12,8 @@ import { occupiesDate } from "./workflow";
 export type ProgrammeEvent = {
   eventDate: string; title: string; artist: string | null; genre: string | null; kind: string;
   status: EventStatus; startTime: string | null; ticketUrl: string | null; description: string | null;
+  /** Optional: a session with a published finish reads "2pm - 10pm" on the calendar. */
+  endTime?: string | null;
 };
 
 const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
@@ -34,6 +36,13 @@ export function editorialTime(hhmm: string): string {
   const suffix = h >= 12 ? "pm" : "am";
   const hour = h % 12 === 0 ? 12 : h % 12;
   return m === 0 ? `${hour}${suffix}` : `${hour}:${String(m).padStart(2, "0")}${suffix}`;
+}
+
+/** "8pm", or "2pm – 10pm" where the finish is published too - what the calendar shows on
+ * the day. An en dash with spaces, the way the site writes a time range. */
+function calendarTime(event: ProgrammeEvent): string {
+  if (!event.startTime) return "Details TBA";
+  return event.endTime ? `${editorialTime(event.startTime)} – ${editorialTime(event.endTime)}` : editorialTime(event.startTime);
 }
 
 /** The metadata cell: ARTIST / GENRE / TIME / STATUS, upper case, slash-separated, in the
@@ -75,10 +84,10 @@ export function calendarData(events: readonly ProgrammeEvent[]): Record<string, 
   const out: Record<string, CalendarEntry> = {};
   for (const event of [...events].sort((a, b) => a.eventDate.localeCompare(b.eventDate))) {
     if (!occupiesDate(event.status)) continue;
-    if (event.kind === "private_booking") { out[event.eventDate] = { type: "private", title: "Private function", ...(event.startTime ? { time: editorialTime(event.startTime) } : {}) }; continue; }
+    if (event.kind === "private_booking") { out[event.eventDate] = { type: "private", title: "Private function", ...(event.startTime ? { time: calendarTime(event) } : {}) }; continue; }
     if (out[event.eventDate]?.type === "private") continue;
     const title = event.artist && !event.title.includes(event.artist) ? `${event.title} — ${event.artist}` : event.genre && !event.title.toLowerCase().includes(event.genre.toLowerCase()) ? `${event.title} — ${event.genre}` : event.title;
-    out[event.eventDate] = { type: "session", title, time: event.startTime ? editorialTime(event.startTime) : "Details TBA" };
+    out[event.eventDate] = { type: "session", title, time: calendarTime(event) };
   }
   return out;
 }

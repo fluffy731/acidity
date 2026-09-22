@@ -71,6 +71,9 @@ services:
       DATABASE_URL: postgres://acidic:${POSTGRES_PASSWORD:?Set a generated hexadecimal database password}@db:5432/acidic
       DATABASE_MIGRATION_URL: postgres://acidic:${POSTGRES_PASSWORD:?Set a generated hexadecimal database password}@db:5432/acidic
       AUTH_SECRET: ${AUTH_SECRET:?Set a generated authentication secret}
+    # The programme is edited on the host and read here, so changing a gig needs no rebuild.
+    volumes:
+      - ./data:/app/data:ro
     depends_on:
       db:
         condition: service_healthy

@@ -66,3 +66,28 @@ email + password (and supersedes D11). Profiles (Solomon as owner, `Manager 1`, 
 manager tile has none. Names appear on the public sign-in page - keep them to first names or
 role labels. The five-failure, 15-minute lockout is what makes a one-in-a-million code safe
 enough for a staff tool; passcodes are still bcrypt-hashed (cost 12) and never stored plain.
+
+**D13 - 22 Sept 2026 - The programme is loaded from a file, not typed in one gig at a time.**
+`data/programme.json` holds the bar's events and `npm run programme:seed` applies it, keyed on
+date and title so it can be run repeatedly. A season's dates are a list someone edits in one
+sitting, not twenty trips through a form, and the file is reviewable in a pull request. The app's
+own event rules are the authority: `tests/programme-seed.test.ts` parses the file with
+`eventInputSchema` in CI, so a ticketed night with no booking link fails on a laptop rather than
+at the bar. The seed never deletes: an event dropped from the file stays in the database, and one
+cancelled in the app is not revived by re-running. The entry form remains for the single gig
+added on a Tuesday.
+
+**D14 - 22 Sept 2026 - The calendar shows a session's finish when one is published.** The
+booking calendar on index.html reads "2pm - 10pm" for the Sunday day programme and "3pm - 8pm"
+for the 9 August private hire, but `ProgrammeEvent` had no end time, so the export rendered only
+"2pm" and "3pm" - it would have thrown away the window of the private hire the calendar exists to
+block out. `endTime` is now optional on `ProgrammeEvent`, read from the database by
+`loadWorkspace`, and rendered as an en-dashed range. `tests/website-export.test.ts` changed with
+it, as the export rule in CLAUDE.md requires.
+
+Four calendar entries still differ from the live site, and deliberately: the site's hand-written
+`data-events` follows a different convention on each of them (10 Aug omits its genre, 14 Aug says
+"Details TBC" where every other row says "Details TBA", 21 Aug puts "Details TBA" inside the
+title, 23 Aug leads with the artist). The export applies one convention to all rows, so pasting a
+fresh export tidies those four. The export is the format from here.
+

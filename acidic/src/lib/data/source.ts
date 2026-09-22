@@ -56,7 +56,7 @@ export async function loadWorkspace(): Promise<Workspace> {
   const [latestCount, previousCount] = await Promise.all([countWithLines(countRows[0]), countWithLines(countRows[1])]);
   const movementFloor = previousCount?.countDate ?? "0000-00-00";
   return {
-    events: eventRows.map((row) => ({ id: row.id, eventDate: row.eventDate, title: row.title, artist: row.artist, genre: row.genre, kind: row.kind, status: row.status as EventStatus, startTime: row.startTime, ticketUrl: row.ticketUrl, description: row.description, staffRequired: row.staffRequired })),
+    events: eventRows.map((row) => ({ id: row.id, eventDate: row.eventDate, title: row.title, artist: row.artist, genre: row.genre, kind: row.kind, status: row.status as EventStatus, startTime: row.startTime, endTime: row.endTime, ticketUrl: row.ticketUrl, description: row.description, staffRequired: row.staffRequired })),
     staff: staffRows.map((row) => ({ id: row.id, name: row.name, hourlyRate: money(row.hourlyRate), employmentType: row.employmentType, defaultRole: row.defaultRole, active: row.active === 1 })),
     shifts: shiftRows.map((row) => ({ id: row.id, staffId: row.staffId, shiftDate: row.shiftDate, startTime: row.startTime, endTime: row.endTime, role: row.role, status: row.status, breakMinutes: row.breakMinutes })),
     // Retired lines stay in the database for old counts but never in the reorder list or value.

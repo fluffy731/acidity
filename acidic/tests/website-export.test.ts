@@ -49,7 +49,8 @@ describe("website export matches acidity.com.au", () => {
     const data = calendarData(events);
     expect(data["2026-08-01"]).toEqual({ type: "session", title: "The Music of Wes Montgomery — Tony Yang Trio", time: "8pm" });
     expect(data["2026-08-08"]).toEqual({ type: "session", title: "Tripside Life Quartet — Acid Jazz / Funk", time: "7:30pm" });
-    expect(data["2026-08-09"]).toEqual({ type: "private", title: "Private function", time: "3pm" });
+    expect(data["2026-08-09"]).toEqual({ type: "private", title: "Private function", time: "3pm \u2013 8pm" });
+    expect(data["2026-08-02"]).toEqual({ type: "session", title: "Coffee Rave + Jazz Jam \u2014 Session 04", time: "2pm \u2013 10pm" });
     expect(data["2026-08-28"]).toEqual({ type: "private", title: "Private function" });
     expect(data["2026-08-15"]).toEqual({ type: "session", title: "Late Night Jazz — Afro-Jazz", time: "Details TBA" });
     expect(data["2026-08-23"].title).toBe("J-Fusion & Hiphop — Chakamens");
