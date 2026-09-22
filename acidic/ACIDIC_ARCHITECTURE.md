@@ -60,7 +60,7 @@ Website export  ->  acidity.com.au (static HTML, updated from the export)
 ## Deployment
 
 - Development: `npm run dev` (preview) or `.env.local` with `ACIDIC_MODE=live`.
-- Live: Docker Desktop on the office laptop that already runs Monnie, `compose.yaml` +
+- Live: Docker Desktop on the always-on Windows desktop that already runs Monnie, `compose.yaml` +
   `compose.live.yaml` (app, PostgreSQL 17, backup loop, on-demand tools container), each
   container under a hard memory/CPU cap (D10). HTTPS comes from the existing Cloudflare
   tunnel routing `acidic.lingenious.com.au` to host port 3100 (D9); no reverse proxy of its own.

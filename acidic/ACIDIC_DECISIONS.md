@@ -47,7 +47,7 @@ live site; editing belongs in live mode with a real database.
 would touch the live website's domain for the sake of an address only staff will type. One
 tunnel serves both apps by hostname. Revisit only if a customer-facing address is ever needed.
 
-**D10 - 22 Sept 2026 - Minimal footprint on the shared laptop.** Solomon: "keep acidic as min
+**D10 - 22 Sept 2026 - Minimal footprint on the shared desktop.** Solomon: "keep acidic as min
 as possible so that it's less disruptive to other services." The live stack is three
 containers - app (512 MB, 1 CPU), db (384 MB, 1 CPU, PostgreSQL tuned small) and the backup
 loop (128 MB, 0.25 CPU) - with hard limits so Acidic can never crowd Monnie; the tools

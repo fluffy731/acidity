@@ -2,7 +2,7 @@
 #   docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml up -d --build --wait app
 services:
   app:
-    # Hard caps so Acidic can never crowd Monnie on the shared laptop (decision D10).
+    # Hard caps so Acidic can never crowd Monnie on the shared desktop (decision D10).
     mem_limit: 512m
     cpus: 1
     environment:

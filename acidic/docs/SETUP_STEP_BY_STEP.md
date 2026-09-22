@@ -1,7 +1,7 @@
 # Acidic live setup, step by step
 
-This is the same path Monnie runs on: Docker on a machine that stays on, PostgreSQL in a
-private container, the app in a container, nightly backups, and a Cloudflare Tunnel (or Caddy)
+This is the same path Monnie runs on: Docker on the always-on Windows desktop, PostgreSQL in a
+private container, the app in a container, nightly backups, and the existing Cloudflare Tunnel
 for HTTPS so the bar's phones can reach it. Follow it in order. Every command is run from the
 `acidic` folder unless it says otherwise. Nothing here needs a Neon/Vercel account.
 
@@ -12,7 +12,7 @@ Expect about an hour the first time. Steps 1-4 are one-off; step 9 is how you de
 ## 0. Before you start - what you need
 
 - A Windows PC (or Mac/Linux box) that stays on and awake while the bar trades. Monnie runs on
-  the office laptop with Docker Desktop; the same works here.
+  the always-on Windows desktop with Docker Desktop; the same machine serves both.
 - **Docker Desktop** installed and running (https://www.docker.com/products/docker-desktop/).
 - **Git** and **Node.js 22** (https://nodejs.org, the LTS line) for the one-off commands.
 - A folder that is synced off the machine for backups - OneDrive, Google Drive or an external
@@ -24,9 +24,11 @@ Expect about an hour the first time. Steps 1-4 are one-off; step 9 is how you de
 ## 1. Get the code onto the machine
 
 ```powershell
-cd C:\Development            # or wherever you keep projects
+cd F:\Development
 git clone https://github.com/fluffy731/acidity
-cd acidity\acidic
+cd acidity
+git checkout claude/programme-content-update-flpkoy   # until Acidic is merged or moved to its own repo
+cd acidic
 npm ci
 ```
 
@@ -132,7 +134,7 @@ tunnel Monnie already uses - one tunnel serves any number of hostnames:
    `lingenious.com.au`, service type HTTP, URL `host.docker.internal:3100`. Save. Cloudflare
    creates the DNS record itself.
 3. Nothing changes for Monnie: its hostname still points at port 3000, Acidic's at 3100, and
-   the `cloudflared` connector container already running on the laptop picks up the new
+   the `cloudflared` connector container already running on the desktop picks up the new
    route within a minute. No new tunnel, connector, token or Cloudflare account.
 
 If you ever want `acidic.acidity.com.au` instead, `acidity.com.au`'s DNS has to move to
@@ -161,19 +163,24 @@ empty - that is correct; there are no records yet.
 
 ## 9. Acceptance run (do this once, with fictional data, before real records)
 
-Using the API from the browser console, or a REST client, while signed in:
+Signed in as the owner, using the entry forms on each screen:
 
-1. `POST /api/events` with a placeholder event, then `PATCH` it to `confirmed`, then to
-   `ticketed` with a booking link. Check it appears on Programme and in the Website export.
-2. `POST /api/stock/items` for two items, `POST /api/stock/counts` twice a week apart with a
-   delivery between them; check Stock shows usage and the reorder list.
-3. `POST /api/staff`, then `POST /api/shifts` on the event's date; check Today's coverage.
-4. `POST /api/ledger` for takings and a stock purchase; check Money's P&L and BAS.
+1. Programme → Add an event as a placeholder; then (via `PATCH /api/events/<id>` for now)
+   move it to `confirmed`, then `ticketed` with a booking link. Check it appears on
+   Programme and in the Website export.
+2. Stock → add two items (`POST /api/stock/items`), then Record a stocktake twice a week
+   apart with a delivery between them (`POST /api/stock/movements`); check Stock shows usage
+   and the reorder list.
+3. Roster → add a staff member (`POST /api/staff`), then Add a shift on the event's date;
+   check Today's coverage.
+4. Money → Record takings and a stock purchase; check the P&L and BAS.
 5. `POST /api/ledger/<id>/void` with a reason; the entry shows struck through.
 6. Sign out, sign in with a wrong password five times: the account locks for 15 minutes.
 
-Then delete the fictional rows (or simply reset: `down --volumes` and repeat steps 4-6).
-Entry forms for these actions are the next build; the APIs are the contract.
+Then reset before real records: from **this `acidic` folder, with this `--env-file`**,
+`docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml down --volumes`,
+and repeat steps 4-6. Never run `down --volumes` from Monnie's folder: it would delete
+Monnie's database volume.
 
 ## 10. Day-to-day
 
@@ -200,7 +207,7 @@ step (ACIDIC_STATUS.md) is a build step that writes them automatically.
 
 ## Footprint - keeping Acidic out of Monnie's way
 
-Acidic is deliberately small on the shared laptop (decision D10):
+Acidic is deliberately small on the shared desktop (decision D10):
 
 - Three containers when live: `acidic-app-1` (capped at 512 MB, 1 CPU), `acidic-db-1`
   (384 MB, 1 CPU, PostgreSQL configured for a small database) and `acidic-backup-1`
