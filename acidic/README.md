@@ -7,7 +7,8 @@ the **website export** that renders acidity.com.au's programme blocks from the s
 
 Built on the engineering framework proven in Monnie (Lingenious): one responsive Next.js app,
 PostgreSQL through Drizzle, deterministic services with strict Zod schemas, money in integer
-cents, preview/live runtime modes, Docker + Caddy + PostgreSQL self-hosting, GitHub Actions
+cents, preview/live runtime modes, Docker + PostgreSQL self-hosting behind the existing
+Cloudflare tunnel, GitHub Actions
 verification, and a small set of maintained project records. Acidic is a bar's tool, not a
 consultancy's: there are no enquiries, proposals or engineering documents here.
 
@@ -35,8 +36,9 @@ A **working browser preview** and the implemented live workflow:
 - Auth.js owner/manager/staff sign-in with lockout, same-origin write protection, bounded JSON.
 - Five screens: Today (the cross-domain view), Programme (+ Website export), Stock, Roster, Money.
 - Docker multi-stage image, `compose.yaml` (preview) + `compose.live.yaml` (PostgreSQL, nightly
-  backups, tools container), Caddy for HTTPS, GitHub Actions running tests, typecheck, lint,
-  migration check, PostgreSQL integration tests, production build and a container smoke test.
+  backups, on-demand tools container) with hard memory/CPU caps so Acidic stays small next to
+  Monnie, HTTPS from the existing Cloudflare tunnel, GitHub Actions running tests, typecheck,
+  lint, migration check, PostgreSQL integration tests, production build and a container smoke test.
 
 This is **not yet verified for live business use**. The live path is implemented behind
 `ACIDIC_MODE=live` and needs an acceptance run on your own installation - see the setup guide.

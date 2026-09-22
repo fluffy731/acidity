@@ -2,6 +2,9 @@
 #   docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml up -d --build --wait app
 services:
   app:
+    # Hard caps so Acidic can never crowd Monnie on the shared laptop (decision D10).
+    mem_limit: 512m
+    cpus: 1
     environment:
       ACIDIC_MODE: live
       DATABASE_URL: postgres://acidic:${POSTGRES_PASSWORD:?Set a generated hexadecimal database password}@db:5432/acidic
@@ -19,6 +22,11 @@ services:
   db:
     image: postgres:17-bookworm
     restart: unless-stopped
+    mem_limit: 384m
+    cpus: 1
+    # A bar's records are small: a few thousand rows a year. Keep PostgreSQL's footprint to
+    # match rather than its defaults, which assume a dedicated server.
+    command: ["postgres", "-c", "shared_buffers=64MB", "-c", "max_connections=20", "-c", "work_mem=4MB", "-c", "maintenance_work_mem=32MB"]
     environment:
       POSTGRES_DB: acidic
       POSTGRES_USER: acidic
@@ -37,6 +45,8 @@ services:
   backup:
     image: postgres:17-bookworm
     restart: unless-stopped
+    mem_limit: 128m
+    cpus: 0.25
     entrypoint: ["/bin/sh", "-c", "tr -d '\\r' < /backup-loop.sh > /tmp/backup-loop.sh && exec /bin/sh /tmp/backup-loop.sh"]
     environment:
       PGHOST: db

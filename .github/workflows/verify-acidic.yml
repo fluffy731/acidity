@@ -57,11 +57,10 @@ jobs:
       AUTH_SECRET: 0123456789abcdef0123456789abcdef0123456789abcdef
     steps:
       - uses: actions/checkout@v4
-      - name: Validate Compose and Caddy configuration
+      - name: Validate Compose configuration
         run: |
           mkdir -p /tmp/acidic-backups
-          docker compose -f compose.yaml -f compose.live.yaml --profile https config --quiet
-          docker run --rm -e ACIDIC_DOMAIN=localhost -v "$PWD/deploy/Caddyfile:/etc/caddy/Caddyfile:ro" caddy:2-alpine caddy validate --config /etc/caddy/Caddyfile
+          docker compose -f compose.yaml -f compose.live.yaml --profile tools config --quiet
       - name: Build and start the standalone preview
         run: docker compose up --build --wait --wait-timeout 180 app
       - name: Verify the preview and the disabled live API
@@ -83,4 +82,4 @@ jobs:
         run: docker compose -f compose.yaml -f compose.live.yaml logs --tail 60
       - name: Remove disposable CI containers and volumes
         if: always()
-        run: docker compose -f compose.yaml -f compose.live.yaml --profile https --profile tools down --volumes
+        run: docker compose -f compose.yaml -f compose.live.yaml --profile tools down --volumes

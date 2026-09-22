@@ -37,7 +37,7 @@ Website export  ->  acidity.com.au (static HTML, updated from the export)
 - `src/db` - Drizzle schema and client. `drizzle/` - generated SQL migrations.
 - `tests` - unit tests per engine plus an opt-in PostgreSQL integration suite.
 - `scripts` - owner provisioning, readiness, database test runner, post-deploy smoke.
-- `deploy` - Caddyfile and nightly backup loop.
+- `deploy` - nightly backup loop (and `deploy/.env`, git-ignored, holding the live secrets).
 
 ## Data ownership
 
@@ -60,9 +60,10 @@ Website export  ->  acidity.com.au (static HTML, updated from the export)
 ## Deployment
 
 - Development: `npm run dev` (preview) or `.env.local` with `ACIDIC_MODE=live`.
-- Live: Docker Engine/Desktop on a machine that stays on, `compose.yaml` + `compose.live.yaml`
-  (app, PostgreSQL 17, backup loop, tools container), HTTPS by Caddy (`--profile https`) or a
-  Cloudflare Tunnel in front of port 3100 - the same path Monnie uses.
+- Live: Docker Desktop on the office laptop that already runs Monnie, `compose.yaml` +
+  `compose.live.yaml` (app, PostgreSQL 17, backup loop, on-demand tools container), each
+  container under a hard memory/CPU cap (D10). HTTPS comes from the existing Cloudflare
+  tunnel routing `acidic.lingenious.com.au` to host port 3100 (D9); no reverse proxy of its own.
 - CI: `.github/workflows/verify-acidic.yml` runs on changes under `acidic/**`.
 
 ## Constraints

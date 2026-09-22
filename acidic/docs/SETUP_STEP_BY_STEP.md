@@ -17,8 +17,9 @@ Expect about an hour the first time. Steps 1-4 are one-off; step 9 is how you de
 - **Git** and **Node.js 22** (https://nodejs.org, the LTS line) for the one-off commands.
 - A folder that is synced off the machine for backups - OneDrive, Google Drive or an external
   disk. Example: `C:\Users\<you>\OneDrive\Acidity\Acidic Backups`.
-- A domain or subdomain you control, e.g. `acidic.acidity.com.au` (you own `acidity.com.au`
-  already - the DNS lives wherever the website's `CNAME` points). Needed only for step 7.
+- A hostname for the app. Decision D9: **`acidic.lingenious.com.au`**, on the existing Monnie
+  Cloudflare tunnel, because `lingenious.com.au` is already on Cloudflare and this is a
+  staff-only tool. No DNS change to `acidity.com.au` and no new Cloudflare account.
 
 ## 1. Get the code onto the machine
 
@@ -61,7 +62,7 @@ notepad deploy\.env
 Paste this in and fill every line (no quotes, no spaces around `=`):
 
 ```
-ACIDIC_DOMAIN=acidic.acidity.com.au
+ACIDIC_DOMAIN=acidic.lingenious.com.au
 POSTGRES_PASSWORD=<paste output of: openssl rand -hex 32>
 AUTH_SECRET=<paste a DIFFERENT output of: openssl rand -hex 32>
 ACIDIC_BACKUP_DIR=C:\Users\<you>\OneDrive\Acidity\Acidic Backups
@@ -122,23 +123,21 @@ There is no default account and no public registration.
 
 ## 7. Make it reachable over HTTPS
 
-Live mode refuses to run over plain http except on localhost, so pick one:
+Live mode refuses to run over plain http except on localhost. Acidic rides the Cloudflare
+tunnel Monnie already uses - one tunnel serves any number of hostnames:
 
-**Option A - Cloudflare Tunnel (what Monnie uses; no ports opened on the router).**
+1. Cloudflare dashboard → Zero Trust → Networks → Tunnels → open the existing Monnie tunnel
+   (the one whose public hostname is `app.lingenious.com.au`).
+2. **Public Hostname** tab → **Add a public hostname**: subdomain `acidic`, domain
+   `lingenious.com.au`, service type HTTP, URL `host.docker.internal:3100`. Save. Cloudflare
+   creates the DNS record itself.
+3. Nothing changes for Monnie: its hostname still points at port 3000, Acidic's at 3100, and
+   the `cloudflared` connector container already running on the laptop picks up the new
+   route within a minute. No new tunnel, connector, token or Cloudflare account.
 
-1. In the Cloudflare dashboard for `acidity.com.au` → Zero Trust → Networks → Tunnels →
-   Create a tunnel. Choose the Docker connector. Cloudflare shows a `docker run … cloudflared
-   tunnel run --token …` command.
-2. Run it, adding a restart policy so it survives reboots:
-   `docker run -d --restart unless-stopped cloudflare/cloudflared:latest tunnel --no-autoupdate run --token <token>`
-3. In the tunnel's **Public Hostname** tab add `acidic.acidity.com.au` → service
-   `http://host.docker.internal:3100`. Cloudflare creates the DNS record for you.
-
-**Option B - Caddy on this machine (needs ports 80/443 forwarded on the router and an A
-record for `acidic.acidity.com.au` pointing at your public IP).** Start the stack with
-`--profile https` in step 8 and Caddy obtains the certificate itself.
-
-Either way `ACIDIC_DOMAIN` in `deploy/.env` must be exactly the hostname people will type.
+If you ever want `acidic.acidity.com.au` instead, `acidity.com.au`'s DNS has to move to
+Cloudflare first (free), which touches the live website's domain - do that as its own job.
+`ACIDIC_DOMAIN` in `deploy/.env` must be exactly the hostname people will type.
 
 ## 8. Start the app
 
@@ -146,14 +145,17 @@ Either way `ACIDIC_DOMAIN` in `deploy/.env` must be exactly the hostname people 
 docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml up -d --build --wait app backup
 ```
 
-(add `--profile https caddy` at the end for option B). Then check:
+Then check:
 
 ```powershell
 node scripts/smoke-live.mjs
 docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml ps
+docker stats --no-stream
 ```
 
-Smoke should print `SMOKE OK`. Open `https://acidic.acidity.com.au` on your phone: you should
+Smoke should print `SMOKE OK`, and `docker stats` should show the three Acidic containers
+well inside their caps (app 512 MB, db 384 MB, backup 128 MB - see "Footprint" below).
+Open `https://acidic.lingenious.com.au` on your phone: you should
 see **Sign in to Acidic**, not the preview. Sign in with the owner account. Today will be
 empty - that is correct; there are no records yet.
 
@@ -196,10 +198,28 @@ calendar `data-events` attribute and the hero event from the live programme. Pas
 in August, now generated. When that has been done by hand a few times and trusted, the next
 step (ACIDIC_STATUS.md) is a build step that writes them automatically.
 
+## Footprint - keeping Acidic out of Monnie's way
+
+Acidic is deliberately small on the shared laptop (decision D10):
+
+- Three containers when live: `acidic-app-1` (capped at 512 MB, 1 CPU), `acidic-db-1`
+  (384 MB, 1 CPU, PostgreSQL configured for a small database) and `acidic-backup-1`
+  (128 MB, 0.25 CPU, asleep between backups). The `tools` container exists only while a
+  migration or account command runs. Total steady state is well under 1 GB of RAM and idle CPU.
+- No reverse proxy, worker, AI or mail service. HTTPS is the tunnel's job.
+- Its own Compose project (`acidic`), network, volume and images: it cannot reach Monnie's
+  database or containers, and Monnie cannot reach it.
+- Disk: about 2-3 GB of images and build cache. After each deploy run
+  `docker image prune -f` and `docker builder prune -f --filter until=72h`, the same habit
+  Monnie's deploy script has, and check F: has room before building.
+- Docker Desktop restarts pause both apps together; nothing else is shared.
+
 ## Differences from Monnie, on purpose
 
-- Port 3100 on the host (Monnie is 3000) so both can run on one machine.
+- Port 3100 on the host (Monnie is 3000) so both run on one machine.
 - No OneDrive document mount, no OpenAI key, no Zoho mail: a bar's records are the four
   tables, not documents and email.
 - Roles are owner / manager / staff, not Director / team.
-- Backup folder is `ACIDIC_BACKUP_DIR` in `deploy/.env` rather than a fixed OneDrive path.
+- Backup folder is `ACIDIC_BACKUP_DIR` in `deploy/.env`, kept separate from the Lingenious
+  business OneDrive.
+- No Caddy: Acidic shares Monnie's Cloudflare tunnel instead of carrying its own proxy.
