@@ -106,23 +106,32 @@ The `tools` image runs the reviewed SQL in `drizzle/` against the private databa
 docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml --profile tools run --rm tools
 ```
 
-You should see the migration `0000_short_rictor` applied. This is safe to run again later: it
+You should see the migrations applied (`0000_short_rictor` creates the tables,
+`0001_public_freak` makes email optional on profiles). This is safe to run again later: it
 only applies migrations that have not been applied yet. Every future schema change is a new
 file in `drizzle/` and this same command.
 
-## 6. Create your owner account
+## 6. Create the sign-in profiles
 
-Interactive, in your own terminal, through the tools container (so the password is hashed
-inside the network and never written to disk):
+Sign-in is "tap your profile, type a 6-digit passcode" (decision D12). Create one profile per
+person or shared role, through the tools container so the passcode is hashed inside the
+network and never written to disk. Owner first:
 
 ```powershell
-docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml --profile tools run --rm -it tools node scripts/create-owner.mjs
+docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml --profile tools run --rm -it tools node scripts/create-profile.mjs --role owner
 ```
 
-Enter your name, email and a password of at least 6 characters (typed twice, hidden). To add a
-manager or staff sign-in later, append `--role manager` or `--role staff` to that command.
-There is no default account and no public registration. Five wrong attempts lock an account
-for 15 minutes, which is what protects a short password on a public address.
+Enter the tile name (`Solomon`) and a 6-digit passcode, typed twice, hidden. Then the managers:
+
+```powershell
+docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml --profile tools run --rm -it tools node scripts/create-profile.mjs --role manager
+```
+
+Run it once per manager profile (`Manager 1`, `Manager 2`, or real names). `--role staff`
+makes a read-only roster profile. Running the command again with an existing name resets that
+profile's passcode and clears its lockout - that is how a forgotten passcode is fixed.
+There is no default profile and no public registration. Five wrong passcodes lock a profile
+for 15 minutes, which is what protects a six-digit code on a public address.
 
 ## 7. Make it reachable over HTTPS
 
@@ -176,7 +185,8 @@ Signed in as the owner, using the entry forms on each screen:
    check Today's coverage.
 4. Money → Record takings and a stock purchase; check the P&L and BAS.
 5. `POST /api/ledger/<id>/void` with a reason; the entry shows struck through.
-6. Sign out, sign in with a wrong password five times: the account locks for 15 minutes.
+6. Sign out, pick a profile and enter a wrong passcode five times: that profile locks for 15
+   minutes (reset it early with the profile command if needed).
 
 Then reset before real records: from **this `acidic` folder, with this `--env-file`**,
 `docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml down --volumes`,

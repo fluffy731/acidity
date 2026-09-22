@@ -33,7 +33,8 @@ A **working browser preview** and the implemented live workflow:
   between counts, reorder-to-par, roster hours/cost/overlaps/coverage, cash-basis P&L and BAS.
 - Live services in transactions with an append-only audit log: create/update events, stock
   items, counts and movements, staff and shifts, ledger entries and voids.
-- Auth.js owner/manager/staff sign-in with lockout, same-origin write protection, bounded JSON.
+- Profile-tile sign-in with a 6-digit passcode (owner / manager / staff), five-failure lockout,
+  same-origin write protection, bounded JSON.
 - Five screens: Today (the cross-domain view), Programme (+ Website export), Stock, Roster, Money.
 - Docker multi-stage image, `compose.yaml` (preview) + `compose.live.yaml` (PostgreSQL, nightly
   backups, on-demand tools container) with hard memory/CPU caps so Acidic stays small next to

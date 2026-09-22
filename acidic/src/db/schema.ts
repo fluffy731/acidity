@@ -11,12 +11,15 @@ const createdAt = () => timestamp("created_at", { withTimezone: true }).defaultN
 const updatedAt = () => timestamp("updated_at", { withTimezone: true }).defaultNow().notNull();
 const moneyColumn = (name: string) => numeric(name, { precision: 12, scale: 2 });
 
-/** People who can sign in. Owner runs the venue; managers run shifts and stock; staff see the
- * roster. Staff who never sign in are still `staffMembers` rows - the two are separate on purpose. */
+/** Profiles that can sign in: pick a tile, type a 6-digit passcode (D12). Owner runs the
+ * venue; managers run shifts and stock; staff see the roster. Staff who never sign in are
+ * still `staffMembers` rows - the two are separate on purpose. */
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
-  email: text("email").notNull().unique(),
+  /** Optional - a shared "Manager 2" profile has no email. Unique where present. */
+  email: text("email").unique(),
+  /** bcrypt hash of the 6-digit passcode (column name kept from the password era). */
   passwordHash: text("password_hash"),
   role: text("role").default("staff").notNull(),
   failedLoginAttempts: integer("failed_login_attempts").default(0).notNull(),

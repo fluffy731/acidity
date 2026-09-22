@@ -16,7 +16,9 @@ one record and shows the owner what needs doing today.
 - **Manager** - programme, stock, roster and ledger entries.
 - **Staff** - reads the roster and the programme.
 
-Accounts are created from the server (`npm run owner:create`); there is no public registration.
+Sign-in is a profile tile plus a 6-digit passcode (D12). Profiles are created from the server
+(`npm run profile:create -- --role owner|manager|staff`); there is no public registration.
+Five wrong passcodes lock the profile for 15 minutes.
 
 ## Programme
 

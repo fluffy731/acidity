@@ -58,3 +58,11 @@ unused service, an image and a CI step. No worker, no AI, no mail integration.
 such a strong security for acidic - just something simple like 6 characters." Accepted for a
 staff tool. What actually defends the public sign-in page is the five-failure, 15-minute
 lockout in `src/lib/auth/policy.ts`, which is unchanged; bcrypt cost 12 also stands.
+
+**D12 - 22 Sept 2026 - Sign-in is a profile tile plus a 6-digit passcode.** Solomon: "select a
+profile to sign in as Manager… then just passcode to sign in 6 digits. make it simple." Replaces
+email + password (and supersedes D11). Profiles (Solomon as owner, `Manager 1`, `Manager 2`,
+…) are created and reset from the server; email is now optional on a profile, since a shared
+manager tile has none. Names appear on the public sign-in page - keep them to first names or
+role labels. The five-failure, 15-minute lockout is what makes a one-in-a-million code safe
+enough for a staff tool; passcodes are still bcrypt-hashed (cost 12) and never stored plain.

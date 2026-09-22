@@ -80,7 +80,13 @@ pre { background: var(--ink); border: 1px solid var(--line); padding: 0.75rem; o
 .welcome-content h1 { font-size: 2.1rem; }
 .welcome-intro { color: var(--cream-dim); font-size: 1.05rem; }
 .welcome-preview { border: 1px solid var(--line); padding: 1.25rem; margin: 1.5rem 0; background: var(--ink-2); }
-.sign-in-form { display: flex; flex-direction: column; gap: 0.9rem; max-width: 380px; margin: 3rem auto; }
+.sign-in-form { display: flex; flex-direction: column; gap: 0.9rem; max-width: 420px; margin: 3rem auto; }
+.profile-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.6rem; }
+.profile-tile { display: flex; flex-direction: column; align-items: flex-start; gap: 0.2rem; padding: 0.8rem 0.9rem; background: var(--ink-2); color: var(--cream); border: 1px solid var(--line); border-radius: var(--radius); text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 0.95rem; text-align: left; min-height: 64px; }
+.profile-tile span { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream-dim); }
+.profile-tile:hover { border-color: var(--green-dim); }
+.profile-tile.selected { border-color: var(--green); background: var(--green-wash); }
+.sign-in-form input[name="passcode"] { font-size: 1.6rem; letter-spacing: 0.4em; text-align: center; font-family: var(--mono); }
 
 @media (max-width: 900px) {
   .workspace-layout { grid-template-columns: 1fr; }

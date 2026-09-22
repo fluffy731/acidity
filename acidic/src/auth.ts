@@ -7,22 +7,22 @@ import { users } from "@/db/schema";
 import { appMode, liveConfigured } from "@/lib/mode";
 import { credentialsSchema, failedLogin, ROLES } from "@/lib/auth/policy";
 
-// Valid bcrypt cost-12 dummy hash used only for unknown-user timing.
+// Valid bcrypt cost-12 dummy hash used only for unknown-profile timing.
 const DUMMY_HASH = "$2b$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW";
 
 export const { auth, handlers, signOut } = NextAuth({
   pages: { signIn: "/login" },
-  // A bar phone or the office laptop stays signed in for 14 days, or until sign-out.
+  // A bar phone or the office desktop stays signed in for 14 days, or until sign-out.
   session: { strategy: "jwt", maxAge: 14 * 24 * 60 * 60 },
   providers: [Credentials({
-    credentials: { email: { type: "email" }, password: { type: "password" } },
+    credentials: { userId: { type: "text" }, passcode: { type: "password" } },
     async authorize(input) {
       if (appMode() !== "live" || !liveConfigured()) return null;
       const parsed = credentialsSchema.safeParse(input);
       if (!parsed.success) return null;
-      const { email, password } = parsed.data;
-      const [candidate] = await db().select().from(users).where(eq(users.email, email)).limit(1);
-      const matches = await compare(password, candidate?.passwordHash ?? DUMMY_HASH);
+      const { userId, passcode } = parsed.data;
+      const [candidate] = await db().select().from(users).where(eq(users.id, userId)).limit(1);
+      const matches = await compare(passcode, candidate?.passwordHash ?? DUMMY_HASH);
       if (!candidate?.passwordHash) return null;
       return db().transaction(async (tx) => {
         const [user] = await tx.select().from(users).where(eq(users.id, candidate.id)).for("update");
@@ -33,7 +33,7 @@ export const { auth, handlers, signOut } = NextAuth({
           return null;
         }
         await tx.update(users).set({ failedLoginAttempts: 0, lockedUntil: null }).where(eq(users.id, user.id));
-        return { id: user.id, email: user.email, name: user.name };
+        return { id: user.id, email: user.email ?? undefined, name: user.name };
       });
     },
   })],

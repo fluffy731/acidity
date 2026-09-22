@@ -2,6 +2,7 @@ import { AppShell } from "@/components/app-shell";
 import { SignInForm } from "@/components/sign-in-form";
 import { appMode, liveConfigured } from "@/lib/mode";
 import { currentUser } from "@/auth";
+import { listProfiles } from "@/lib/auth/profiles";
 export const dynamic = "force-dynamic";
 export default async function WorkspaceLayout({ children }: { children: React.ReactNode }) {
   if (appMode() === "preview") return <AppShell>{children}</AppShell>;
@@ -9,6 +10,6 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
   let user;
   try { user = await currentUser(); }
   catch { return <main id="main" className="container"><h1>Acidic is temporarily unavailable</h1><p>Try again shortly. Saved records have not changed.</p></main>; }
-  if (!user) return <main id="main" className="welcome-content"><SignInForm /></main>;
+  if (!user) return <main id="main" className="welcome-content"><SignInForm profiles={await listProfiles()} /></main>;
   return <AppShell live user={user}>{children}</AppShell>;
 }
