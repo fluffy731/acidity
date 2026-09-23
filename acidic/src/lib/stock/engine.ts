@@ -12,6 +12,22 @@ export const stockItemInputSchema = z.object({
 }).strict();
 export type StockItemInput = z.infer<typeof stockItemInputSchema>;
 
+/** An edit from the Stock screen: send only what changed. `active: false` retires a line -
+ *  it keeps its history and leaves the count sheet, the reorder list and the stock value.
+ *  Written out rather than derived with `.partial()`, because partial keeps the create
+ *  schema's defaults: a request that set only the cost would arrive carrying parLevel 0 and
+ *  supplier null and quietly wipe both. */
+export const stockItemUpdateSchema = z.object({
+  name: z.string().trim().min(1).max(120).optional(),
+  category: z.enum(STOCK_CATEGORIES).optional(),
+  unit: z.enum(STOCK_UNITS).optional(),
+  unitCost: z.number().min(0).max(100_000).optional(),
+  parLevel: z.number().min(0).max(100_000).optional(),
+  supplier: z.string().trim().max(120).nullable().optional(),
+  active: z.boolean().optional(),
+}).strict().refine((value) => Object.keys(value).length > 0, { message: "Nothing to change." });
+export type StockItemUpdate = z.infer<typeof stockItemUpdateSchema>;
+
 export const stockCountInputSchema = z.object({
   countDate: z.iso.date(),
   note: z.string().trim().max(500).nullable().default(null),

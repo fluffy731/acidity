@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { costOfGoods, reorderList, stockCountInputSchema, stockValue, usageBetweenCounts } from "../src/lib/stock/engine";
+import { costOfGoods, reorderList, stockCountInputSchema, stockItemUpdateSchema, stockValue, usageBetweenCounts } from "../src/lib/stock/engine";
 import { items, latestCount, movements, previousCount } from "../src/lib/data/fixtures";
 
 describe("stocktake engine", () => {
@@ -32,5 +32,22 @@ describe("stocktake engine", () => {
   });
   it("rejects a count that lists the same item twice", () => {
     expect(stockCountInputSchema.safeParse({ countDate: "2026-08-10", lines: [{ itemId: "6b1f2f3e-1111-4a5b-8c9d-000000000001", quantity: 1 }, { itemId: "6b1f2f3e-1111-4a5b-8c9d-000000000001", quantity: 2 }] }).success).toBe(false);
+  });
+});
+
+describe("editing a stock line", () => {
+  it("accepts just the field that changed", () => {
+    expect(stockItemUpdateSchema.parse({ unitCost: 58.9 })).toEqual({ unitCost: 58.9 });
+    expect(stockItemUpdateSchema.parse({ parLevel: 3, active: false })).toEqual({ parLevel: 3, active: false });
+  });
+  it("refuses an empty edit rather than writing an audit row for nothing", () => {
+    expect(() => stockItemUpdateSchema.parse({})).toThrow();
+  });
+  it("refuses a field nobody meant to send", () => {
+    expect(() => stockItemUpdateSchema.parse({ unitCost: 10, onHand: 4 })).toThrow();
+  });
+  it("still enforces the vocabulary and the limits", () => {
+    expect(() => stockItemUpdateSchema.parse({ category: "grog" })).toThrow();
+    expect(() => stockItemUpdateSchema.parse({ unitCost: -1 })).toThrow();
   });
 });

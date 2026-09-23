@@ -5,7 +5,7 @@ private container, the app in a container, nightly backups, and the existing Clo
 for HTTPS so the bar's phones can reach it. Follow it in order. Every command is run from the
 `acidic` folder unless it says otherwise. Nothing here needs a Neon/Vercel account.
 
-Expect about an hour the first time. Steps 1-4 are one-off; step 11 is how you deploy forever after.
+Expect about an hour the first time. Steps 1-4 are one-off; step 12 is how you deploy forever after.
 
 ---
 
@@ -212,7 +212,31 @@ Things worth knowing:
 Then open Programme in the app, and Programme -> **Website export** to render the site blocks
 from what you just loaded.
 
-## 10. Acceptance run (do this once, with fictional data, before real records)
+## 10. Load the stock list and the recipe book
+
+`data/stock.json` is the bar's countable lines - the back bar as the menu lists it, the
+liqueurs and bitters the cocktail specs need, kegs, wine, sake, mixers, produce and dairy.
+`data/recipes.json` is the cocktail list: the house specs and the classics. Load both:
+
+```powershell
+docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml --profile tools run --rm tools node scripts/seed-bar.mjs
+docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml --profile tools run --rm tools node scripts/seed-bar.mjs --apply
+```
+
+The first reports and rolls back; the second keeps it. It links each ingredient to the bottle
+it pours from wherever the names match, and lists the ones still to decide - "Gin" has to be
+told which gin.
+
+**Every cost and par level is zero**, on purpose: a guessed cost would quietly corrupt stock
+value, the reorder list and the P&L. Set them on the **Stock** screen, which is built for a
+phone: search a line, tap **Edit**, type the cost and the par. Re-running the seed never
+overwrites a cost or par you have set.
+
+Day to day on the Stock screen: **Start a stocktake** walks the bar section by section with a
+running count; **+ Delivery** and **− Waste** on any line record a movement in two taps.
+Cocktails is on the main nav - anyone on shift can read a spec, managers can edit one.
+
+## 11. Acceptance run (do this once, with fictional data, before real records)
 
 Signed in as the owner, using the entry forms on each screen:
 
@@ -231,15 +255,17 @@ Signed in as the owner, using the entry forms on each screen:
 
 Then reset before real records: from **this `acidic` folder, with this `--env-file`**,
 `docker compose --env-file deploy/.env -f compose.yaml -f compose.live.yaml down --volumes`,
-and repeat steps 4-6, then step 9. Never run `down --volumes` from Monnie's folder: it would delete
+and repeat steps 4-6, then steps 9 and 10. Never run `down --volumes` from Monnie's folder: it would delete
 Monnie's database volume.
 
-## 11. Day-to-day
+## 12. Day-to-day
 
 - **Deploy a change:** `git pull`, then the step-8 `up -d --build --wait` command, then
   `node scripts/smoke-live.mjs`. If smoke fails, `docker compose … logs --tail 60 app`.
 - **New migration in the pull:** run step 5 before step 8.
 - **A gig changes:** edit `data/programme.json`, run step 9 (dry run, then `--apply`).
+- **A new bottle or a new drink:** add it on the Stock or Cocktails screen, or edit
+  `data/stock.json` / `data/recipes.json` and re-run step 10.
 - **Backups:** the `backup` container writes `acidic-<stamp>.dump` into `ACIDIC_BACKUP_DIR`
   every ~20 hours and keeps 30. Confirm a file appears there in the first day; that folder
   syncing off the machine is your disaster recovery.
@@ -250,7 +276,7 @@ Monnie's database volume.
 - **Reboot:** every container has `restart: unless-stopped`; Docker Desktop must be set to start
   at login and the PC must not sleep while the bar trades.
 
-## 12. Keep it in step with the website
+## 13. Keep it in step with the website
 
 Programme → **Website export** renders the Programme Index rows, the Upcoming lists, the
 calendar `data-events` attribute and the hero event from the live programme. Paste them into

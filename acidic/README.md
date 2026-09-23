@@ -25,7 +25,7 @@ consultancy's: there are no enquiries, proposals or engineering documents here.
 
 A **working browser preview** and the implemented live workflow:
 
-- Ten PostgreSQL tables with check constraints that make bad records impossible: a booking link
+- Twelve PostgreSQL tables with check constraints that make bad records impossible: a booking link
   only on a ticketed/RSVP event, a consistent GST split on every ledger entry, positive stock
   movements, valid roles and statuses.
 - Deterministic engines with unit tests: event status workflow and date conflicts, website
@@ -35,7 +35,13 @@ A **working browser preview** and the implemented live workflow:
   items, counts and movements, staff and shifts, ledger entries and voids.
 - Profile-tile sign-in with a 6-digit passcode (owner / manager / staff), five-failure lockout,
   same-origin write protection, bounded JSON.
-- Five screens: Today (the cross-domain view), Programme (+ Website export), Stock, Roster, Money.
+- Six screens: Today (the cross-domain view), Programme (+ Website export), Cocktails, Stock,
+  Roster, Money - the Stock and Cocktails screens are card lists built for a phone, where a
+  cost, a delivery, a stocktake or a spec is edited in place.
+- The bar's reference data as editable files: `data/stock.json` (148 lines, from the menu's own
+  back bar plus everything the cocktail specs need) and `data/recipes.json` (the house list and
+  the classics), applied with `npm run seed:bar`, which links each ingredient to the bottle it
+  pours from. Costs and par levels are deliberately unset - see decision D15.
 - The programme as one editable file, `data/programme.json`, applied with `npm run programme:seed`
   (dry run by default, keyed on date and title so it is safe to re-run, never deletes) and
   validated against the app's own event rules in CI.
@@ -62,7 +68,7 @@ compared with the live site. Nothing in the preview is saved.
 ## Verify
 
 ```bash
-npm test          # 57 unit tests
+npm test          # 74 unit tests
 npm run typecheck
 npm run lint
 npm run db:check  # migration metadata

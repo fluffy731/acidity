@@ -1,0 +1,1061 @@
+{
+  "$comment": [
+    "The bar's stock lines. `npm run seed:bar` loads this into the live database; re-running",
+    "updates a line rather than duplicating it, and never deletes.",
+    "",
+    "IMPORTANT: unitCost and parLevel are 0 on every line, because a cost is a business fact",
+    "nobody should guess. Set them on the Stock screen - it is built for a phone - or edit them",
+    "here and re-run. Stock value and the reorder list stay wrong until the costs are in.",
+    "",
+    "  name      what the count sheet calls it; also how a recipe ingredient links to it",
+    "  category  coffee tea beer wine sake spirits liqueur bitters mixers juice syrup produce",
+    "            milk_dairy food packaging other",
+    "  unit      each bottle can keg kg gram litre carton pack - the unit you COUNT in",
+    "  unitCost  what one unit costs you, GST inclusive, as the supplier bills it",
+    "  parLevel  the level you want back to after an order; 0 means never on the reorder list"
+  ],
+  "items": [
+    {
+      "name": "Greenside Vodka",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Absolut",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Haku Vodka",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Haku Yuzu",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Grey Goose",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Beefeater London Dry",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Bombay Sapphire",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Hendrick's",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Suntory Roku",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Slingsby London Dry",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Soldada Blanco",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "El Jimador Reposado",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Orendain Blanco",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Orendain Reposado",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "1800 Blanco",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Bacardi Spiced",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Bacardi White",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Sailor Jerry Spiced",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Kraken Black Spiced",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Plantation 3 Stars",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Plantation Original Dark",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Jameson Irish",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Jack Daniel's No.7",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Johnnie Walker Black",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Four Roses Bourbon",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Maker's Mark Bourbon",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Suntory Toki",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Glenfiddich 12",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Fuji Single Blended",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Hibiki Harmony",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "The Hakushu 12",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "The Yamazaki 12",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Rye Whisky",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Laphroaig Select",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Mezcal",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Cognac",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Brandy",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Absinthe",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Triple Sec",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Campari",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Aperol",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Suze",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Cynar",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Lillet Blanc",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Dry Vermouth",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Sweet Vermouth",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Bianco Vermouth",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Benedictine DOM",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Branca Menta",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Luxardo Maraschino",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Creme de Cacao",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Coffee Liqueur",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Peach Liqueur",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Cherry Liqueur",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Yuzu Liqueur",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Elderflower Liqueur",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Matcha Liqueur",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Umeshu",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Oloroso Sherry",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Amaro",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Angostura Bitters",
+      "category": "bitters",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Orange Bitters",
+      "category": "bitters",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Chocolate Bitters",
+      "category": "bitters",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Japanese Lager (Boatrocker, 5%)",
+      "category": "beer",
+      "unit": "keg",
+      "unitCost": 0,
+      "parLevel": 0,
+      "supplier": "Boatrocker"
+    },
+    {
+      "name": "Lamington Stout (Boatrocker, 5.5%)",
+      "category": "beer",
+      "unit": "keg",
+      "unitCost": 0,
+      "parLevel": 0,
+      "supplier": "Boatrocker"
+    },
+    {
+      "name": "Dark Lager (Stingrays, 4.5%)",
+      "category": "beer",
+      "unit": "keg",
+      "unitCost": 0,
+      "parLevel": 0,
+      "supplier": "Stingrays"
+    },
+    {
+      "name": "Pale Ale (Hop Nation, 4.6%)",
+      "category": "beer",
+      "unit": "keg",
+      "unitCost": 0,
+      "parLevel": 0,
+      "supplier": "Hop Nation"
+    },
+    {
+      "name": "Status Quo Pale Ale (Mountain Culture, 5.2%)",
+      "category": "beer",
+      "unit": "keg",
+      "unitCost": 0,
+      "parLevel": 0,
+      "supplier": "Mountain Culture"
+    },
+    {
+      "name": "Quench IPA (Bodriggy, 6.2%)",
+      "category": "beer",
+      "unit": "keg",
+      "unitCost": 0,
+      "parLevel": 0,
+      "supplier": "Bodriggy"
+    },
+    {
+      "name": "N.V. Serafino Goose Island Sparkling",
+      "category": "wine",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "2023 Sir Paz Yianni Blanc de Blanc",
+      "category": "wine",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "2025 Claymore Walk This Way Riesling",
+      "category": "wine",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "2025 Alpha Box & Dice Tarot Pinot Grigio",
+      "category": "wine",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "2024 Digiorgio Lucindale Chardonnay",
+      "category": "wine",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "2022 Sevenhill Inigo Shiraz",
+      "category": "wine",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "2024 Nevis Bluff The Bluff Pinot Noir",
+      "category": "wine",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "2022 Tscharke A Thing of Beauty Grenache",
+      "category": "wine",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "2019 Grace Wine Yamanashi De Grace",
+      "category": "wine",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "2024 Digiorgio Head In The Clouds Pinot Rose",
+      "category": "wine",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "2025 Delinquente Jaybird Bianco Macerato",
+      "category": "wine",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "2022 Soumah Ai Fiori Rosato",
+      "category": "wine",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Prosecco",
+      "category": "wine",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Kubota Junmai Daiginjo",
+      "category": "sake",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Kubota Hyakuju Junmai Daiginjo",
+      "category": "sake",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Dassai 45 Junmai Daiginjo",
+      "category": "sake",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Dassai 39 Junmai Daiginjo",
+      "category": "sake",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Hyaku Moku Junmai Daiginjo",
+      "category": "sake",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Dassai 45 Happo Nigorizake",
+      "category": "sake",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Coke",
+      "category": "mixers",
+      "unit": "can",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Coke Zero",
+      "category": "mixers",
+      "unit": "can",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Soda Water",
+      "category": "mixers",
+      "unit": "can",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Tonic Water",
+      "category": "mixers",
+      "unit": "can",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Lemonade",
+      "category": "mixers",
+      "unit": "can",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Ginger Ale",
+      "category": "mixers",
+      "unit": "can",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Ginger Beer",
+      "category": "mixers",
+      "unit": "can",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Red Bull",
+      "category": "mixers",
+      "unit": "can",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Cranberry Juice",
+      "category": "juice",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Orange Juice",
+      "category": "juice",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Apple Juice",
+      "category": "juice",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Pineapple Juice",
+      "category": "juice",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Grapefruit Juice",
+      "category": "juice",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Lemon Juice",
+      "category": "juice",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Lime Juice",
+      "category": "juice",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Yuzu Juice",
+      "category": "juice",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Sugar Syrup",
+      "category": "syrup",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Honey Syrup",
+      "category": "syrup",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Thyme Syrup",
+      "category": "syrup",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Pineapple Oleo",
+      "category": "syrup",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Orange Flower Water",
+      "category": "syrup",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Brown Sugar Syrup",
+      "category": "syrup",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Lemons",
+      "category": "produce",
+      "unit": "each",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Limes",
+      "category": "produce",
+      "unit": "each",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Oranges",
+      "category": "produce",
+      "unit": "each",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Grapefruit",
+      "category": "produce",
+      "unit": "each",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Cucumber",
+      "category": "produce",
+      "unit": "each",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Peaches",
+      "category": "produce",
+      "unit": "each",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Pineapple",
+      "category": "produce",
+      "unit": "each",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Mint",
+      "category": "produce",
+      "unit": "each",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Thyme",
+      "category": "produce",
+      "unit": "each",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Maraschino Cherries",
+      "category": "produce",
+      "unit": "each",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Dried Pineapple Wheels",
+      "category": "produce",
+      "unit": "each",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Olive Oil",
+      "category": "produce",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Espresso Blend - Humbler",
+      "category": "coffee",
+      "unit": "kg",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Ghost Rider Blend",
+      "category": "coffee",
+      "unit": "kg",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Decaf Beans",
+      "category": "coffee",
+      "unit": "kg",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Filter / Pour Over Beans",
+      "category": "coffee",
+      "unit": "kg",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Cold Brew",
+      "category": "coffee",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Black Tea",
+      "category": "tea",
+      "unit": "pack",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Jasmine Tea",
+      "category": "tea",
+      "unit": "pack",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Oolong Tea",
+      "category": "tea",
+      "unit": "pack",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Chai",
+      "category": "tea",
+      "unit": "pack",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Matcha Powder",
+      "category": "tea",
+      "unit": "gram",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Full Cream Milk",
+      "category": "milk_dairy",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Oat Milk",
+      "category": "milk_dairy",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Almond Milk",
+      "category": "milk_dairy",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Soy Milk",
+      "category": "milk_dairy",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Evaporated Milk",
+      "category": "milk_dairy",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Rice Milk",
+      "category": "milk_dairy",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Coconut Milk",
+      "category": "milk_dairy",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Pouring Cream",
+      "category": "milk_dairy",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Egg White",
+      "category": "milk_dairy",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Crisps",
+      "category": "food",
+      "unit": "pack",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Chocolate Powder",
+      "category": "food",
+      "unit": "gram",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Pistachio Cream",
+      "category": "food",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Ice",
+      "category": "packaging",
+      "unit": "pack",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Takeaway Cups",
+      "category": "packaging",
+      "unit": "pack",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Cocktail Napkins",
+      "category": "packaging",
+      "unit": "pack",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Straws",
+      "category": "packaging",
+      "unit": "pack",
+      "unitCost": 0,
+      "parLevel": 0
+    }
+  ]
+}

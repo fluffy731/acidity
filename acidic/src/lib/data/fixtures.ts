@@ -6,8 +6,37 @@ import type { LedgerEntry } from "@/lib/accounting/ledger";
 import type { Shift, StaffMember } from "@/lib/staffing/roster";
 import type { CountLine, StockItem } from "@/lib/stock/engine";
 import { ledgerSplit } from "@/lib/accounting/ledger";
+import type { Recipe, RecipeLine } from "@/lib/recipes/engine";
+import { recipeSeedSchema } from "./bar-seed";
+import recipeBookJson from "../../../data/recipes.json";
 
 export const FIXTURE_USER = { id: "00000000-0000-4000-8000-000000000001", name: "Preview owner", role: "owner" };
+
+/** The recipe book is real - it is what the bar pours, not a fictional record - so the preview
+ * shows the same list the live database is seeded with. Ingredients read unlinked here because
+ * linking points at real stock rows, which the preview does not have. */
+const recipeBook = recipeSeedSchema.parse(recipeBookJson);
+export const recipes: Recipe[] = recipeBook.recipes.map((recipe, index) => ({
+  id: `recipe-${index + 1}`,
+  name: recipe.name,
+  kind: recipe.kind,
+  family: recipe.family ?? null,
+  glass: recipe.glass ?? null,
+  method: recipe.method,
+  methodNote: recipe.methodNote ?? null,
+  garnish: recipe.garnish ?? null,
+  menuPrice: recipe.menuPrice ?? null,
+  notes: recipe.notes ?? null,
+  active: true,
+  lines: recipe.lines.map((line, position) => ({
+    id: `recipe-${index + 1}-${position + 1}`,
+    ingredient: line.ingredient,
+    quantity: line.quantity ?? null,
+    unit: (line.unit ?? null) as RecipeLine["unit"],
+    itemId: null,
+    note: line.note ?? null,
+  })),
+}));
 
 export const events: OverviewEvent[] = [
   { id: "e1", eventDate: "2026-08-01", title: "The Music of Wes Montgomery", artist: "Tony Yang Trio", genre: "Jazz Trio", kind: "night_session", status: "ticketed", startTime: "20:00", ticketUrl: "https://events.humanitix.com/music-of-montgomery-or-tony-yang-jazz-trio-live-performance/tickets", description: "Tony Yang, Charlie Rank and Zayne Guo play the music of Wes Montgomery.", staffRequired: 3 },

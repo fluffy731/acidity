@@ -93,3 +93,32 @@ Four calendar entries still differ from the live site, and deliberately: the sit
 title, 23 Aug leads with the artist). The export applies one convention to all rows, so pasting a
 fresh export tidies those four. The export is the format from here.
 
+**D15 - 23 Sept 2026 - The stock list is seeded from the menu, with no costs.** `data/stock.json`
+holds 148 lines built from what acidity.com.au actually sells - the back bar spirit by spirit,
+the six kegs, the wine and sake lists, the printed mixers - plus every liqueur, bitter, syrup and
+piece of produce the cocktail specs call for. Unit cost and par level are **zero on every line**.
+A plausible-looking guessed cost is worse than an obvious gap: it would flow into stock value,
+the reorder list and cost of goods, and nobody would know the figures were invented. Re-running
+the seed never overwrites a cost or par that has been set, so the file stays usable as the list
+grows.
+
+**D16 - 23 Sept 2026 - Recipes are their own domain, linked to stock by name.** A recipe is what
+the bar makes, a stock line is what it buys, and one bottle serves many drinks, so
+`recipes` / `recipe_lines` sit beside stock rather than inside it. Every measure carries its
+ingredient as written text and, optionally, the stock line it draws from; the seed links the two
+when the names match exactly, which covers 134 of 165 measures and leaves the house-pour
+decisions ("which gin is Gin") to a person. That link is what lets a stocktake say a drink is
+about to become unmakeable. Specs came from the bar's own sheets, so they supersede the
+ingredient prose on the menu page; three drinks are recorded with no measures rather than
+invented, and the classics were added so the back bar is checked against everything the bar
+actually pours.
+
+**D17 - 23 Sept 2026 - Stock and recipes are edited on a phone, not a laptop.** Solomon: "make
+it mobile friendly as that's most frequently used platform." Both screens are card lists with
+44px controls and 16px inputs (smaller text makes iOS zoom the page): search a line, tap Edit,
+change the cost. A stocktake collapses by category with a running count, and holds entered
+quantities in component state so searching never loses them. Fixing this exposed a layout bug
+affecting every screen - `grid-template-columns: 1fr` will not shrink below its content, so one
+wide table pushed the whole workspace ~180-270px wider than the phone; it is now
+`minmax(0, 1fr)`.
+

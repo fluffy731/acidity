@@ -1,0 +1,1251 @@
+{
+  "$comment": [
+    "The cocktail list: house specs as the bar writes them, plus the classics any guest can",
+    "order. `npm run seed:bar` loads this; re-running updates a recipe by name and replaces its",
+    "measures, so this file is the master copy - edit here or on the Recipes screen.",
+    "",
+    "An ingredient is written the way a bartender says it. The seed links it to a stock line",
+    "when the names match exactly, so \"Campari\" finds the bottle but \"Gin\" stays unlinked",
+    "until someone picks the house pour. The Recipes screen lists what is still unlinked.",
+    "",
+    "  method    shake | dry_then_wet_shake | stir | build | roll | throw | blend | hot | none",
+    "  unit      ml | dash | bar_spoon | each | slice | wedge | leaf | pinch | top_up | rinse"
+  ],
+  "recipes": [
+    {
+      "name": "Ume x Matcha Aperitif",
+      "kind": "house",
+      "method": "stir",
+      "glass": "Short stem",
+      "methodNote": "Stir with ice",
+      "garnish": "Dried pineapple wheel",
+      "lines": [
+        {
+          "ingredient": "Absinthe",
+          "unit": "rinse"
+        },
+        {
+          "ingredient": "Umeshu",
+          "quantity": 25,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Matcha Liqueur",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lillet Blanc",
+          "quantity": 25,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Dry Vermouth",
+          "quantity": 20,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "Sake x Ume Peach Spritz",
+      "kind": "house",
+      "method": "build",
+      "glass": "Highball",
+      "methodNote": "Build with ice in the glass",
+      "garnish": "Peach and thyme",
+      "lines": [
+        {
+          "ingredient": "Sake",
+          "quantity": 50,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Umeshu",
+          "quantity": 20,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Peach Liqueur",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lemon Juice",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Thyme Syrup",
+          "quantity": 5,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Soda Water",
+          "unit": "top_up"
+        }
+      ]
+    },
+    {
+      "name": "Acidity Iced Tea",
+      "kind": "house",
+      "method": "dry_then_wet_shake",
+      "glass": "Highball",
+      "methodNote": "Dry shake 7 secs, wet shake 7 secs",
+      "garnish": "Lemon wheel",
+      "lines": [
+        {
+          "ingredient": "Jameson Irish",
+          "quantity": 45,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Tea base",
+          "quantity": 90,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lemon Juice",
+          "quantity": 20,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sugar Syrup",
+          "quantity": 20,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "Peachy Black Highball",
+      "kind": "house",
+      "method": "none",
+      "notes": "Spec not written up yet.",
+      "lines": []
+    },
+    {
+      "name": "Pink Cut",
+      "kind": "house",
+      "method": "shake",
+      "glass": "Coupe or Nick & Nora",
+      "methodNote": "Shake 7 secs, double strain",
+      "garnish": "Lemon peel",
+      "lines": [
+        {
+          "ingredient": "Gin",
+          "quantity": 35,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Peach Liqueur",
+          "quantity": 10,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Cherry Liqueur",
+          "quantity": 10,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Cranberry Juice",
+          "quantity": 20,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lemon Juice",
+          "quantity": 15,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "Matcha Gin Fizz",
+      "kind": "house",
+      "method": "dry_then_wet_shake",
+      "glass": "Highball",
+      "methodNote": "Dry shake 15 secs, wet shake 30 secs, pour over ice, top with soda",
+      "garnish": "Matcha powder",
+      "lines": [
+        {
+          "ingredient": "Gin",
+          "quantity": 45,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Matcha Liqueur",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lemon Juice",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lime Juice",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sugar Syrup",
+          "quantity": 20,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Pouring Cream",
+          "quantity": 45,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Egg White",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Soda Water",
+          "unit": "top_up"
+        }
+      ]
+    },
+    {
+      "name": "Cross Brew",
+      "kind": "house",
+      "method": "roll",
+      "methodNote": "Roll 3-4 times",
+      "lines": [
+        {
+          "ingredient": "Tea base",
+          "quantity": 40,
+          "unit": "ml",
+          "note": "Two-mix black tea x coffee base"
+        },
+        {
+          "ingredient": "Creme de Cacao",
+          "quantity": 20,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Vodka",
+          "quantity": 40,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Evaporated Milk",
+          "quantity": 40,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "Dark Forest Martini",
+      "kind": "house",
+      "method": "dry_then_wet_shake",
+      "glass": "Martini or coupe",
+      "methodNote": "Dry shake 7 secs, wet shake 10 secs, double strain",
+      "garnish": "Chocolate powder and coffee beans",
+      "notes": "The source sheet reads \"25 Espresso\" - taken as 25ml espresso; confirm.",
+      "lines": [
+        {
+          "ingredient": "Vodka",
+          "quantity": 35,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Coffee Liqueur",
+          "quantity": 20,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Luxardo Maraschino",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Espresso",
+          "quantity": 25,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Creme de Cacao",
+          "quantity": 10,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Chocolate Bitters",
+          "quantity": 2,
+          "unit": "dash"
+        }
+      ]
+    },
+    {
+      "name": "Coffee Yuzu Spritz",
+      "kind": "house",
+      "method": "build",
+      "glass": "Highball",
+      "methodNote": "Build",
+      "garnish": "Lemon or grapefruit peel",
+      "lines": [
+        {
+          "ingredient": "Cold Brew",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Dry Vermouth",
+          "quantity": 20,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Yuzu Liqueur",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Yuzu Juice",
+          "quantity": 10,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Soda Water",
+          "unit": "top_up"
+        }
+      ]
+    },
+    {
+      "name": "Oolong Black Whisky Sour",
+      "kind": "house",
+      "method": "none",
+      "notes": "Spec not written up yet.",
+      "lines": []
+    },
+    {
+      "name": "Midnight Orchard",
+      "kind": "house",
+      "method": "shake",
+      "glass": "Coupe or Nick & Nora",
+      "methodNote": "Shake, double strain",
+      "garnish": "Cherry",
+      "lines": [
+        {
+          "ingredient": "Rye Whisky",
+          "quantity": 45,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Cynar",
+          "quantity": 22,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lemon Juice",
+          "quantity": 22,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Cherry Liqueur",
+          "quantity": 22,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "Verdant Smoke",
+      "kind": "house",
+      "method": "shake",
+      "glass": "Coupe or Nick & Nora",
+      "methodNote": "Hard shake 10-12 secs, double strain",
+      "garnish": "Cucumber",
+      "lines": [
+        {
+          "ingredient": "Mezcal",
+          "quantity": 40,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Aperol",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Elderflower Liqueur",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lime Juice",
+          "quantity": 20,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Cucumber",
+          "quantity": 3,
+          "unit": "slice"
+        }
+      ]
+    },
+    {
+      "name": "Tea Tree Sour",
+      "kind": "house",
+      "method": "shake",
+      "glass": "Nick & Nora",
+      "methodNote": "Shake around 10 secs, double strain",
+      "lines": [
+        {
+          "ingredient": "Cognac",
+          "quantity": 45,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Branca Menta",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lemon Juice",
+          "quantity": 22,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Honey Syrup",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Orange Flower Water",
+          "quantity": 1,
+          "unit": "dash"
+        }
+      ]
+    },
+    {
+      "name": "The Part-Time Lover",
+      "kind": "house",
+      "method": "none",
+      "notes": "Spec not written up yet.",
+      "lines": []
+    },
+    {
+      "name": "Poet's Dream",
+      "kind": "house",
+      "method": "stir",
+      "glass": "Nick & Nora",
+      "methodNote": "Stir",
+      "garnish": "Lemon peel",
+      "lines": [
+        {
+          "ingredient": "Gin",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Dry Vermouth",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Benedictine DOM",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Orange Bitters",
+          "quantity": 1,
+          "unit": "dash"
+        }
+      ]
+    },
+    {
+      "name": "Rosita",
+      "kind": "house",
+      "method": "stir",
+      "glass": "Rocks",
+      "methodNote": "Stir 7-10 secs, over ice",
+      "garnish": "Orange or lemon peel",
+      "lines": [
+        {
+          "ingredient": "Tequila",
+          "quantity": 45,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Dry Vermouth",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sweet Vermouth",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Campari",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Angostura Bitters",
+          "quantity": 2,
+          "unit": "dash"
+        }
+      ]
+    },
+    {
+      "name": "Vieux Carre",
+      "kind": "house",
+      "method": "stir",
+      "glass": "Rocks",
+      "methodNote": "Stir 10 secs, over ice",
+      "garnish": "Cherry or orange peel",
+      "lines": [
+        {
+          "ingredient": "Rye Whisky",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Cognac",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sweet Vermouth",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Benedictine DOM",
+          "quantity": 1,
+          "unit": "bar_spoon"
+        },
+        {
+          "ingredient": "Angostura Bitters",
+          "quantity": 3,
+          "unit": "dash"
+        }
+      ]
+    },
+    {
+      "name": "Black Canopy",
+      "kind": "house",
+      "method": "stir",
+      "glass": "Rocks",
+      "methodNote": "Stir 7-10 secs, over ice",
+      "garnish": "Cherry or orange peel",
+      "lines": [
+        {
+          "ingredient": "Dark Rum",
+          "quantity": 55,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Pineapple Oleo",
+          "quantity": 5,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Cherry Liqueur",
+          "quantity": 5,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Campari",
+          "quantity": 5,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Angostura Bitters",
+          "quantity": 2,
+          "unit": "dash"
+        }
+      ]
+    },
+    {
+      "name": "Smoke Signal",
+      "kind": "house",
+      "method": "stir",
+      "glass": "Rocks",
+      "methodNote": "Stir with ice 10-12 secs",
+      "garnish": "Orange peel",
+      "lines": [
+        {
+          "ingredient": "Laphroaig Select",
+          "quantity": 35,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Bourbon",
+          "quantity": 25,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Peach Liqueur",
+          "quantity": 5,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Yuzu Liqueur",
+          "quantity": 5,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Angostura Bitters",
+          "quantity": 2,
+          "unit": "dash"
+        },
+        {
+          "ingredient": "Orange Bitters",
+          "quantity": 1,
+          "unit": "dash"
+        }
+      ]
+    },
+    {
+      "name": "Negroni",
+      "kind": "classic",
+      "method": "stir",
+      "glass": "Rocks",
+      "methodNote": "Stir over ice",
+      "garnish": "Orange peel",
+      "lines": [
+        {
+          "ingredient": "Gin",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Campari",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sweet Vermouth",
+          "quantity": 30,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "Boulevardier",
+      "kind": "classic",
+      "method": "stir",
+      "glass": "Rocks",
+      "methodNote": "Stir over ice",
+      "garnish": "Orange peel",
+      "lines": [
+        {
+          "ingredient": "Bourbon",
+          "quantity": 40,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Campari",
+          "quantity": 25,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sweet Vermouth",
+          "quantity": 25,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "Americano",
+      "kind": "classic",
+      "method": "build",
+      "glass": "Highball",
+      "methodNote": "Build over ice",
+      "garnish": "Orange slice",
+      "lines": [
+        {
+          "ingredient": "Campari",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sweet Vermouth",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Soda Water",
+          "unit": "top_up"
+        }
+      ]
+    },
+    {
+      "name": "Negroni Sbagliato",
+      "kind": "classic",
+      "method": "build",
+      "glass": "Rocks",
+      "methodNote": "Build over ice",
+      "garnish": "Orange slice",
+      "lines": [
+        {
+          "ingredient": "Campari",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sweet Vermouth",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Prosecco",
+          "quantity": 60,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "Old Fashioned",
+      "kind": "classic",
+      "method": "stir",
+      "glass": "Rocks",
+      "methodNote": "Stir over a large cube",
+      "garnish": "Orange peel",
+      "lines": [
+        {
+          "ingredient": "Bourbon",
+          "quantity": 60,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sugar Syrup",
+          "quantity": 5,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Angostura Bitters",
+          "quantity": 2,
+          "unit": "dash"
+        }
+      ]
+    },
+    {
+      "name": "Manhattan",
+      "kind": "classic",
+      "method": "stir",
+      "glass": "Nick & Nora",
+      "methodNote": "Stir, strain",
+      "garnish": "Cherry",
+      "lines": [
+        {
+          "ingredient": "Rye Whisky",
+          "quantity": 60,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sweet Vermouth",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Angostura Bitters",
+          "quantity": 2,
+          "unit": "dash"
+        }
+      ]
+    },
+    {
+      "name": "Dry Martini",
+      "kind": "classic",
+      "method": "stir",
+      "glass": "Martini",
+      "methodNote": "Stir, strain",
+      "garnish": "Lemon peel or olive",
+      "lines": [
+        {
+          "ingredient": "Gin",
+          "quantity": 60,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Dry Vermouth",
+          "quantity": 10,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "Margarita",
+      "kind": "classic",
+      "method": "shake",
+      "glass": "Rocks",
+      "methodNote": "Shake, strain over ice",
+      "garnish": "Lime wedge, salt rim",
+      "lines": [
+        {
+          "ingredient": "Tequila",
+          "quantity": 45,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Triple Sec",
+          "quantity": 20,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lime Juice",
+          "quantity": 20,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "Daiquiri",
+      "kind": "classic",
+      "method": "shake",
+      "glass": "Coupe",
+      "methodNote": "Shake, double strain",
+      "garnish": "Lime wheel",
+      "lines": [
+        {
+          "ingredient": "White Rum",
+          "quantity": 50,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lime Juice",
+          "quantity": 25,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sugar Syrup",
+          "quantity": 15,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "Espresso Martini",
+      "kind": "classic",
+      "method": "shake",
+      "glass": "Coupe",
+      "methodNote": "Shake hard, double strain",
+      "garnish": "Three coffee beans",
+      "lines": [
+        {
+          "ingredient": "Vodka",
+          "quantity": 45,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Coffee Liqueur",
+          "quantity": 20,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Espresso",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sugar Syrup",
+          "quantity": 5,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "Whisky Sour",
+      "kind": "classic",
+      "method": "dry_then_wet_shake",
+      "glass": "Rocks",
+      "methodNote": "Dry shake, then shake with ice",
+      "garnish": "Cherry and orange",
+      "lines": [
+        {
+          "ingredient": "Bourbon",
+          "quantity": 50,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lemon Juice",
+          "quantity": 25,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sugar Syrup",
+          "quantity": 20,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Egg White",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Angostura Bitters",
+          "quantity": 2,
+          "unit": "dash"
+        }
+      ]
+    },
+    {
+      "name": "Aperol Spritz",
+      "kind": "classic",
+      "method": "build",
+      "glass": "Wine glass",
+      "methodNote": "Build over ice",
+      "garnish": "Orange slice",
+      "lines": [
+        {
+          "ingredient": "Aperol",
+          "quantity": 60,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Prosecco",
+          "quantity": 90,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Soda Water",
+          "unit": "top_up"
+        }
+      ]
+    },
+    {
+      "name": "Hugo Spritz",
+      "kind": "classic",
+      "method": "build",
+      "glass": "Wine glass",
+      "methodNote": "Build over ice",
+      "garnish": "Mint and lime",
+      "lines": [
+        {
+          "ingredient": "Elderflower Liqueur",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Prosecco",
+          "quantity": 90,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Mint",
+          "quantity": 4,
+          "unit": "leaf"
+        },
+        {
+          "ingredient": "Soda Water",
+          "unit": "top_up"
+        }
+      ]
+    },
+    {
+      "name": "Mojito",
+      "kind": "classic",
+      "method": "build",
+      "glass": "Highball",
+      "methodNote": "Muddle mint, build over crushed ice",
+      "garnish": "Mint sprig",
+      "lines": [
+        {
+          "ingredient": "White Rum",
+          "quantity": 50,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lime Juice",
+          "quantity": 25,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sugar Syrup",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Mint",
+          "quantity": 8,
+          "unit": "leaf"
+        },
+        {
+          "ingredient": "Soda Water",
+          "unit": "top_up"
+        }
+      ]
+    },
+    {
+      "name": "Cosmopolitan",
+      "kind": "classic",
+      "method": "shake",
+      "glass": "Coupe",
+      "methodNote": "Shake, double strain",
+      "garnish": "Orange peel",
+      "lines": [
+        {
+          "ingredient": "Vodka",
+          "quantity": 40,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Triple Sec",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Cranberry Juice",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lime Juice",
+          "quantity": 15,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "Gimlet",
+      "kind": "classic",
+      "method": "shake",
+      "glass": "Coupe",
+      "methodNote": "Shake, double strain",
+      "garnish": "Lime wheel",
+      "lines": [
+        {
+          "ingredient": "Gin",
+          "quantity": 60,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lime Juice",
+          "quantity": 20,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sugar Syrup",
+          "quantity": 15,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "Tom Collins",
+      "kind": "classic",
+      "method": "build",
+      "glass": "Highball",
+      "methodNote": "Build over ice",
+      "garnish": "Lemon wheel",
+      "lines": [
+        {
+          "ingredient": "Gin",
+          "quantity": 45,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lemon Juice",
+          "quantity": 25,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sugar Syrup",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Soda Water",
+          "unit": "top_up"
+        }
+      ]
+    },
+    {
+      "name": "Paloma",
+      "kind": "classic",
+      "method": "build",
+      "glass": "Highball",
+      "methodNote": "Build over ice",
+      "garnish": "Grapefruit and lime",
+      "lines": [
+        {
+          "ingredient": "Tequila",
+          "quantity": 45,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Grapefruit Juice",
+          "quantity": 60,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lime Juice",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Soda Water",
+          "unit": "top_up"
+        }
+      ]
+    },
+    {
+      "name": "Sidecar",
+      "kind": "classic",
+      "method": "shake",
+      "glass": "Coupe",
+      "methodNote": "Shake, double strain",
+      "garnish": "Sugar rim, lemon peel",
+      "lines": [
+        {
+          "ingredient": "Cognac",
+          "quantity": 45,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Triple Sec",
+          "quantity": 20,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lemon Juice",
+          "quantity": 20,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "French 75",
+      "kind": "classic",
+      "method": "shake",
+      "glass": "Flute",
+      "methodNote": "Shake the first three, strain, top with prosecco",
+      "garnish": "Lemon twist",
+      "lines": [
+        {
+          "ingredient": "Gin",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lemon Juice",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Sugar Syrup",
+          "quantity": 10,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Prosecco",
+          "quantity": 60,
+          "unit": "ml"
+        }
+      ]
+    },
+    {
+      "name": "Moscow Mule",
+      "kind": "classic",
+      "method": "build",
+      "glass": "Mug or highball",
+      "methodNote": "Build over ice",
+      "garnish": "Lime wedge",
+      "lines": [
+        {
+          "ingredient": "Vodka",
+          "quantity": 45,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lime Juice",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Ginger Beer",
+          "unit": "top_up"
+        }
+      ]
+    },
+    {
+      "name": "Dark 'n' Stormy",
+      "kind": "classic",
+      "method": "build",
+      "glass": "Highball",
+      "methodNote": "Build over ice, float the rum",
+      "garnish": "Lime wedge",
+      "lines": [
+        {
+          "ingredient": "Dark Rum",
+          "quantity": 50,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lime Juice",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Ginger Beer",
+          "unit": "top_up"
+        }
+      ]
+    },
+    {
+      "name": "Penicillin",
+      "kind": "classic",
+      "method": "shake",
+      "glass": "Rocks",
+      "methodNote": "Shake, strain over ice, float the Laphroaig",
+      "garnish": "Candied ginger",
+      "lines": [
+        {
+          "ingredient": "Blended Scotch",
+          "quantity": 50,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lemon Juice",
+          "quantity": 22,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Honey Syrup",
+          "quantity": 22,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Laphroaig Select",
+          "quantity": 7.5,
+          "unit": "ml",
+          "note": "Float"
+        }
+      ]
+    },
+    {
+      "name": "Irish Coffee",
+      "kind": "classic",
+      "method": "hot",
+      "glass": "Glass mug",
+      "methodNote": "Build hot, float the cream",
+      "garnish": "Lightly whipped cream",
+      "lines": [
+        {
+          "ingredient": "Jameson Irish",
+          "quantity": 40,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Hot filter coffee",
+          "quantity": 90,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Brown Sugar Syrup",
+          "quantity": 10,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Pouring Cream",
+          "quantity": 30,
+          "unit": "ml",
+          "note": "Float"
+        }
+      ]
+    }
+  ]
+}

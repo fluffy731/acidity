@@ -4,6 +4,7 @@ import { EVENT_KINDS, EVENT_STATUSES } from "../lib/programme/vocab";
 import { MOVEMENT_KINDS, STOCK_CATEGORIES, STOCK_UNITS } from "../lib/stock/vocab";
 import { SHIFT_ROLES, SHIFT_STATUSES, EMPLOYMENT_TYPES } from "../lib/staffing/vocab";
 import { LEDGER_KINDS, LEDGER_CATEGORIES, PAYMENT_METHODS } from "../lib/accounting/vocab";
+import { RECIPE_KINDS, RECIPE_METHODS, RECIPE_UNITS } from "../lib/recipes/vocab";
 
 /** A SQL list of allowed values for a check constraint, from a vocabulary. */
 const inList = (values: readonly string[]) => sql.raw(values.map((value) => `'${value}'`).join(", "));
@@ -104,6 +105,50 @@ export const stockMovements = pgTable("stock_movements", {
   recordedBy: uuid("recorded_by").notNull().references(() => users.id, { onDelete: "restrict" }),
   createdAt: createdAt(),
 }, (table) => [index("stock_movements_item_date_idx").on(table.itemId, table.movementDate), check("stock_movements_kind_valid", sql`${table.kind} IN (${inList(MOVEMENT_KINDS)})`), check("stock_movements_quantity_valid", sql`${table.quantity} > 0`)]);
+
+/* ---------------- Recipes: what the bar pours, and what that needs on the shelf ---------------- */
+/** The cocktail list, house and classic. Separate from stock on purpose: a recipe is what the
+ * bar makes, a stock item is what it buys, and one bottle serves many drinks. */
+export const recipes = pgTable("recipes", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: text("name").notNull(),
+  kind: text("kind").default("house").notNull(),
+  /** The menu grouping - "Bright & Refreshing", "Deep & Spirit-Forward", or null for classics. */
+  family: text("family"),
+  glass: text("glass"),
+  method: text("method").default("none").notNull(),
+  /** "Dry shake 15secs, wet shake 30secs" - the timings a spec card carries. */
+  methodNote: text("method_note"),
+  garnish: text("garnish"),
+  menuPrice: moneyColumn("menu_price"),
+  notes: text("notes"),
+  active: integer("active").default(1).notNull(),
+  createdBy: uuid("created_by").notNull().references(() => users.id, { onDelete: "restrict" }),
+  createdAt: createdAt(), updatedAt: updatedAt(),
+}, (table) => [
+  uniqueIndex("recipes_name_unique").on(table.name),
+  check("recipes_kind_valid", sql`${table.kind} IN (${inList(RECIPE_KINDS)})`),
+  check("recipes_method_valid", sql`${table.method} IN (${inList(RECIPE_METHODS)})`),
+  check("recipes_price_valid", sql`${table.menuPrice} IS NULL OR ${table.menuPrice} >= 0`),
+]);
+
+/** One measure. `item_id` is null until someone says which bottle this ingredient comes from;
+ * the written ingredient always stands on its own so the spec reads correctly unlinked. */
+export const recipeLines = pgTable("recipe_lines", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  recipeId: uuid("recipe_id").notNull().references(() => recipes.id, { onDelete: "cascade" }),
+  position: integer("position").default(0).notNull(),
+  ingredient: text("ingredient").notNull(),
+  quantity: numeric("quantity", { precision: 10, scale: 2 }),
+  unit: text("unit"),
+  itemId: uuid("item_id").references(() => stockItems.id, { onDelete: "set null" }),
+  note: text("note"),
+}, (table) => [
+  index("recipe_lines_recipe_idx").on(table.recipeId, table.position),
+  index("recipe_lines_item_idx").on(table.itemId),
+  check("recipe_lines_unit_valid", sql`${table.unit} IS NULL OR ${table.unit} IN (${inList(RECIPE_UNITS)})`),
+  check("recipe_lines_quantity_valid", sql`${table.quantity} IS NULL OR ${table.quantity} >= 0`),
+]);
 
 /* ---------------- Staffing: people and shifts ---------------- */
 export const staffMembers = pgTable("staff_members", {

@@ -1,13 +1,15 @@
 # Acidic status
 
-**Last updated:** 22 September 2026, 10:05 AEST
+**Last updated:** 23 September 2026, 11:10 AEST
 
 ## Verified in this checkout
 
-- `npm test` - 57 unit tests pass (11 files); 4 PostgreSQL integration tests skip without a database.
+- `npm test` - 74 unit tests pass (12 files); 4 PostgreSQL integration tests skip without a database.
 - `npm run typecheck` - clean. `npm run lint` - clean, no warnings.
 - `npm run db:generate` - two migrations, `drizzle/0000_short_rictor.sql` (10 tables) and
-  `drizzle/0001_public_freak.sql` (email optional on a profile). `npm run db:check` clean.
+  `drizzle/0001_public_freak.sql` (email optional on a profile) and
+  `drizzle/0002_cute_clint_barton.sql` (recipes, recipe lines, wider stock vocabulary).
+  `npm run db:check` clean.
 - `npm run build` with `ACIDIC_STANDALONE=1` - production build, 23 routes.
 - Standalone server started in preview: every screen 200, `/api/events` 503 (live disabled),
   stylesheet served, desktop and phone screenshots reviewed.
@@ -19,6 +21,12 @@
 - The seeded database rendered through the website export reproduces `index.html`'s calendar
   `data-events` for 9 of 13 dates; the 4 differences are the hand-written site disagreeing with
   itself (see "Known gaps").
+- `scripts/seed-bar.mjs` against a real PostgreSQL 16: 148 stock lines and 43 recipes created,
+  a second run reports everything unchanged, and a cost set by hand survives re-seeding.
+- The live app driven in a real browser at 390x844: signed in, edited a stock line's cost and
+  par, recorded a delivery, ran a stocktake, and edited a cocktail spec including linking an
+  ingredient to a bottle - each verified in the database with its audit row. No horizontal
+  overflow on any screen.
 - A correctness review of the first commit found ten issues, all fixed and covered: screens
   now enforce the same role as their APIs (Money, Stock, Website export are manager-only;
   staff never see hourly rates), shift cost is computed from minutes not display-rounded
@@ -42,9 +50,17 @@
 
 ## Known gaps
 
-- Entry forms exist for events, stock counts, shifts and ledger entries (live mode; managers).
-  Stock deliveries/waste, new stock lines, new staff, event edits and voids are API-only from
-  the browser for now - the form pattern is `src/components/event-form.tsx`.
+- **No cost or par level is set on any of the 148 stock lines** (D15), so stock value, the
+  reorder list and cost of goods read as zero until they are entered on the Stock screen.
+  This is the next thing to do, and it is a job for whoever knows the invoices.
+- 11 cocktail ingredients have no bottle chosen - the house pours (which gin is "Gin"), plus
+  the house preparations (tea base, espresso, cold brew). Listed on the Cocktails screen.
+- Three house drinks are recorded with a name and no spec: Peachy Black Highball, Oolong Black
+  Whisky Sour, The Part-Time Lover.
+- Entry forms exist for events, stock counts, shifts and ledger entries (live mode; managers);
+  stock lines and cocktail specs are edited in place on their screens. New staff, event edits
+  and ledger voids are still API-only from the browser - the form pattern is
+  `src/components/event-form.tsx`.
 - No staff self-service beyond reading the roster.
 - Website export is copy-and-paste (D4).
 - The site's hand-written calendar is not internally consistent, so pasting a fresh export will
@@ -64,4 +80,5 @@
 3. A build step that writes the website export into `index.html` / `events.html`, replacing
    the hand-editing and the daily "promote next event" routine.
 4. Put October onwards in `data/programme.json` and seed it - the site has nothing upcoming.
-5. Enter real stock lines and staff; import the bookkeeper's opening figures for the quarter.
+5. Enter unit costs and par levels on the Stock screen; then a first real stocktake.
+6. Enter staff and rates; import the bookkeeper's opening figures for the quarter.

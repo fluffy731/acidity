@@ -7,6 +7,7 @@ import type { OverviewEvent } from "@/lib/today/overview";
 import type { LedgerEntry } from "@/lib/accounting/ledger";
 import type { Shift, StaffMember } from "@/lib/staffing/roster";
 import type { CountLine, StockItem } from "@/lib/stock/engine";
+import type { Recipe } from "@/lib/recipes/engine";
 import type { EventStatus } from "@/lib/programme/vocab";
 import * as fixtures from "./fixtures";
 
@@ -19,6 +20,7 @@ export type Workspace = {
   previousCount: { id: string | null; countDate: string; lines: CountLine[] } | null;
   movements: { itemId: string; kind: "delivery" | "waste" | "adjustment"; quantity: number }[];
   ledger: (LedgerEntry & { id: string; description: string; paymentMethod: string | null })[];
+  recipes: Recipe[];
 };
 
 export function isLive() { return appMode() === "live" && liveConfigured(); }
@@ -34,12 +36,14 @@ export async function loadWorkspace(): Promise<Workspace> {
       previousCount: { id: null, ...fixtures.previousCount },
       movements: fixtures.movements,
       ledger: fixtures.ledger.map((entry, index) => ({ ...entry, id: `ledger-${index + 1}`, description: entry.category.replace(/_/g, " "), paymentMethod: null })),
+      recipes: fixtures.recipes,
     };
   }
   const { db } = await import("@/db/client");
   const schema = await import("@/db/schema");
   const database = db();
-  const [eventRows, staffRows, shiftRows, itemRows, countRows, movementRows, ledgerRows] = await Promise.all([
+  const { listRecipes } = await import("@/lib/recipes/service");
+  const [eventRows, staffRows, shiftRows, itemRows, countRows, movementRows, ledgerRows, recipeRows] = await Promise.all([
     database.select().from(schema.events).orderBy(schema.events.eventDate),
     database.select().from(schema.staffMembers).orderBy(schema.staffMembers.name),
     database.select().from(schema.shifts).orderBy(schema.shifts.shiftDate, schema.shifts.startTime),
@@ -47,6 +51,7 @@ export async function loadWorkspace(): Promise<Workspace> {
     database.select().from(schema.stockCounts).orderBy(desc(schema.stockCounts.countDate), desc(schema.stockCounts.createdAt)).limit(2),
     database.select().from(schema.stockMovements).orderBy(schema.stockMovements.movementDate),
     database.select().from(schema.ledgerEntries).orderBy(desc(schema.ledgerEntries.entryDate), desc(schema.ledgerEntries.createdAt)),
+    listRecipes(),
   ]);
   const countWithLines = async (count: (typeof countRows)[number] | undefined) => {
     if (!count) return null;
@@ -64,5 +69,6 @@ export async function loadWorkspace(): Promise<Workspace> {
     latestCount, previousCount,
     movements: movementRows.filter((row) => row.movementDate >= movementFloor && (!latestCount || row.movementDate <= latestCount.countDate)).map((row) => ({ itemId: row.itemId, kind: row.kind as "delivery" | "waste" | "adjustment", quantity: Number(row.quantity) })),
     ledger: ledgerRows.map((row) => ({ id: row.id, entryDate: row.entryDate, kind: row.kind as LedgerEntry["kind"], category: row.category, description: row.description, total: money(row.total), gst: money(row.gst), subtotal: money(row.subtotal), paymentMethod: row.paymentMethod, voidedAt: row.voidedAt?.toISOString() ?? null })),
+    recipes: recipeRows,
   };
 }

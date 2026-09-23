@@ -15,6 +15,13 @@
       "when": 1790081271870,
       "tag": "0001_public_freak",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790124392439,
+      "tag": "0002_cute_clint_barton",
+      "breakpoints": true
     }
   ]
 }
