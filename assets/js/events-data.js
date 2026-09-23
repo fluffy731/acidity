@@ -365,19 +365,6 @@ const VENUE_EVENTS = [
     isPublic: true
   },
   {
-    id: 'sound-sample-file-03',
-    dateStart: '2026-09-25',
-    title: "Sound Sample '26 — File 03",
-    artist: 'Early Bird',
-    piArtistSeparator: ': ',
-    badge: 'Ft. Early Bird',
-    genres: ['Neo-Soul', 'R&B', 'Contemporary Groove'],
-    status: 'details-soon',
-    ctaType: 'details',
-    calType: 'session',
-    isPublic: true
-  },
-  {
     id: 'siwei-intimate-concert',
     pageUrl: 'programme/freedom-fly.html',
     dateStart: '2026-09-26',
@@ -420,6 +407,24 @@ const VENUE_EVENTS = [
     calType: 'feature',
     isPublic: true,
     isFeature: true
+  },
+  {
+    id: 'moon-festival-jazz-duo',
+    dateStart: '2026-09-25',
+    title: 'Moon Festival Jazz Duo',
+    artist: 'Yolanda Li & Geryl Leong',
+    genres: ['Jazz Duo', 'Moon Festival'],
+    music: '20:00',
+    status: 'free',
+    ctaType: 'free',
+    poster: 'posters/moon-festival-jazz-duo.png',
+    preservePoster: true,
+    description: 'A Moon Festival jazz duo session featuring Yolanda Li and Geryl Leong.',
+    lineup: ['Yolanda Li', 'Geryl Leong'],
+    schedule: ['8PM — Music', '10PM — Finish'],
+    admission: 'Free entry.',
+    calType: 'session',
+    isPublic: true
   },
   {
     id: 'private-function-30-oct',

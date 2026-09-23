@@ -4224,3 +4224,31 @@ h1, h2{
   .page-home .hero-carousel-slide{ transition: none !important; transform: none !important; }
   .hero-carousel-nav button::after{ animation: none !important; }
 }
+
+/* Mobile viewport containment.
+   Keep the document fixed to the viewport while preserving the intentional
+   horizontal programme, field-note and package rails. */
+html,
+body{
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+}
+
+.page-home .hero-feature{
+  max-width: 100%;
+  overflow: hidden;
+  overflow: clip;
+  touch-action: pan-y pinch-zoom;
+}
+
+.wo-track,
+.field-notes-track,
+.pkg-track{
+  max-width: 100%;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
