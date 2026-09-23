@@ -19,6 +19,8 @@ consultancy's: there are no enquiries, proposals or engineering documents here.
 - [ACIDIC_DECISIONS.md](ACIDIC_DECISIONS.md) - append-only decision register.
 - [ACIDIC_STATUS.md](ACIDIC_STATUS.md) - what is verified, what is not, next priorities.
 - [docs/SETUP_STEP_BY_STEP.md](docs/SETUP_STEP_BY_STEP.md) - the live setup, the way Monnie was set up.
+- [docs/HANDOVER.md](docs/HANDOVER.md) - orientation for a session picking this up: branch state,
+  what is loaded, what is outstanding, and the traps found the hard way.
 - [CLAUDE.md](CLAUDE.md) - session start rules for Claude Code.
 
 ## Current state
