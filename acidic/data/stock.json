@@ -289,6 +289,13 @@
       "parLevel": 0
     },
     {
+      "name": "Lychee Vodka",
+      "category": "spirits",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
       "name": "Campari",
       "category": "liqueur",
       "unit": "bottle",
@@ -430,6 +437,13 @@
     },
     {
       "name": "Amaro",
+      "category": "liqueur",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Mango Liqueur",
       "category": "liqueur",
       "unit": "bottle",
       "unitCost": 0,
@@ -750,6 +764,13 @@
       "parLevel": 0
     },
     {
+      "name": "White Pomelo Juice",
+      "category": "juice",
+      "unit": "litre",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
       "name": "Sugar Syrup",
       "category": "syrup",
       "unit": "bottle",
@@ -786,6 +807,20 @@
     },
     {
       "name": "Brown Sugar Syrup",
+      "category": "syrup",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Vanilla Syrup",
+      "category": "syrup",
+      "unit": "bottle",
+      "unitCost": 0,
+      "parLevel": 0
+    },
+    {
+      "name": "Kaffir Lime Syrup",
       "category": "syrup",
       "unit": "bottle",
       "unitCost": 0,

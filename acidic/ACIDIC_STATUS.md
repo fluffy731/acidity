@@ -1,6 +1,6 @@
 # Acidic status
 
-**Last updated:** 23 September 2026, 11:10 AEST
+**Last updated:** 23 September 2026, 12:40 AEST
 
 ## Verified in this checkout
 
@@ -21,7 +21,7 @@
 - The seeded database rendered through the website export reproduces `index.html`'s calendar
   `data-events` for 9 of 13 dates; the 4 differences are the hand-written site disagreeing with
   itself (see "Known gaps").
-- `scripts/seed-bar.mjs` against a real PostgreSQL 16: 148 stock lines and 43 recipes created,
+- `scripts/seed-bar.mjs` against a real PostgreSQL 16: 153 stock lines and 45 recipes created,
   a second run reports everything unchanged, and a cost set by hand survives re-seeding.
 - The live app driven in a real browser at 390x844: signed in, edited a stock line's cost and
   par, recorded a delivery, ran a stocktake, and edited a cocktail spec including linking an
@@ -53,7 +53,7 @@
 - **No cost or par level is set on any of the 148 stock lines** (D15), so stock value, the
   reorder list and cost of goods read as zero until they are entered on the Stock screen.
   This is the next thing to do, and it is a job for whoever knows the invoices.
-- 11 cocktail ingredients have no bottle chosen - the house pours (which gin is "Gin"), plus
+- 12 cocktail ingredients have no bottle chosen - the house pours (which gin is "Gin"), plus
   the house preparations (tea base, espresso, cold brew). Listed on the Cocktails screen.
 - Three house drinks are recorded with a name and no spec: Peachy Black Highball, Oolong Black
   Whisky Sour, The Part-Time Lover.

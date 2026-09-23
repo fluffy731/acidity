@@ -38,7 +38,7 @@ A **working browser preview** and the implemented live workflow:
 - Six screens: Today (the cross-domain view), Programme (+ Website export), Cocktails, Stock,
   Roster, Money - the Stock and Cocktails screens are card lists built for a phone, where a
   cost, a delivery, a stocktake or a spec is edited in place.
-- The bar's reference data as editable files: `data/stock.json` (148 lines, from the menu's own
+- The bar's reference data as editable files: `data/stock.json` (153 lines, from the menu's own
   back bar plus everything the cocktail specs need) and `data/recipes.json` (the house list and
   the classics), applied with `npm run seed:bar`, which links each ingredient to the bottle it
   pours from. Costs and par levels are deliberately unset - see decision D15.

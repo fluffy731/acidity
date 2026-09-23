@@ -116,6 +116,92 @@
       ]
     },
     {
+      "name": "Kin Lychee/Golden Haze",
+      "kind": "house",
+      "method": "dry_then_wet_shake",
+      "lines": [
+        {
+          "ingredient": "Lychee Vodka",
+          "quantity": 35,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Amaro",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Creme de Cacao",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Jasmine Tea",
+          "quantity": 10,
+          "unit": "ml",
+          "note": "5-10ml, to taste"
+        },
+        {
+          "ingredient": "Mango Liqueur",
+          "quantity": 22,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Vanilla Syrup",
+          "quantity": 5,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Egg White",
+          "quantity": 20,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Lemon Juice",
+          "quantity": 10,
+          "unit": "ml"
+        }
+      ],
+      "notes": "Glass and garnish not on the spec sheet yet."
+    },
+    {
+      "name": "Acidity Letter",
+      "kind": "house",
+      "method": "build",
+      "lines": [
+        {
+          "ingredient": "Gin",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Suze",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "White Pomelo Juice",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Kaffir Lime Syrup",
+          "quantity": 10,
+          "unit": "ml"
+        },
+        {
+          "ingredient": "Soda Water",
+          "unit": "top_up",
+          "note": "Half soda, half tonic"
+        },
+        {
+          "ingredient": "Tonic Water",
+          "unit": "top_up",
+          "note": "Half soda, half tonic"
+        }
+      ]
+    },
+    {
       "name": "Peachy Black Highball",
       "kind": "house",
       "method": "none",
