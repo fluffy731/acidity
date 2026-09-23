@@ -47,7 +47,7 @@ const eventSchema = z.object({
   if (bookable && !value.ticketUrl) ctx.addIssue({ code: "custom", path: ["ticketUrl"], message: "A ticketed or RSVP event needs its booking link." });
   if (value.kind === "private_booking" && !["private", "cancelled"].includes(value.status)) ctx.addIssue({ code: "custom", path: ["status"], message: "A private booking is always status private." });
 });
-const fileSchema = z.object({ $comment: z.array(z.string()).optional(), events: z.array(eventSchema).min(1) }).strict();
+const fileSchema = z.object({ $comment: z.array(z.string()).optional(), events: z.array(eventSchema) }).strict();
 
 const path = file ? new URL(file, `file://${process.cwd()}/`) : new URL("../data/programme.json", import.meta.url);
 let raw;
@@ -80,6 +80,11 @@ const desiredRow = (event) => ({
   priceTo: event.priceTo === null ? null : event.priceTo.toFixed(2),
   description: event.description, staffRequired: event.staffRequired,
 });
+
+if (!programme.events.length) {
+  console.log(`No events in ${file ?? "data/programme.json"} yet - add the dates and run this again. The file's own note lists the fields.`);
+  process.exit(0);
+}
 
 const sql = postgres(process.env.DATABASE_URL, { max: 1, prepare: false });
 const ROLLBACK = Symbol("dry run");

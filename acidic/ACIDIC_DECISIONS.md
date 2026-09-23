@@ -75,7 +75,9 @@ own event rules are the authority: `tests/programme-seed.test.ts` parses the fil
 `eventInputSchema` in CI, so a ticketed night with no booking link fails on a laptop rather than
 at the bar. The seed never deletes: an event dropped from the file stays in the database, and one
 cancelled in the app is not revived by re-running. The entry form remains for the single gig
-added on a Tuesday.
+added on a Tuesday. The file ships empty: past events are not back-filled, because the programme
+exists to drive the hero, the Upcoming lists and the roster, and none of those look backwards.
+`data/programme.example.json` keeps a worked example of every status to copy from.
 
 **D14 - 22 Sept 2026 - The calendar shows a session's finish when one is published.** The
 booking calendar on index.html reads "2pm - 10pm" for the Sunday day programme and "3pm - 8pm"

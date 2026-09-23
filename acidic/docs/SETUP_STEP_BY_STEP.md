@@ -175,7 +175,12 @@ empty - that is correct; there are no records yet.
 
 The bar's programme lives in one editable file, `data/programme.json`, and is loaded with a
 command rather than typed into the app one gig at a time. Each event is one object; only the
-date and title are required. The file opens with a note listing every field.
+date and title are required. The file opens with a note listing every field, and
+`data/programme.example.json` next to it is a worked example of every status to copy from.
+
+The file ships empty - put the coming season's dates in it first. Past events are not worth
+back-filling: the programme is there to drive the website's hero, the Upcoming lists and the
+roster, and none of those care what happened last month.
 
 Look at what it would do first:
 

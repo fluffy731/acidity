@@ -11,9 +11,9 @@
 - `npm run build` with `ACIDIC_STANDALONE=1` - production build, 23 routes.
 - Standalone server started in preview: every screen 200, `/api/events` 503 (live disabled),
   stylesheet served, desktop and phone screenshots reviewed.
-- `scripts/seed-programme.mjs` against a real PostgreSQL 16: the dry run reports and rolls
-  back, `--apply` writes 13 events with their audit entries, a second run reports all 13
-  unchanged, an edited row updates only the changed fields and records the status move, a
+- `scripts/seed-programme.mjs` against a real PostgreSQL 16, using the 13-event worked example
+  as a test programme: the dry run reports and rolls back, `--apply` writes 13 events with
+  their audit entries, a second run reports all 13 unchanged, an edited row updates only the changed fields and records the status move, a
   cancelled event is not revived, a private hire is refused a date a public gig holds, and an
   invalid file is rejected naming the gig by date and title.
 - The seeded database rendered through the website export reproduces `index.html`'s calendar
@@ -52,9 +52,10 @@
   becomes "Details TBA", 21 Aug drops "Details TBA" from inside the title, and 23 Aug reads
   "J-Fusion & Hiphop - Chakamens" like every other row rather than artist-first. Intended, but
   check them before pasting.
-- The website's programme ends 29 August while the current date is later: acidity.com.au has no
-  upcoming event, so the hero and Upcoming lists have nothing to show. September onwards needs
-  adding to `data/programme.json`.
+- **`data/programme.json` is empty and the website has no upcoming event.** acidity.com.au's
+  last listed date is 29 August, so the hero, the Upcoming lists and the calendar are all
+  showing a programme that has finished. October's dates are the blocker for everything the
+  programme feeds; nothing before them is worth entering.
 
 ## Next priorities
 
@@ -62,5 +63,5 @@
 2. Entry forms for the four domains (the API contracts are the Zod schemas in each `lib/*`).
 3. A build step that writes the website export into `index.html` / `events.html`, replacing
    the hand-editing and the daily "promote next event" routine.
-4. Fill `data/programme.json` with September onwards and seed it - the site is a month stale.
+4. Put October onwards in `data/programme.json` and seed it - the site has nothing upcoming.
 5. Enter real stock lines and staff; import the bookkeeper's opening figures for the quarter.

@@ -5,13 +5,13 @@ import { programmeSeedSchema, seedIssues } from "@/lib/data/programme-seed";
 /** data/programme.json is loaded into the live database by `npm run programme:seed`, which runs
  *  in a container with no TypeScript. These tests are where the file meets the app's real rules,
  *  so a bad row fails in CI on a laptop rather than at the bar on a Friday night. */
-const raw = JSON.parse(readFileSync(new URL("../data/programme.json", import.meta.url), "utf8"));
+const read = (name: string) => JSON.parse(readFileSync(new URL(`../data/${name}`, import.meta.url), "utf8"));
 
 describe("the programme seed file", () => {
-  const seed = programmeSeedSchema.parse(raw);
+  const seed = programmeSeedSchema.parse(read("programme.json"));
 
   it("holds only events the Programme screen would accept", () => {
-    expect(seed.events.length).toBeGreaterThan(0);
+    expect(Array.isArray(seed.events)).toBe(true);
   });
 
   it("has no duplicates and no private hire on a public night", () => {
@@ -28,6 +28,12 @@ describe("the programme seed file", () => {
       const bookable = ["ticketed", "free_rsvp"].includes(event.status);
       expect(Boolean(event.ticketUrl), `${event.eventDate} ${event.title}`).toBe(bookable);
     }
+  });
+
+  it("keeps the worked example valid too, since it is what people copy from", () => {
+    const example = programmeSeedSchema.parse(read("programme.example.json"));
+    expect(example.events.length).toBeGreaterThan(0);
+    expect(seedIssues(example.events)).toEqual([]);
   });
 
   it("rejects a ticketed night with no way to buy a ticket", () => {

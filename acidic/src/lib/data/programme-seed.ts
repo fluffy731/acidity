@@ -7,14 +7,15 @@ import { dateConflict, eventInputSchema, type EventInput } from "@/lib/programme
  *  public, a price range the wrong way round. The seed script trusts this; the test enforces it. */
 export const programmeSeedSchema = z.object({
   $comment: z.array(z.string()).optional(),
-  events: z.array(eventInputSchema).min(1),
+  events: z.array(eventInputSchema),
 }).strict();
 
 export type ProgrammeSeed = z.infer<typeof programmeSeedSchema>;
 
 /** Problems no single row can show, because they are about the list as a whole: the same gig
  *  entered twice, or a private hire sharing a date with a public event. Returns plain sentences
- *  meant to be printed next to the file someone just edited. */
+ *  meant to be printed next to the file someone just edited. An empty programme is fine:
+ *  it means nothing has been entered yet, not that something is wrong. */
 export function seedIssues(events: readonly EventInput[]): string[] {
   const issues: string[] = [];
   const seen = new Set<string>();
