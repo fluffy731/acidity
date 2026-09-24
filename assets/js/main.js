@@ -500,8 +500,9 @@ function initAvailabilityCalendar() {
         }[event.type] || { cls: 'session', tip: 'Live session', fallback: 'Live session' };
         const title = event.title || typeInfo.fallback;
         const time = event.time ? ` — ${escapeHtml(event.time)}` : '';
+        const note = event.note ? `<span class="cal-tip-note">${escapeHtml(event.note)}</span>` : '';
         html += `<button type="button" class="cal-day ${typeInfo.cls}" data-iso="${iso}">${d}` +
-          `<span class="cal-tip"><strong>${typeInfo.tip}${time}</strong>${escapeHtml(title)}</span>` +
+          `<span class="cal-tip"><strong>${typeInfo.tip}${time}</strong>${escapeHtml(title)}${note}</span>` +
           `</button>`;
       } else {
         html += `<button type="button" class="cal-day available" data-iso="${iso}">${d}` +

@@ -707,6 +707,7 @@ img{ max-width: 100%; display: block; }
   transform: translateX(-50%) translateY(0);
 }
 .cal-tip strong{ display: block; color: var(--amber); font-weight: 600; margin-bottom: 0.15rem; }
+.cal-tip-note{ display: block; margin-top: 0.25rem; color: inherit; opacity: 0.78; font-size: 0.72rem; line-height: 1.35; }
 .cal-day.private .cal-tip strong{ color: var(--rust); }
 
 .cal-legend{

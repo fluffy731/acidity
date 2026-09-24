@@ -582,6 +582,8 @@
         eventStatus: ev.ticketStatus === 'cancelled' ? 'https://schema.org/EventCancelled' : 'https://schema.org/EventScheduled'
       };
       if (ev.dateEnd) item.endDate = ev.dateEnd;
+      else if (ev.timeEnd) item.endDate = `${ev.dateStart}T${ev.timeEnd}:00${offsetName}`;
+      if (ev.artist) item.performer = { '@type': 'MusicGroup', name: ev.artist };
       if (ev.poster) item.image = `${location.origin}/assets/images/${ev.poster}`;
       const description = ev.detailDescription || ev.description || (ev.genres || []).join(', ');
       if (description) item.description = description.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&');
@@ -618,7 +620,8 @@
       } else {
         const entry = { type: ev.calType, title: ev.isPublic ? title : ev.title };
         const t = primaryTime(ev);
-        if (t) entry.time = fmt12(t);
+        if (t) entry.time = ev.timeEnd ? `${fmt12(t)}–${fmt12(ev.timeEnd)}` : fmt12(t);
+        if (ev.admission) entry.note = ev.admission;
         out[ev.dateStart] = entry;
       }
     });
