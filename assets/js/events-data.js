@@ -409,6 +409,27 @@ const VENUE_EVENTS = [
     isFeature: true
   },
   {
+    id: 'brazilian-jazz-original-grooves',
+    pageUrl: 'programme/brazilian-jazz-original-grooves.html',
+    dateStart: '2026-10-02',
+    title: 'Brazilian Jazz & Original Grooves',
+    artist: 'Maurizio Gulina / Andrew Martin / Sebastian Andrade',
+    genres: ['Brazilian Jazz', 'Brazilian Standards', 'Original Compositions', 'Funk Influences'],
+    music: '20:00',
+    status: 'ticketed',
+    ctaType: 'details',
+    poster: 'posters/brazilian-jazz-original-grooves.jpg',
+    video: 'brazilian-jazz-original-grooves.mp4',
+    preservePoster: true,
+    description: 'Brazilian standards and original compositions with a touch of funk, shaped by warm guitar tones, six-string bass, percussion and improvisation.',
+    lineup: ['Maurizio Gulina — Guitar', 'Andrew Martin — Six-string bass guitar', 'Sebastian Andrade — Percussion'],
+    schedule: ['8PM — Music', '10PM — Finish'],
+    price: '$15',
+    admission: '$15 tickets. Booking link coming soon.',
+    calType: 'session',
+    isPublic: true
+  },
+  {
     id: 'moon-festival-jazz-duo',
     dateStart: '2026-09-25',
     title: 'Moon Festival Jazz Duo',

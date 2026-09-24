@@ -325,9 +325,11 @@
     const badgeHtml = isUpcoming ? `<span class="wo-card-badge">${badgeLabel}</span>` : '';
 
     let photo;
-    if (ev.poster) {
+    if (ev.poster || ev.video) {
       const preserveClass = ev.preservePoster ? ' is-contain' : '';
-      const posterImage = `<img src="assets/images/${ev.poster}" alt="${escapeHtml(fullTitle(ev))} poster">`;
+      const posterImage = ev.video
+        ? `<video muted loop autoplay playsinline preload="metadata" poster="assets/images/${ev.poster}" aria-label="${escapeHtml(fullTitle(ev))} animated poster"><source src="assets/video/${ev.video}" type="video/mp4"></video>`
+        : `<img src="assets/images/${ev.poster}" alt="${escapeHtml(fullTitle(ev))} poster">`;
       const linkedPoster = ev.ticketUrl && bookingIsActive(ev) && (ev.ctaType === 'book' || ev.ctaType === 'rsvp')
         ? `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="wo-card-poster-link" aria-label="${escapeHtml(ctaLabel(ev))} for ${escapeHtml(fullTitle(ev))}">${posterImage}</a>`
         : posterImage;
@@ -457,6 +459,8 @@
               <source src="assets/video/we-want-miles.m4v" type="video/mp4">
             </video>
           </a>`
+        : item.video
+          ? `<video muted loop autoplay playsinline preload="metadata" poster="${posterSrc}" data-hero-video aria-label="${escapeHtml(fullTitle(item))} animated poster"><source src="assets/video/${item.video}" type="video/mp4"></video>`
         : item.ticketUrl && bookingIsActive(item) && (item.ctaType === 'book' || item.ctaType === 'rsvp')
           ? `<a href="${item.ticketUrl}" target="_blank" rel="noopener" class="hero-poster-link" aria-label="${escapeHtml(ctaLabel(item))} for ${escapeHtml(fullTitle(item))}"><img src="${posterSrc}" alt="${escapeHtml(fullTitle(item))} poster"></a>`
           : `<img src="${posterSrc}" alt="${escapeHtml(fullTitle(item))} poster">`;
@@ -468,7 +472,7 @@
           <div class="hero-eyebrow">${isFeature ? 'FEATURE PROGRAMME / THREE NIGHTS' : 'CURRENT PROGRAMME / RICHMOND, MELBOURNE'}</div>
           <p class="hero-lead">${isFeature ? '100 years of Miles.<br>Three eras after dark.' : 'Coffee by day.<br>Live sound after dark.'}</p>
           <span class="hero-feature-tag">${isFeature ? '09—11 OCT 2026' : `Next Session${fileTag}`}</span>
-          <h1>${titleHtml}</h1>
+          <h2 class="hero-feature-title">${titleHtml}</h2>
           <p class="hero-feature-desc">${desc}</p>
           ${earlyBirdCountdown(item, 'hero')}
           <div class="hero-feature-meta">
@@ -633,7 +637,7 @@
     const programmePublic = VENUE_EVENTS
       .filter(ev => ev.isPublic)
       .sort((a, b) => a.dateStart.localeCompare(b.dateStart));
-    addEventStructuredData(programmePublic);
+    addEventStructuredData(upcomingPublic);
 
     // Hero — current programme plus the multi-night feature programme
     renderHero(upcomingPublic[0], programmePublic.find(ev => ev.isFeature));
