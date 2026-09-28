@@ -440,6 +440,46 @@ const VENUE_EVENTS = [
     isPublic: true
   },
   {
+    id: 'thursday-jazz-night-08-oct',
+    dateStart: '2026-10-08',
+    title: 'Thursday Jazz Night',
+    genres: ['Thursday Jazz', 'Live Session'],
+    status: 'details-soon',
+    ctaType: 'details',
+    calType: 'session',
+    isPublic: true
+  },
+  {
+    id: 'jazz-sixten-15-oct',
+    dateStart: '2026-10-15',
+    title: 'Jazz Sixten — Jazz + Soul + Blues Session',
+    genres: ['Jazz', 'Soul', 'Blues'],
+    status: 'details-soon',
+    ctaType: 'details',
+    calType: 'session',
+    isPublic: true
+  },
+  {
+    id: 'acidity-after-dark-old-shanghai-jazz',
+    dateStart: '2026-10-16',
+    title: 'Acidity After Dark: Old Shanghai Jazz',
+    genres: ['Old Shanghai Jazz', 'Acidity After Dark'],
+    status: 'details-soon',
+    ctaType: 'details',
+    calType: 'session',
+    isPublic: true
+  },
+  {
+    id: 'thursday-jazz-night-22-oct',
+    dateStart: '2026-10-22',
+    title: 'Thursday Jazz Night',
+    genres: ['Thursday Jazz', 'Live Session'],
+    status: 'details-soon',
+    ctaType: 'details',
+    calType: 'session',
+    isPublic: true
+  },
+  {
     id: 'moon-festival-jazz-duo',
     dateStart: '2026-09-25',
     title: 'Moon Festival Jazz Duo',
@@ -473,6 +513,26 @@ const VENUE_EVENTS = [
     dateStart: '2026-10-31',
     title: 'Acidity. Halloween Music Night',
     genres: ['Halloween', 'Music Night'],
+    status: 'details-soon',
+    ctaType: 'details',
+    calType: 'session',
+    isPublic: true
+  },
+  {
+    id: 'tripside-life-07-nov',
+    dateStart: '2026-11-07',
+    title: 'Tripside Life',
+    genres: ['Acid Jazz', 'Funk'],
+    status: 'details-soon',
+    ctaType: 'details',
+    calType: 'session',
+    isPublic: true
+  },
+  {
+    id: 'jazz-trio-15-nov',
+    dateStart: '2026-11-15',
+    title: 'Jazz Trio',
+    genres: ['Jazz Trio'],
     status: 'details-soon',
     ctaType: 'details',
     calType: 'session',
