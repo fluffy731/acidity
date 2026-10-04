@@ -440,16 +440,6 @@ const VENUE_EVENTS = [
     isPublic: true
   },
   {
-    id: 'thursday-jazz-night-08-oct',
-    dateStart: '2026-10-08',
-    title: 'Thursday Jazz Night',
-    genres: ['Thursday Jazz', 'Live Session'],
-    status: 'details-soon',
-    ctaType: 'details',
-    calType: 'session',
-    isPublic: true
-  },
-  {
     id: 'jazz-sixten-25-oct',
     dateStart: '2026-10-25',
     title: 'Jazz Sixten — Jazz + Soul + Blues Session',
@@ -477,12 +467,22 @@ const VENUE_EVENTS = [
     isPublic: true
   },
   {
-    id: 'thursday-jazz-night-22-oct',
-    dateStart: '2026-10-22',
+    id: 'iso-jazz-quartet-29-oct',
+    dateStart: '2026-10-29',
     title: 'Thursday Jazz Night',
-    genres: ['Thursday Jazz', 'Live Session'],
-    status: 'details-soon',
-    ctaType: 'details',
+    artist: 'ISO Quartet',
+    genres: ['Jazz Quartet', 'Thursday Session'],
+    music: '20:00',
+    timeEnd: '22:00',
+    status: 'ticketed',
+    ctaType: 'book',
+    ctaLabel: 'Pay What You Can ↗',
+    ticketUrl: 'https://events.humanitix.com/thursday-jazz-night-iso-quartet-or-acidity-richmond',
+    poster: 'posters/iso-quartet-live-17-24-sep.jpg',
+    preservePoster: true,
+    description: 'ISO Quartet brings a two-hour Thursday jazz session to Acidity’s intimate Richmond music room.',
+    schedule: ['8PM — Performance begins', '10PM — Finish'],
+    admission: 'Pay what you can · Donation tickets online or tickets at the door, subject to availability · Capacity 70',
     calType: 'session',
     isPublic: true
   },
