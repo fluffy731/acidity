@@ -450,8 +450,8 @@ const VENUE_EVENTS = [
     isPublic: true
   },
   {
-    id: 'jazz-sixten-15-oct',
-    dateStart: '2026-10-15',
+    id: 'jazz-sixten-25-oct',
+    dateStart: '2026-10-25',
     title: 'Jazz Sixten — Jazz + Soul + Blues Session',
     genres: ['Jazz', 'Soul', 'Blues'],
     status: 'details-soon',
