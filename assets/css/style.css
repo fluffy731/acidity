@@ -4262,3 +4262,5 @@ body{
   overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
 }
+
+.performer-feature[hidden]{ display:none !important; }

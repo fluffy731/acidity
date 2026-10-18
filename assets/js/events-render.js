@@ -642,6 +642,26 @@
       .sort((a, b) => a.dateStart.localeCompare(b.dateStart));
     addEventStructuredData(upcomingPublic);
 
+    // Homepage "Upcoming Programme" feature card — auto-selects the next
+    // upcoming ticketed event with artwork, and hides itself when none remain
+    const featureCard = document.querySelector('.performer-feature');
+    if (featureCard && featureCard.hasAttribute('data-auto-feature')) {
+      const heroEv = upcomingPublic[0];
+      const pick = upcomingPublic.find(ev => ev !== heroEv && ev.poster && ev.ticketUrl && ev.ctaType === 'book');
+      if (!pick) {
+        featureCard.hidden = true;
+      } else {
+        const when = `${weekdayShort(pick.dateStart)} ${dayNum(pick.dateStart)} ${monthLong(pick.dateStart)}`;
+        const t = primaryTime(pick);
+        const who = pick.artist ? escapeHtml(pick.artist) + ' — ' : '';
+        featureCard.querySelector('img').src = `assets/images/${pick.poster}`;
+        featureCard.querySelector('img').alt = `${fullTitle(pick)} poster artwork`;
+        featureCard.querySelector('h4').textContent = fullTitle(pick);
+        featureCard.querySelector('p').innerHTML = `${who}${escapeHtml(when)}${t ? ', ' + escapeHtml(fmt12(t)) : ''}. <a href="${pick.ticketUrl}" target="_blank" rel="noopener">${escapeHtml(ctaLabel(pick))}</a>`;
+        featureCard.hidden = false;
+      }
+    }
+
     // Hero — current programme plus the multi-night feature programme
     renderHero(upcomingPublic[0], programmePublic.find(ev => ev.isFeature));
 
