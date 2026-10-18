@@ -3491,7 +3491,8 @@ h1, h2{
 .programme-newsletter p{ max-width:38rem; margin:.4rem 0 0; color:var(--journal-grey); }
 .programme-newsletter form{ display:flex; gap:.6rem; }
 .programme-newsletter input{ min-width:0; width:100%; padding:.8rem; color:var(--journal-ink); background:transparent; border:1px solid var(--journal-ink); font-family:var(--font-mono); }
-.visit-faq{
+.visit-faq,
+.artists-call{
   --cream:var(--journal-ink);
   --cream-dim:var(--journal-grey);
   color:var(--journal-ink);
@@ -3726,9 +3727,10 @@ h1, h2{
   padding: 0;
   color: var(--journal-ink);
   border: 0;
-  font-size: clamp(3rem, 6vw, 6.7rem);
-  line-height: .82;
+  font-size: clamp(2.2rem, 4.1vw, 5.4rem);
+  line-height: .86;
   letter-spacing: -.075em;
+  overflow-wrap: break-word;
 }
 .page-menu .menu-subhead{
   margin: 2.5rem 0 .4rem;
@@ -3818,7 +3820,7 @@ h1, h2{
   .page-menu .header-status{ display: none; }
   .page-menu .nav-toggle{ grid-column: 2; width: 44px; }
   .page-menu .menu-hero{ display: block; padding-top: 5rem; }
-  .page-menu .menu-hero h1{ font-size: clamp(4.6rem, 22vw, 7rem); }
+  .page-menu .menu-hero h1{ font-size: clamp(3rem, 17vw, 7rem); }
   .page-menu .menu-hero > p{ margin-top: 2rem !important; }
   .page-menu .menu-toggle{ grid-template-columns: 1fr; margin-top: 2rem; }
   .page-menu .menu-hero .booking-note{ margin-top: 1.5rem !important; }
