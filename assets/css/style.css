@@ -3042,6 +3042,7 @@ h1, h2{
 .page-home .performer-feature img{ border-radius: 0; border-color: var(--journal-blue); }
 .page-home .menu-note,
 .page-home .performer-feature p{ color: var(--journal-grey); }
+.page-home .performer-feature h4{ color: var(--journal-ink); }
 .page-home .cal{
   margin-top: 1px !important;
   padding: 2rem;
