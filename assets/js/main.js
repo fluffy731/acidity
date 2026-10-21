@@ -44,29 +44,22 @@ function initHoverVideos() {
   const hasHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   videos.forEach(video => {
-    const frame = video.closest('.feature-programme-art');
-    if (!frame || reducedMotion) return;
+    const frame = video.closest('.poster-motion') || video.closest('.feature-programme-art');
+    if (!frame || reducedMotion || !hasHover) return;
 
     const play = () => {
       video.play().then(() => frame.classList.add('is-playing')).catch(() => {});
     };
     const pause = () => {
       video.pause();
+      try { video.currentTime = 0; } catch (error) {}
       frame.classList.remove('is-playing');
     };
 
-    if (hasHover) {
-      frame.addEventListener('mouseenter', play);
-      frame.addEventListener('mouseleave', pause);
-      frame.addEventListener('focusin', play);
-      frame.addEventListener('focusout', pause);
-      return;
-    }
-
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => entry.isIntersecting && entry.intersectionRatio >= 0.35 ? play() : pause());
-    }, { threshold: [0, 0.35, 0.75] });
-    observer.observe(frame);
+    frame.addEventListener('mouseenter', play);
+    frame.addEventListener('mouseleave', pause);
+    frame.addEventListener('focusin', play);
+    frame.addEventListener('focusout', pause);
   });
 }
 

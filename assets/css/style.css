@@ -1239,7 +1239,38 @@ img{ max-width: 100%; display: block; }
 .wo-card-photo img,
 .wo-card-photo video{ width: 100%; height: 100%; object-fit: cover; display: block; }
 .wo-card-photo.is-contain{ background: #071d55; }
-.wo-card-photo.is-contain img{ object-fit: contain; }
+.wo-card-photo.is-contain img,
+.wo-card-photo.is-contain video{ object-fit: contain; }
+
+/* Static artwork is always the fallback. Motion is revealed only after a
+   deliberate hover/focus play succeeds, so touch screens never get trapped
+   on a video frame. */
+.poster-motion{
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: inherit;
+}
+.poster-motion-static,
+.poster-motion-video{
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: inherit;
+}
+.poster-motion-video{
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  object-fit: cover !important;
+  object-position: center;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+}
+.poster-motion.is-playing .poster-motion-video{ opacity: 1; }
 
 /* Editorial campaign placeholder — used only when no current, factually-correct
    artwork exists. Never a substitute for a real poster from a different edition. */
@@ -3965,6 +3996,10 @@ h1, h2{
   transition: transform 700ms var(--ease-jazz), filter 350ms ease;
 }
 .feature-programme-art video{ object-fit: cover; }
+.feature-programme-art .poster-motion-video{
+  height: 100%;
+  aspect-ratio: auto;
+}
 .feature-programme-art:hover img,
 .feature-programme-art.is-playing video{
   transform: scale(1.008);
@@ -4054,6 +4089,39 @@ h1, h2{
   background: #057a34;
   border: 0;
 }
+.feature-info-banner{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  padding: clamp(1rem, 2vw, 1.7rem) clamp(1rem, 2.5vw, 2.4rem);
+  font: 600 clamp(.72rem, 1.1vw, 1rem)/1.35 var(--font-mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.feature-info-banner strong{ color: #ef2b20; }
+
+#acidity-halloween-music-night .feature-programme-art{
+  max-width: 900px;
+  margin-inline: auto;
+  background: #d60000;
+  border-color: #111;
+}
+#acidity-halloween-music-night .feature-programme-art .poster-motion{
+  aspect-ratio: 3 / 4;
+}
+#acidity-halloween-music-night .feature-programme-art img,
+#acidity-halloween-music-night .feature-programme-art video{
+  height: 100%;
+  aspect-ratio: auto;
+}
+#acidity-halloween-music-night .feature-programme-art img{ object-fit: contain; }
+#acidity-halloween-music-night .feature-programme-art video{ object-fit: cover; }
+#acidity-halloween-music-night .feature-ticket-banner{ border-color: #ef2b20; }
+#acidity-halloween-music-night .feature-ticket-banner .btn{ background: #ef2b20; }
+#acidity-halloween-music-night .feature-eyebrow,
+#acidity-halloween-music-night .feature-tag,
+#acidity-halloween-music-night .feature-night-no{ color: #ef2b20; }
 .feature-programme-copy{
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -4090,6 +4158,7 @@ h1, h2{
 @media (max-width: 760px){
   .page-home .feature-programme{ padding: 3rem 1rem; }
   .feature-ticket-banner{ grid-template-columns: 1fr; }
+  .feature-info-banner{ align-items: flex-start; flex-direction: column; }
   .feature-ticket-banner .early-bird-countdown.is-feature{
     grid-template-columns: 1fr 1fr;
     padding: 1rem;

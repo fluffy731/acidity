@@ -18,8 +18,8 @@
  *   genres       array of genre/category strings
  *   doors        optional 24h "HH:MM" doors time
  *   music        optional 24h "HH:MM" music-start time (shown instead of/alongside doors)
- *   status       'ticketed' | 'free' | 'door' | 'details-soon' | 'occupied'
- *   ctaType      'book' | 'free' | 'rsvp' | 'door' | 'details' | 'occupied'
+ *   status       'ticketed' | 'announced' | 'free' | 'door' | 'details-soon' | 'occupied'
+ *   ctaType      'book' | 'free' | 'rsvp' | 'info' | 'door' | 'details' | 'occupied'
  *   ticketUrl    Humanitix (or other) ticket URL — only ever reused, never invented
  *   poster       path relative to assets/images/, or null for the editorial placeholder
  *   description  optional custom body copy; auto-built from genres when omitted
@@ -33,7 +33,7 @@
  *   piArtistSeparator  override for how title/artist join in the Programme Index (default " — ")
  *   calType      'session' | 'private' | 'feature' — drives the Availability calendar dot
  *   isPublic     false = calendar-only entry (private booking with no public listing)
- *   isFeature    true = also has its own dedicated feature-programme section (Miles Davis)
+ *   isFeature    true = also appears in the homepage feature-programme treatment
  *   fileNumber   optional "File NN" tag used only when this event is featured in the Hero
  */
 
@@ -413,8 +413,7 @@ const VENUE_EVENTS = [
     showDates: ['2026-10-09T20:00:00+11:00', '2026-10-10T20:00:00+11:00', '2026-10-11T20:00:00+11:00'],
     showDurationHours: 3,
     calType: 'feature',
-    isPublic: true,
-    isFeature: true
+    isPublic: true
   },
   {
     id: 'brazilian-jazz-original-grooves',
@@ -526,11 +525,20 @@ const VENUE_EVENTS = [
     id: 'acidity-halloween-music-night',
     dateStart: '2026-10-31',
     title: 'Acidity. Halloween Music Night',
-    genres: ['Halloween', 'Music Night'],
-    status: 'details-soon',
-    ctaType: 'details',
-    calType: 'session',
-    isPublic: true
+    genres: ['Live Music', 'DJ Sets', 'Costumes', 'Late Night'],
+    music: '18:00',
+    status: 'announced',
+    ctaType: 'info',
+    ctaLabel: 'Info on Instagram ↗',
+    infoUrl: 'https://instagram.com/acidity.bar_n_coffee',
+    poster: 'posters/acidity-halloween-music-night-31-oct.jpg',
+    video: 'halloween-music-night.m4v',
+    preservePoster: true,
+    description: 'Acidity presents a Halloween music party with live music, DJ sets, costumes and a late-night programme.',
+    schedule: ['6PM — Programme begins', 'Late — Finish'],
+    calType: 'feature',
+    isPublic: true,
+    isFeature: true
   },
   {
     id: 'tripside-life-07-nov',

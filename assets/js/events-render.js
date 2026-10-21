@@ -46,6 +46,20 @@
     }[c]));
   }
 
+  function videoMime(file) {
+    return /\.mov$/i.test(file || '') ? 'video/quicktime' : 'video/mp4';
+  }
+
+  function motionPosterHtml(ev, alt) {
+    const posterSrc = `assets/images/${ev.poster}`;
+    return `<span class="poster-motion">
+      <img class="poster-motion-static" src="${posterSrc}" alt="${escapeHtml(alt)}">
+      <video class="poster-motion-video" muted loop playsinline preload="metadata" data-hover-video aria-hidden="true">
+        <source src="assets/video/${ev.video}" type="${videoMime(ev.video)}">
+      </video>
+    </span>`;
+  }
+
   function primaryTime(ev) { return ev.music || ev.doors || null; }
 
   function metaLine(ev) {
@@ -238,8 +252,9 @@
 
   // ---- CTA builders ----------------------------------------------------
 
-  const DEFAULT_CTA_LABELS = { book: 'Book Tickets ↗', rsvp: 'RSVP ↗' };
+  const DEFAULT_CTA_LABELS = { book: 'Book Tickets ↗', rsvp: 'RSVP ↗', info: 'Info ↗' };
   function ctaLabel(ev) { return ev.ctaLabel || DEFAULT_CTA_LABELS[ev.ctaType] || ''; }
+  function ctaUrl(ev) { return ev.infoUrl || ev.ticketUrl || ''; }
   function bookingIsActive(ev) { return !['sold-out', 'cancelled'].includes(ev.ticketStatus); }
 
   function ctaWoCard(ev) {
@@ -248,7 +263,8 @@
     switch (ev.ctaType) {
       case 'book':
       case 'rsvp':
-        return `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="wo-card-link">${escapeHtml(ctaLabel(ev))}</a>`;
+      case 'info':
+        return `<a href="${ctaUrl(ev)}" target="_blank" rel="noopener" class="wo-card-link">${escapeHtml(ctaLabel(ev))}</a>`;
       case 'free':
         return `<span class="pi-status">Free Entry</span>`;
       case 'door':
@@ -266,7 +282,8 @@
     switch (ev.ctaType) {
       case 'book':
       case 'rsvp':
-        return `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="pi-link">${escapeHtml(ctaLabel(ev))}</a>`;
+      case 'info':
+        return `<a href="${ctaUrl(ev)}" target="_blank" rel="noopener" class="pi-link">${escapeHtml(ctaLabel(ev))}</a>`;
       case 'free':
         return `<span class="pi-status">Free Entry</span>`;
       case 'door':
@@ -284,7 +301,8 @@
     switch (ev.ctaType) {
       case 'book':
       case 'rsvp':
-        return `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="run-status is-link">${escapeHtml(ctaLabel(ev))}</a>`;
+      case 'info':
+        return `<a href="${ctaUrl(ev)}" target="_blank" rel="noopener" class="run-status is-link">${escapeHtml(ctaLabel(ev))}</a>`;
       case 'free':
         return `<span class="run-status is-details">Free Entry</span>`;
       case 'door':
@@ -328,10 +346,10 @@
     if (ev.poster || ev.video) {
       const preserveClass = ev.preservePoster ? ' is-contain' : '';
       const posterImage = ev.video
-        ? `<video muted loop autoplay playsinline preload="metadata" poster="assets/images/${ev.poster}" aria-label="${escapeHtml(fullTitle(ev))} animated poster"><source src="assets/video/${ev.video}" type="video/mp4"></video>`
+        ? motionPosterHtml(ev, `${fullTitle(ev)} poster`)
         : `<img src="assets/images/${ev.poster}" alt="${escapeHtml(fullTitle(ev))} poster">`;
-      const linkedPoster = ev.ticketUrl && bookingIsActive(ev) && (ev.ctaType === 'book' || ev.ctaType === 'rsvp')
-        ? `<a href="${ev.ticketUrl}" target="_blank" rel="noopener" class="wo-card-poster-link" aria-label="${escapeHtml(ctaLabel(ev))} for ${escapeHtml(fullTitle(ev))}">${posterImage}</a>`
+      const linkedPoster = ctaUrl(ev) && bookingIsActive(ev) && ['book', 'rsvp', 'info'].includes(ev.ctaType)
+        ? `<a href="${ctaUrl(ev)}" target="_blank" rel="noopener" class="wo-card-poster-link" aria-label="${escapeHtml(ctaLabel(ev))} for ${escapeHtml(fullTitle(ev))}">${posterImage}</a>`
         : posterImage;
       photo = `<div class="wo-card-photo${preserveClass}">${badgeHtml}${linkedPoster}</div>`;
     } else {
@@ -420,12 +438,8 @@
     if (!root || !ev) return;
 
     const slideHtml = (item, index, isFeature) => {
-      const posterSrc = isFeature
-        ? 'assets/images/posters/we-want-miles-landscape.jpg'
-        : item.poster ? `assets/images/${item.poster}` : 'assets/images/posters/coffee-rave-24-may.jpg';
-      const titleHtml = isFeature
-        ? 'We Want<br>Miles'
-        : item.artist ? `${escapeHtml(item.title)}<br>${escapeHtml(item.artist)}` : escapeHtml(item.title);
+      const posterSrc = item.poster ? `assets/images/${item.poster}` : 'assets/images/posters/coffee-rave-24-may.jpg';
+      const titleHtml = item.artist ? `${escapeHtml(item.title)}<br>${escapeHtml(item.artist)}` : escapeHtml(item.title);
       const genreLine = (item.genres || []).join(' / ');
       const desc = item.heroDescription
         ? item.heroDescription
@@ -442,36 +456,33 @@
 
       let statusLabel = isFeature ? 'Feature Programme' : 'Ticketed';
       if (!isFeature && item.status === 'free') statusLabel = 'Free Entry';
+      else if (!isFeature && item.ctaType === 'info') statusLabel = 'Info on Instagram';
       else if (!isFeature && item.status === 'details-soon') statusLabel = 'Details Soon';
       else if (!isFeature && item.status === 'occupied') statusLabel = 'Occupied';
 
       let primaryCta;
-      if (item.ctaType === 'book' || item.ctaType === 'rsvp') primaryCta = `<a href="${item.ticketUrl}" target="_blank" rel="noopener" class="btn btn-primary">${escapeHtml(ctaLabel(item))}</a>`;
+      if (['book', 'rsvp', 'info'].includes(item.ctaType)) primaryCta = `<a href="${ctaUrl(item)}" target="_blank" rel="noopener" class="btn btn-primary">${escapeHtml(ctaLabel(item))}</a>`;
       else if (item.ctaType === 'free') primaryCta = `<span class="btn btn-outline" style="cursor:default;">Free Entry</span>`;
       else if (item.ctaType === 'door') primaryCta = `<span class="btn btn-outline" style="cursor:default;">${escapeHtml(ctaLabel(item))}</span>`;
       else primaryCta = `<span class="btn btn-outline" style="cursor:default;">Details Soon</span>`;
 
       const fileTag = item.fileNumber ? ` · ${item.fileNumber}` : '';
-      const media = isFeature
-        ? `<a href="${item.ticketUrl}" target="_blank" rel="noopener" class="hero-poster-link" aria-label="Book tickets for ${escapeHtml(fullTitle(item))}">
-            <video muted loop playsinline preload="metadata" poster="${posterSrc}" data-hero-video aria-label="${escapeHtml(fullTitle(item))} feature video">
-              <source src="assets/video/we-want-miles-original.mov" type="video/quicktime">
-              <source src="assets/video/we-want-miles.m4v" type="video/mp4">
-            </video>
-          </a>`
-        : item.video
-          ? `<video muted loop autoplay playsinline preload="metadata" poster="${posterSrc}" data-hero-video aria-label="${escapeHtml(fullTitle(item))} animated poster"><source src="assets/video/${item.video}" type="video/mp4"></video>`
-        : item.ticketUrl && bookingIsActive(item) && (item.ctaType === 'book' || item.ctaType === 'rsvp')
-          ? `<a href="${item.ticketUrl}" target="_blank" rel="noopener" class="hero-poster-link" aria-label="${escapeHtml(ctaLabel(item))} for ${escapeHtml(fullTitle(item))}"><img src="${posterSrc}" alt="${escapeHtml(fullTitle(item))} poster"></a>`
+      const motionMedia = item.video ? motionPosterHtml(item, `${fullTitle(item)} poster`) : '';
+      const media = item.video
+        ? ctaUrl(item) && ['book', 'rsvp', 'info'].includes(item.ctaType)
+          ? `<a href="${ctaUrl(item)}" target="_blank" rel="noopener" class="hero-poster-link" aria-label="${escapeHtml(ctaLabel(item))} for ${escapeHtml(fullTitle(item))}">${motionMedia}</a>`
+          : motionMedia
+        : ctaUrl(item) && bookingIsActive(item) && ['book', 'rsvp', 'info'].includes(item.ctaType)
+          ? `<a href="${ctaUrl(item)}" target="_blank" rel="noopener" class="hero-poster-link" aria-label="${escapeHtml(ctaLabel(item))} for ${escapeHtml(fullTitle(item))}"><img src="${posterSrc}" alt="${escapeHtml(fullTitle(item))} poster"></a>`
           : `<img src="${posterSrc}" alt="${escapeHtml(fullTitle(item))} poster">`;
 
       return `<article class="hero-carousel-slide${index === 0 ? ' is-active' : ''}${isFeature ? ' is-feature-slide' : ''}" data-hero-slide="${index}" aria-hidden="${index === 0 ? 'false' : 'true'}">
         <div class="hero-folio" aria-hidden="true"><span>ACD.</span><span>${String(index + 1).padStart(2, '0')}</span></div>
         <div class="hero-feature-media${item.preservePoster || isFeature ? ' is-contain' : ''}">${media}</div>
         <div class="hero-feature-body">
-          <div class="hero-eyebrow">${isFeature ? 'FEATURE PROGRAMME / THREE NIGHTS' : 'CURRENT PROGRAMME / RICHMOND, MELBOURNE'}</div>
-          <p class="hero-lead">${isFeature ? '100 years of Miles.<br>Three eras after dark.' : 'Coffee by day.<br>Live sound after dark.'}</p>
-          <span class="hero-feature-tag">${isFeature ? '09—11 OCT 2026' : `Next Session${fileTag}`}</span>
+          <div class="hero-eyebrow">${isFeature ? 'FEATURE PROGRAMME / ONE NIGHT' : 'CURRENT PROGRAMME / RICHMOND, MELBOURNE'}</div>
+          <p class="hero-lead">${isFeature ? 'Live music.<br>DJ sets after dark.' : 'Coffee by day.<br>Live sound after dark.'}</p>
+          <span class="hero-feature-tag">${isFeature ? `${String(dayNum(item.dateStart)).padStart(2, '0')} ${monthShort(item.dateStart).toUpperCase()} ${yearOf(item.dateStart)}` : `Next Session${fileTag}`}</span>
           <h2 class="hero-feature-title">${titleHtml}</h2>
           <p class="hero-feature-desc">${desc}</p>
           ${earlyBirdCountdown(item, 'hero')}
@@ -481,7 +492,7 @@
           </div>
           <div class="hero-actions">
             ${primaryCta}
-            <a href="${isFeature ? '#miles-davis-tribute' : 'events.html'}" class="btn btn-outline">${isFeature ? 'Feature Details' : 'Full Programme'}</a>
+            <a href="${isFeature ? `#${escapeHtml(item.id)}` : 'events.html'}" class="btn btn-outline">${isFeature ? 'Feature Details' : 'Full Programme'}</a>
           </div>
         </div>
       </article>`;
