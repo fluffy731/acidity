@@ -473,6 +473,23 @@ const VENUE_EVENTS = [
     isPublic: true
   },
   {
+    id: 'late-night-jazz-24-oct',
+    dateStart: '2026-10-24',
+    title: 'Late Night Jazz',
+    genres: ['Late-Night Jazz', 'Happy Hour'],
+    music: '21:00',
+    status: 'free',
+    ctaType: 'free',
+    ctaLabel: 'Free Entry',
+    poster: 'posters/late-night-jazz-24-oct.jpg',
+    preservePoster: true,
+    description: 'Late-night jazz from 9PM until late, with free entry and all-day happy hour at Acidity.',
+    schedule: ['9PM — Live jazz begins', 'Late — Finish'],
+    admission: 'Free entry · All-day happy hour.',
+    calType: 'session',
+    isPublic: true
+  },
+  {
     id: 'iso-jazz-quartet-29-oct',
     dateStart: '2026-10-29',
     title: 'Thursday Jazz Night',
