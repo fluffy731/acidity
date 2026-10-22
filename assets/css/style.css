@@ -3545,6 +3545,9 @@ h1, h2{
 .artist-submission-grid span{ font-family:var(--font-mono); color:var(--journal-blue); }
 .artist-submission-grid h3{ margin:2rem 0 .5rem; font-size:2rem; text-transform:uppercase; }
 .artist-submission-grid p{ color:var(--cream-dim); }
+.artist-cta-row{ display:flex; flex-wrap:wrap; gap:.75rem; align-items:center; }
+.artists-call .artist-cta-row .btn-outline{ color:var(--journal-ink); border-color:var(--journal-ink); }
+.artists-call .artist-cta-row .btn-outline:hover{ color:var(--journal-blue); border-color:var(--journal-blue); }
 .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 @media (max-width:760px){
   .programme-newsletter{ grid-template-columns:1fr; }
@@ -3552,6 +3555,8 @@ h1, h2{
   .faq-grid,.artist-submission-grid{ grid-template-columns:1fr; }
   .faq-grid details:nth-child(odd),.faq-grid details:nth-child(even){ padding-left:0; padding-right:0; border-left:0; }
   .artist-submission-grid>div+div{ border-left:0; border-top:1px solid currentColor; }
+  .artist-cta-row{ align-items:stretch; flex-direction:column; }
+  .artist-cta-row .btn{ justify-content:center; text-align:center; }
   .event-detail dl>div{ grid-template-columns:1fr; gap:.25rem; }
 }
 

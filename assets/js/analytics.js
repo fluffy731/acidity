@@ -39,7 +39,9 @@
     try { url = new URL(rawHref, window.location.href); } catch (_) { return; }
 
     const details = { link_url: url.href, link_text: linkLabel(link) };
-    if (url.hostname === 'events.humanitix.com') {
+    if (url.hostname === 'soundsample-artist-pitches.sharpdell16.chatgpt.site') {
+      send('artist_portal_click', details);
+    } else if (url.hostname === 'events.humanitix.com') {
       send('ticket_click', Object.assign({ event_name: linkLabel(link) }, details));
     } else if (url.hostname.includes('google.com') && url.pathname.includes('/maps')) {
       send('map_click', details);
