@@ -69,7 +69,7 @@ function initProgrammeIntro() {
 
   const reducedMotion = prefersReducedMotion();
   let lastSeen = '';
-  const introStorageKey = 'acidity-programme-intro-seen-v5';
+  const introStorageKey = 'acidity-programme-intro-seen-v6';
   try { lastSeen = localStorage.getItem(introStorageKey) || ''; } catch (error) {}
 
   const dayParts = new Intl.DateTimeFormat('en', {
@@ -83,7 +83,9 @@ function initProgrammeIntro() {
 
   if (typeof VENUE_EVENTS !== 'undefined') {
     const today = melbourneDay;
-    const featured = VENUE_EVENTS.find(event => event.isPublic && event.poster && event.dateStart >= today);
+    const featured = VENUE_EVENTS
+      .filter(event => event.isPublic && event.poster && (event.dateStart >= today || (event.dateEnd && event.dateEnd >= today)))
+      .sort((a, b) => a.dateStart.localeCompare(b.dateStart))[0];
     if (featured) {
       const poster = intro.querySelector('[data-intro-poster]');
       const title = intro.querySelector('[data-intro-title]');
