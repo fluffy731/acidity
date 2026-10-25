@@ -398,6 +398,48 @@
       </article>`;
   }
 
+  function renderWoStack(events, isUpcoming) {
+    const front = events.find(ev => ev.stackPosition === 'front') || events[0];
+    const back = events.find(ev => ev !== front) || events[1];
+    const monthAttr = `${monthLong(front.dateStart)} ${yearOf(front.dateStart)}`;
+    const classes = ['wo-card', 'wo-card-stack'];
+    if (isUpcoming) classes.push('is-upcoming');
+    const eventPoster = (ev, position) => `<figure class="wo-stack-panel is-${position}">
+      <img src="assets/images/${ev.poster}" alt="${escapeHtml(fullTitle(ev))} poster">
+      <figcaption><strong>${escapeHtml(fullTitle(ev))}</strong><span>${escapeHtml(fmt12(primaryTime(ev)))}${ev.timeEnd ? `–${escapeHtml(fmt12(ev.timeEnd))}` : ''}</span></figcaption>
+    </figure>`;
+    const first = [...events].sort((a, b) => (primaryTime(a) || '').localeCompare(primaryTime(b) || ''))[0];
+    const endingOrder = [...events].sort((a, b) => (a.timeEnd || primaryTime(a) || '').localeCompare(b.timeEnd || primaryTime(b) || ''));
+    const last = endingOrder[endingOrder.length - 1];
+    const timeRange = `${fmt12(primaryTime(first))}–${fmt12(last.timeEnd || primaryTime(last))}`;
+
+    return `<article class="${classes.join(' ')}" data-month="${monthAttr}" tabindex="0" aria-label="14 November double bill. Focus or hover to unfold both posters.">
+      <div class="wo-card-stack-stage">
+        <span class="wo-card-badge">Double Bill</span>
+        ${eventPoster(back, 'back')}
+        ${eventPoster(front, 'front')}
+        <span class="wo-stack-hint">Hover / tap to unfold</span>
+      </div>
+      <div class="wo-card-body">
+        <span class="wo-card-date">${escapeHtml(longDateRangeLabel(front))} · ${escapeHtml(timeRange)}</span>
+        <h4>Shanghai Jazz / P.D.B.H.</h4>
+        <p><strong>7–9PM</strong> — P.D.B.H. live jazz fusion.<br><strong>9–11PM</strong> — Shanghai Jazz: Chinese melodies and jazz spirit.</p>
+        <span class="pi-status">P.D.B.H. · Free Entry</span>
+      </div>
+    </article>`;
+  }
+
+  function renderWoProgramme(events, today) {
+    const renderedStacks = new Set();
+    return events.map(ev => {
+      const isUpcoming = ev.dateEnd ? ev.dateEnd >= today : ev.dateStart >= today;
+      if (!ev.stackGroup) return renderWoCard(ev, isUpcoming);
+      if (renderedStacks.has(ev.stackGroup)) return '';
+      renderedStacks.add(ev.stackGroup);
+      return renderWoStack(events.filter(item => item.stackGroup === ev.stackGroup), isUpcoming);
+    }).join('\n');
+  }
+
   // ---- Programme Index list-item -----------------------------------------
 
   function renderPiItem(ev, isUpcoming) {
@@ -614,6 +656,19 @@
 
   function buildCalendarEvents(events) {
     const out = {};
+    const addEntry = (iso, entry) => {
+      if (!out[iso]) {
+        out[iso] = entry;
+        return;
+      }
+      const existing = out[iso];
+      out[iso] = {
+        type: existing.type === 'feature' || entry.type === 'feature' ? 'feature' : existing.type,
+        title: `${existing.title} / ${entry.title}`,
+        time: [existing.time, entry.time].filter(Boolean).join(' · '),
+        note: [existing.note, entry.note].filter(Boolean).join(' · ')
+      };
+    };
     events.forEach(ev => {
       const title = fullTitle(ev) + (ev.artist ? ` — ${ev.artist}` : '');
       if (ev.dateEnd) {
@@ -624,7 +679,7 @@
         let night = 1;
         while (cursor <= end) {
           const iso = cursor.toISOString().slice(0, 10);
-          out[iso] = { type: ev.calType, title: `${title} — Night ${night} of ${totalNights}` };
+          addEntry(iso, { type: ev.calType, title: `${title} — Night ${night} of ${totalNights}` });
           cursor.setDate(cursor.getDate() + 1);
           night++;
         }
@@ -633,7 +688,7 @@
         const t = primaryTime(ev);
         if (t) entry.time = ev.timeEnd ? `${fmt12(t)}–${fmt12(ev.timeEnd)}` : fmt12(t);
         if (ev.admission) entry.note = ev.admission;
-        out[ev.dateStart] = entry;
+        addEntry(ev.dateStart, entry);
       }
     });
     return out;
@@ -679,7 +734,7 @@
     // What's On — append generated cards after the wo-anchor marker
     const woAnchor = document.getElementById('wo-anchor-upcoming');
     if (woAnchor) {
-      woAnchor.insertAdjacentHTML('afterend', programmePublic.map(ev => renderWoCard(ev, ev.dateEnd ? ev.dateEnd >= today : ev.dateStart >= today)).join('\n'));
+      woAnchor.insertAdjacentHTML('afterend', renderWoProgramme(programmePublic, today));
     }
 
     // Programme Index — group by month, insert after pi-anchor
