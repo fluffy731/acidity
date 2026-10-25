@@ -404,10 +404,15 @@
     const monthAttr = `${monthLong(front.dateStart)} ${yearOf(front.dateStart)}`;
     const classes = ['wo-card', 'wo-card-stack'];
     if (isUpcoming) classes.push('is-upcoming');
-    const eventPoster = (ev, position) => `<figure class="wo-stack-panel is-${position}">
-      <img src="assets/images/${ev.poster}" alt="${escapeHtml(fullTitle(ev))} poster">
-      <figcaption><strong>${escapeHtml(fullTitle(ev))}</strong><span>${escapeHtml(fmt12(primaryTime(ev)))}${ev.timeEnd ? `–${escapeHtml(fmt12(ev.timeEnd))}` : ''}</span></figcaption>
-    </figure>`;
+    const eventPoster = (ev, position) => {
+      const media = ctaUrl(ev) && ['book', 'rsvp', 'info'].includes(ev.ctaType)
+        ? `<a href="${ctaUrl(ev)}" target="_blank" rel="noopener" class="wo-card-poster-link" aria-label="${escapeHtml(ctaLabel(ev))} for ${escapeHtml(fullTitle(ev))}"><img src="assets/images/${ev.poster}" alt="${escapeHtml(fullTitle(ev))} poster"></a>`
+        : `<img src="assets/images/${ev.poster}" alt="${escapeHtml(fullTitle(ev))} poster">`;
+      return `<figure class="wo-stack-panel is-${position}">
+        ${media}
+        <figcaption><strong>${escapeHtml(fullTitle(ev))}</strong><span>${escapeHtml(fmt12(primaryTime(ev)))}${ev.timeEnd ? `–${escapeHtml(fmt12(ev.timeEnd))}` : ''}</span></figcaption>
+      </figure>`;
+    };
     const first = [...events].sort((a, b) => (primaryTime(a) || '').localeCompare(primaryTime(b) || ''))[0];
     const endingOrder = [...events].sort((a, b) => (a.timeEnd || primaryTime(a) || '').localeCompare(b.timeEnd || primaryTime(b) || ''));
     const last = endingOrder[endingOrder.length - 1];
@@ -425,6 +430,7 @@
         <h4>Shanghai Jazz / P.D.B.H.</h4>
         <p><strong>7–9PM</strong> — P.D.B.H. live jazz fusion.<br><strong>9–11PM</strong> — Shanghai Jazz: Chinese melodies and jazz spirit.</p>
         <span class="pi-status">P.D.B.H. · Free Entry</span>
+        ${ctaWoCard(front)}
       </div>
     </article>`;
   }
