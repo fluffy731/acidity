@@ -413,7 +413,7 @@
     const last = endingOrder[endingOrder.length - 1];
     const timeRange = `${fmt12(primaryTime(first))}–${fmt12(last.timeEnd || primaryTime(last))}`;
 
-    return `<article class="${classes.join(' ')}" data-month="${monthAttr}" tabindex="0" aria-label="14 November double bill. Focus or hover to unfold both posters.">
+    return `<article class="${classes.join(' ')}" data-month="${monthAttr}" tabindex="0" aria-expanded="false" aria-label="14 November double bill. Hover, or press Enter or Space, to unfold both posters.">
       <div class="wo-card-stack-stage">
         <span class="wo-card-badge">Double Bill</span>
         ${eventPoster(back, 'back')}
@@ -438,6 +438,53 @@
       renderedStacks.add(ev.stackGroup);
       return renderWoStack(events.filter(item => item.stackGroup === ev.stackGroup), isUpcoming);
     }).join('\n');
+  }
+
+  function initWoCardStacks() {
+    const cards = Array.from(document.querySelectorAll('.wo-card-stack'));
+    if (!cards.length) return;
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+    const setExpanded = (card, expanded, pinned) => {
+      card.classList.toggle('is-expanded', expanded);
+      card.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      if (typeof pinned === 'boolean') card.dataset.stackPinned = pinned ? 'true' : 'false';
+    };
+
+    cards.forEach(card => {
+      card.dataset.stackPinned = 'false';
+
+      card.addEventListener('pointerenter', () => {
+        if (canHover.matches) setExpanded(card, true);
+      });
+
+      card.addEventListener('pointerleave', () => {
+        if (canHover.matches && card.dataset.stackPinned !== 'true') setExpanded(card, false);
+      });
+
+      card.addEventListener('click', event => {
+        if (event.target.closest('a, button')) return;
+        const pinned = card.dataset.stackPinned !== 'true';
+        setExpanded(card, pinned, pinned);
+      });
+
+      card.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          const pinned = card.dataset.stackPinned !== 'true';
+          setExpanded(card, pinned, pinned);
+        } else if (event.key === 'Escape') {
+          setExpanded(card, false, false);
+          card.blur();
+        }
+      });
+    });
+
+    document.addEventListener('click', event => {
+      cards.forEach(card => {
+        if (!card.contains(event.target)) setExpanded(card, false, false);
+      });
+    });
   }
 
   // ---- Programme Index list-item -----------------------------------------
@@ -735,6 +782,7 @@
     const woAnchor = document.getElementById('wo-anchor-upcoming');
     if (woAnchor) {
       woAnchor.insertAdjacentHTML('afterend', renderWoProgramme(programmePublic, today));
+      initWoCardStacks();
     }
 
     // Programme Index — group by month, insert after pi-anchor

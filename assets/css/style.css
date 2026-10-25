@@ -2916,6 +2916,8 @@ h1, h2{
 .wo-card-stack{
   --stack-spread: 0%;
   --stack-tilt: 1.8deg;
+  --stack-scale: 1;
+  position: relative;
   outline: none;
 }
 .wo-card-stack-stage{
@@ -2943,11 +2945,11 @@ h1, h2{
 }
 .wo-stack-panel.is-back{
   z-index: 1;
-  transform: translateX(calc(var(--stack-spread) * .72)) rotate(var(--stack-tilt));
+  transform: translateX(calc(var(--stack-spread) * .72)) rotate(var(--stack-tilt)) scale(var(--stack-scale));
 }
 .wo-stack-panel.is-front{
   z-index: 2;
-  transform: translateX(calc(var(--stack-spread) * -.72)) rotate(calc(var(--stack-tilt) * -1));
+  transform: translateX(calc(var(--stack-spread) * -.72)) rotate(calc(var(--stack-tilt) * -1)) scale(var(--stack-scale));
 }
 .wo-stack-panel figcaption{
   position: absolute;
@@ -2980,26 +2982,19 @@ h1, h2{
   text-transform: uppercase;
   transition: opacity 180ms ease;
 }
-.wo-card-stack:hover,
-.wo-card-stack:focus,
-.wo-card-stack:focus-within{
-  --stack-spread: 27%;
-  --stack-tilt: 3.5deg;
+.wo-card-stack.is-expanded{
+  --stack-spread: 72%;
+  --stack-tilt: 1.25deg;
+  z-index: 8;
 }
-.wo-card-stack:hover .wo-stack-panel,
-.wo-card-stack:focus .wo-stack-panel,
-.wo-card-stack:focus-within .wo-stack-panel{
+.wo-card-stack.is-expanded .wo-stack-panel{
   box-shadow: 0 22px 42px rgba(11,12,12,.25);
 }
-.wo-card-stack:hover .wo-stack-panel figcaption,
-.wo-card-stack:focus .wo-stack-panel figcaption,
-.wo-card-stack:focus-within .wo-stack-panel figcaption{
+.wo-card-stack.is-expanded .wo-stack-panel figcaption{
   opacity: 1;
   transform: translateY(0);
 }
-.wo-card-stack:hover .wo-stack-hint,
-.wo-card-stack:focus .wo-stack-hint,
-.wo-card-stack:focus-within .wo-stack-hint{ opacity: 0; }
+.wo-card-stack.is-expanded .wo-stack-hint{ opacity: 0; }
 .wo-card-poster-link,
 .hero-poster-link{
   display: block;
@@ -4390,8 +4385,11 @@ h1, h2{
   .hero-carousel-nav{ width: calc(100% - 2rem); justify-content: center; }
   .hero-carousel-nav button{ flex: 1 1 0; max-width: 5rem; }
   .wo-card-stack{ --stack-spread: 0%; }
-  .wo-card-stack:focus,
-  .wo-card-stack:focus-within{ --stack-spread: 19%; }
+  .wo-card-stack.is-expanded{
+    --stack-spread: 44%;
+    --stack-scale: .58;
+    --stack-tilt: 0deg;
+  }
   .wo-stack-panel{ inset-inline: 9%; }
 }
 
