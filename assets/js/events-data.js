@@ -637,6 +637,48 @@ const VENUE_EVENTS = [
     schedule: ['7PM — Doors', '8PM — First set', '10PM — Finish'],
     calType: 'session',
     isPublic: true
+  },
+  {
+    id: 'soul-rnb-session-21-nov',
+    dateStart: '2026-11-21',
+    title: 'Soul / R&B Session',
+    artist: 'Mustang Wu',
+    genres: ['Soul', 'R&B', 'Contemporary Soul'],
+    music: '20:30',
+    timeEnd: '22:30',
+    status: 'free',
+    ctaType: 'rsvp',
+    ctaLabel: 'Reserve Free Entry ↗',
+    ticketUrl: 'https://events.humanitix.com/soul-r-and-b-session-at-acidity',
+    poster: 'posters/soul-rnb-session-21-nov.jpg',
+    preservePoster: true,
+    description: 'Warm vocals, deep grooves and laid-back rhythms from Mustang Wu with Andre Chen, Ben Hooper and Zayne Guo.',
+    lineup: ['Mustang Wu — Vocals', 'Andre Chen — Bass', 'Ben Hooper — Keys', 'Zayne Guo — Drums'],
+    schedule: ['8:30PM — Performance begins', '10:30PM — Finish'],
+    admission: 'Free entry. RSVP via Humanitix.',
+    calType: 'session',
+    isPublic: true
+  },
+  {
+    id: 'jazz-brasileiro-27-nov',
+    dateStart: '2026-11-27',
+    title: 'Jazz Brasileiro',
+    artist: 'Project Orpheus',
+    genres: ['Brazilian Jazz', 'Samba', 'Bossa Nova'],
+    music: '21:00',
+    timeEnd: '23:00',
+    status: 'ticketed',
+    ctaType: 'book',
+    ctaLabel: 'Book Tickets ↗',
+    ticketUrl: 'https://events.humanitix.com/jazz-brasileiro-or-brazilian-jazz-night-with-project-orpheus',
+    poster: 'posters/jazz-brasileiro-27-nov.jpg',
+    preservePoster: true,
+    description: 'Project Orpheus brings the infectious rhythms, joyful energy and samba spirit of Brazil to Acidity.',
+    lineup: ['Maurizio Gulina — Guitar', 'Andrew Martin — Six-string Bass', 'Sebastian Andrade — Percussion'],
+    schedule: ['9PM — Performance begins', '11PM — Finish'],
+    admission: '$20 general admission via Humanitix.',
+    calType: 'session',
+    isPublic: true
   }
 ];
 
