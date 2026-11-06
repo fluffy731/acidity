@@ -549,7 +549,6 @@ const VENUE_EVENTS = [
     ctaLabel: 'Info on Instagram ↗',
     infoUrl: 'https://instagram.com/acidity.bar_n_coffee',
     poster: 'posters/acidity-halloween-music-night-31-oct.jpg',
-    video: 'halloween-music-night.m4v',
     preservePoster: true,
     description: 'Acidity presents a Halloween music party with live music, DJ sets, costumes and a late-night programme.',
     schedule: ['6PM — Programme begins', 'Late — Finish'],
