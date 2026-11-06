@@ -630,7 +630,7 @@ const VENUE_EVENTS = [
     ctaType: 'book',
     ctaLabel: 'Book Tickets ↗',
     ticketUrl: 'https://events.humanitix.com/acidity-bar-jade-lawford-trio',
-    poster: 'posters/jade-lawford-trio-15-nov.png',
+    poster: 'posters/jade-lawford-trio-15-nov.jpg',
     preservePoster: true,
     description: 'An intimate jazz trio night featuring Jade Lawford on vocals, Akash Dutta on keys and Nama Rangachari on double bass.',
     lineup: ['Jade Lawford — Vocals', 'Akash Dutta — Keys', 'Nama Rangachari — Double Bass'],
